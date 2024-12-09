@@ -1,3 +1,5 @@
+#set text(size: 12pt)
+
 #let parse-actions(body) = {
   let extract(it) = {
     ""
@@ -23,7 +25,7 @@
 #let objects = (
     "functor", "natural transformation", "monoid", "groupoid", "topos",
     "cartesian closed category", "homoset", "comonad",
-    "endofunctor", "fibration", "lilateral morphism", "coequalizer",
+    "endofunctor", "fibration", "lateral morphism", "coequalizer",
     "enriched category", "quiver", "bifunctor", "simplicial object", "sheaf",
     "torsor", "limit", "operad", "part-whole relation", "fusion",
     "tropes", "haecceity",
@@ -115,8 +117,12 @@
 
         [#a #non-statement(i)#j#non-statement(i - 1)]
     }
+    let n = chars.map(c => to-int(c)).sum()
+    let theorem = get(theorems, n)
+    let object = get(objects, n)
 
-
+    align(center)[= Proving #theorem for an arbitrary #object]
+    [\ ]
     for (i, c) in chars.enumerate() {
         let n = to-int(c)
 
@@ -132,4 +138,4 @@
 
 }
 
-#nonsense[kk]
+#nonsense[x]
