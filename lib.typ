@@ -12,6 +12,13 @@
   extract(body).clusters().map(lower)
 }
 
+#let vars = ("x", "y", "z", $theta$)
+#let funcs = ("f", $lambda$, "g", "G", $Im$)
+#let joiner = ($and$, $or$, $xor$)
+#let to-int = (char) => {("abcdefghijklmnopqrstuvwxyz").position(char)}
+#let get = (arr, i) => {arr.at(calc.rem(i, arr.len()))}
+#let cap = (str) => [#upper(str.at(0))#str.slice(1, str.len())]
+
 
 #let objects = (
     "functor", "natural transformation", "monoid", "groupoid", "topos",
@@ -24,13 +31,25 @@
     "constructible universe", "fixed-point combinator"
 )
 
-#let fields = (
-    "mereotopology", "universalism", "ontic structural realism",
-    "modal realism", "zermelo-fraenkel set theory (zf)",
-    "intuitionistic logic", "lambda calculus", "higher-order logic",
-    "substructural logic", "paraconsistent logic", "algebra of relations",
-    "grothendieck topology",
-)
+
+#let feild = (i) => {
+    let buzzwords = (
+        "abstract", "relational", "substructural", "discrete", "inerpolated",
+        "intuitional", "higher order", "paraconsistent", "interrelational",
+        "structural", "ontic", "semi ontic", "modal", "formal", "informal"
+    )
+
+    let fields = (
+        "calculus", "statistics", "logic", "algebra", "set theory", "topology",
+        "ontology","mereology"
+    )
+    let b1 = get(buzzwords, i)
+    let b2 = get(buzzwords, i + 2)
+    let f = get(fields, i)
+
+    [#b1 #b2 #f]
+}
+
 
 #let theorems = (
     "yoneda lemma", "kan extension", "exact sequence principle",
@@ -50,7 +69,11 @@
 )
 
 #let quantifiers = (
-    "for all", "there exists", "there is no", "in every case", "in some cases",
+    $forall$, $exists$ 
+)
+
+#let connectives = (
+    $==>$, $-->$, $<==>$, $arrow.double.not$, $arrow.squiggly$, $eq.triple$ 
 )
 
 #let adverbs = (
@@ -60,31 +83,41 @@
     "essentially", "fundamentally", "superfluously",
 )
 
-#let char_to_int = (char) => {
-    ("abcdefghijklmnopqrstuvwxyz").position(char)
-}
+#let openers = ("a problem arises", "a long sought after result", "a common challenge may be")
 
 
 #let nonsense(body) = {
     let chars = parse-actions(body).filter(char => char != none)
-
-    let nonsentence = (char) => {
-        let f = fields.at(calc.rem(char_to_int(char), fields.len()))
-        f = upper(f.at(0)) + f.slice(1, f.len())
-        let a = adverbs.at(calc.rem(char_to_int(char), adverbs.len()))
-        let c = connecting-frase.at(calc.rem(char_to_int(char), connecting-frase.len()))
-        let q = quantifiers.at(calc.rem(char_to_int(char), quantifiers.len()))
-        let o = objects.at(calc.rem(char_to_int(char), objects.len()))
-        let l = theorems.at(calc.rem(char_to_int(char), theorems.len()))
-
-        [#f #a #c #q #o the #l holds.]
+    if chars.len() == 0 {
+        return
     }
 
-    chars.map(char => nonsentence(char)).join(" ")
+    let non-statement = (i) => {
+        let q = get(quantifiers, i)
+        let f = get(funcs, i)
+        let f2 = get(funcs, i + 1)
+        let v = get(vars, i)
+        let v2 = get(vars, i - 1)
+        let c = get(connectives, i)
+        [[#q #v2#f\(#v)#c#f2\(#v2)]]
+    }
+
+    let non-introduction = (char) => {
+        let i = to-int(char)
+        let o = get(openers, i)
+        let f = feild(i)
+        [In #f #o]
+    }
+
+    let nonsentence = (char) => {
+        let i = to-int(char)
+        let j = get(joiner, i)
+        let a = get(adverbs, i)
+
+        [#a #non-statement(i)#j#non-statement(i - 1)]
+    }
+
+    par()[#non-introduction(chars.at(0)) #chars.slice(1, chars.len()).map(char => nonsentence(char)).join([\ ])]
 }
 
-
-// GEN 1 NONSENSE CONSTRUCTOR
-#nonsense[e]
-
-
+#nonsense[xano]
