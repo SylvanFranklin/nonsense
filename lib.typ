@@ -14,57 +14,50 @@
 
 
 #let objects = (
-    "Functor", "Natural transformation", "Monoid", "Groupoid", "Topos",
-    "Pullback / Pushout", "Cartesian closed category", "Hom-set", "Comonad",
-    "Endofunctor", "Fibration", "Lax morphism", "Coequalizer",
-    "Enriched category", "Quiver", "Bifunctor", "Simplicial object", "Sheaf",
-    "Torsor", "Colimit / Limit", "Operad", "Part-whole relation", "Fusion",
-    "Gunk (mereological)", "Tropes", "Haecceity", "Relational ontology",
-    "Large cardinal", "Cardinality", "Hyperreal number",
-    "Constructible universe", "Boolean algebra"
+    "functor", "natural transformation", "monoid", "groupoid", "topos",
+    "cartesian closed category", "homoset", "comonad",
+    "endofunctor", "fibration", "lilateral morphism", "coequalizer",
+    "enriched category", "quiver", "bifunctor", "simplicial object", "sheaf",
+    "torsor", "limit", "operad", "part-whole relation", "fusion",
+    "tropes", "haecceity",
+    "large cardinal", "hyperreal number",
+    "constructible universe", "fixed-point combinator"
 )
 
 #let fields = (
-    "Infinity category", "Decategorification", "Mereotopology",
-    "Universalism (mereology)", "Ontic structural realism", "Modal realism",
-    "Substratum", "Zermelo-Fraenkel set theory (ZF)", "Intuitionistic logic",
-    "Lambda calculus", "Higher-order logic", "Substructural logic",
-    "Paraconsistent logic", "Algebra of relations"
+    "mereotopology", "universalism", "ontic structural realism",
+    "modal realism", "zermelo-fraenkel set theory (zf)",
+    "intuitionistic logic", "lambda calculus", "higher-order logic",
+    "substructural logic", "paraconsistent logic", "algebra of relations",
+    "grothendieck topology",
 )
 
-#let theorems_lemmas_rules = (
-    "Yoneda Lemma", "Adjunction", "Kan extension", "Exact sequence",
-    "Spectral sequence", "Derived functor", "Grothendieck topology",
-    "Skolemization", "Supervenience", "Ontological dependence",
-    "Truthmaker theory", "Modal collapse", "Essentialism",
-    "Counterfactual dependence", "Axiom of choice", "Ordinal collapse",
-    "Forcing", "Kripke frame", "Curry-Howard correspondence",
-    "Predicate abstraction", "Fixed-point combinator", "Sequent calculus",
-    "Ultraproduct", "Dialetheism"
+#let theorems = (
+    "yoneda lemma", "kan extension", "exact sequence principle",
+    "spectral sequence", "ontological dependence",
+    "truthmaker theory", "modal collapse", "essentialism",
+    "counterfactual dependence", "axiom of choice", "ordinal collapse",
+    "forcing", "kripke frame", "curry-howard correspondence",
+    "predicate abstraction"
 )
 
 
 #let connecting-frase = (
-    "Implies", "Necessarily implies", "Only if", "Provided that", "On the
-    condition that", "Given that", "Whenever", "Entails that", "Insofar as",
-    "Supposing that", "It follows that", "Leads to", "If and only if", "Just in
-    case", "Is equivalent to", "Exactly when", "Necessary and sufficient
-    condition", "Coextensive with", "Because", "Therefore", "Thus", "Hence",
-    "Consequently", "As a result", "By necessity", "It must be that", "Or",
-    "Either ", "Unless", "Otherwise", "And", "Moreover", "Furthermore",
-    "Additionally", "As well as", "While", "Even if",
+    "implies", "necessarily implies", "only if", "holds provided that", "hold on the condition that", "exists only given that", "whenever", "insofar as",
+    "supposing that", "it follows that", "leads to", "if and only if", "is equivalent to", "exactly when", "is coextensive with", 
+    "and consequently", "as a direct result", "so by necessity", 
+    "unless", "and",  "even if",
 )
 
 #let quantifiers = (
-    "For all", "There exists", "There is no", "Such that", "In every case", "In
-    some cases",
+    "for all", "there exists", "there is no", "in every case", "in some cases",
 )
 
 #let adverbs = (
-    "Vacuously", "Trivially", "Logically", "Necessarily", "Formally",
-    "Ostensibly","Hypothetically", "Apparently", "Obliquely", "Indirectly",
-    "Superficially", "Redundantly", "Strictly", "Presumably", "Nominally",
-    "Essentially", "Fundamentally", "Superfluously",
+    "vacuously", "trivially", "logically", "necessarily", "formally",
+    "ostensibly","hypothetically", "apparently", "obliquely", "indirectly",
+    "superficially", "redundantly", "strictly", "presumably", "nominally",
+    "essentially", "fundamentally", "superfluously",
 )
 
 #let char_to_int = (char) => {
@@ -76,10 +69,22 @@
     let chars = parse-actions(body).filter(char => char != none)
 
     let nonsentence = (char) => {
-        fields.at(calc.rem(char_to_int(char), fields.len()))
+        let f = fields.at(calc.rem(char_to_int(char), fields.len()))
+        f = upper(f.at(0)) + f.slice(1, f.len())
+        let a = adverbs.at(calc.rem(char_to_int(char), adverbs.len()))
+        let c = connecting-frase.at(calc.rem(char_to_int(char), connecting-frase.len()))
+        let q = quantifiers.at(calc.rem(char_to_int(char), quantifiers.len()))
+        let o = objects.at(calc.rem(char_to_int(char), objects.len()))
+        let l = theorems.at(calc.rem(char_to_int(char), theorems.len()))
+
+        [#f #a #c #q #o the #l holds.]
     }
 
     chars.map(char => nonsentence(char)).join(" ")
 }
 
-#nonsense()[enaio]
+
+// GEN 1 NONSENSE CONSTRUCTOR
+#nonsense[e]
+
+
