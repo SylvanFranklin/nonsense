@@ -102,8 +102,7 @@
         [[#q #v2#f\(#v)#c#f2\(#v2)]]
     }
 
-    let non-introduction = (char) => {
-        let i = to-int(char)
+    let non-introduction = (i) => {
         let o = get(openers, i)
         let f = feild(i)
         [In #f #o]
@@ -117,7 +116,20 @@
         [#a #non-statement(i)#j#non-statement(i - 1)]
     }
 
-    par()[#non-introduction(chars.at(0)) #chars.slice(1, chars.len()).map(char => nonsentence(char)).join([\ ])]
+
+    for (i, c) in chars.enumerate() {
+        let n = to-int(c)
+
+        if i == 0 {
+            [#non-introduction(n)]
+        } else {
+            [#non-statement(n)]
+        }
+
+        [ ]
+        
+    }
+
 }
 
-#nonsense[xano]
+#nonsense[kk]
