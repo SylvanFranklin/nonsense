@@ -1,4 +1,5 @@
 #set text(size: 12pt)
+#set page(margin: (x: 20%))
 
 #let parse-actions(body) = {
   let extract(it) = {
@@ -17,57 +18,75 @@
 #let vars = ("x", "y", "z", $theta$)
 #let funcs = ("f", $lambda$, "g", "G", $Im$)
 #let joiner = ($and$, $or$, $xor$)
-#let to-int = (char) => {("abcdefghijklmnopqrstuvwxyz").position(char)}
+#let alphabet = "abcdefghijklmnopqrstuvwxyz"
+#let to-int = (char) => {("ab*()&^%$#@!'cd:;efghijklmnopqrstuvwxyz").position(char)}
 #let get = (arr, i) => {arr.at(calc.rem(i, arr.len()))}
 #let cap = (str) => [#upper(str.at(0))#str.slice(1, str.len())]
 
 
 #let objects = (
-    "functor", "natural transformation", "monoid", "groupoid", "topos",
-    "cartesian closed category", "homoset", "comonad",
-    "endofunctor", "fibration", "lateral morphism", "coequalizer",
-    "enriched category", "quiver", "bifunctor", "simplicial object", "sheaf",
-    "torsor", "limit", "operad", "part-whole relation", "fusion",
-    "tropes", "haecceity",
-    "large cardinal", "hyperreal number",
-    "constructible universe", "fixed-point combinator"
+    "functor", "transformation", "monoid", "groupoid", "topos", "cartesian
+    closed category", "homoset", "comonad", "endofunctor", "fibration",
+    "lateral morphism", "coequalizer", "category", "quiver", "bifunctor",
+    "object", "sheaf", "torsor", "limit", "operad", "part-whole relation",
+    "fusion", "haecceity", "subspace", "ordinal", "large cardinal", 
+    "hyperreal number", "universe", "combinator"
 )
 
+#let buzzwords = (
+    "abstract", "relational", "substructural", "discrete", "inerpolated",
+    "intuitional", "higher order", "paraconsistent", "interrelational",
+    "structural", "ontic", "semi ontic", "modal", "formal", "informal", "psuedo", 
+    "natural", "enriched", "simplicial", "abelian", "constructable", "fixed point"
+)
+
+#let fields = (
+    "calculus", "statistics", "logic", "algebra", "set theory", "topology",
+    "ontology","mereology"
+)
+
+#let theorems = (
+    "yoneda lemma", "kan extension", "exact sequence principle",
+    "spectral sequence lemma",
+    "truthmaker theory", 
+    "modal collapse", "essentialism",
+    "counterfactual dependence theorem", "axiom of choice", "ordinal collapse",
+    "kripke frame", "curry-howard correspondence",
+    "predicate abstraction"
+)
 
 #let feild = (i) => {
-    let buzzwords = (
-        "abstract", "relational", "substructural", "discrete", "inerpolated",
-        "intuitional", "higher order", "paraconsistent", "interrelational",
-        "structural", "ontic", "semi ontic", "modal", "formal", "informal"
-    )
-
-    let fields = (
-        "calculus", "statistics", "logic", "algebra", "set theory", "topology",
-        "ontology","mereology"
-    )
     let b1 = get(buzzwords, i)
     let b2 = get(buzzwords, i + 2)
     let f = get(fields, i)
-
     [#b1 #b2 #f]
 }
 
 
-#let theorems = (
-    "yoneda lemma", "kan extension", "exact sequence principle",
-    "spectral sequence", "ontological dependence",
-    "truthmaker theory", "modal collapse", "essentialism",
-    "counterfactual dependence", "axiom of choice", "ordinal collapse",
-    "forcing", "kripke frame", "curry-howard correspondence",
-    "predicate abstraction"
-)
+#let last_names = (
+    "Euler", "Bernstein", "Schröder", "Pascal", "Descartes", "Gödel", "Turing",
+    "Cantor", "Fibonacci", "Leibniz", "Pythagoras", "Noether", "Hilbert",
+    "Russell", "Frege", "Zeno", "Curry" 
+);
 
+
+#let theorem = (i) => {
+    let o = get(objects, i)
+    let b = get(buzzwords, i)
+    let a = if calc.rem(i, 2) == 0 {get(last_names, i)} else {get(buzzwords, i - 2)}
+    let k = get(
+    ("lemma", "theorem", "axiom", "conjecture", "principle", "extension",
+    "theory"), i)
+
+    [the #b #a #o #k]
+}
 
 #let connecting-frase = (
-    "implies", "necessarily implies", "only if", "holds provided that", "hold on the condition that", "exists only given that", "whenever", "insofar as",
-    "supposing that", "it follows that", "leads to", "if and only if", "is equivalent to", "exactly when", "is coextensive with", 
-    "and consequently", "as a direct result", "so by necessity", 
-    "unless", "and",  "even if",
+    "implies", "necessarily implies", "only if", "holds provided that", "hold
+    on the condition that", "exists only given that", "whenever", "insofar as",
+    "supposing that", "it follows that", "leads to", "if and only if", "is
+    equivalent to", "exactly when", "is coextensive with", "and consequently",
+    "as a direct result", "so by necessity", "unless", "and",  "even if",
 )
 
 #let quantifiers = (
@@ -110,32 +129,26 @@
         [In #f #o]
     }
 
-    let nonsentence = (char) => {
-        let i = to-int(char)
-        let j = get(joiner, i)
-        let a = get(adverbs, i)
+    let glob-i = chars.map(c => to-int(c)).sum()
+    let theorem = theorem(glob-i)
+    let object = get(objects, glob-i)
 
-        [#a #non-statement(i)#j#non-statement(i - 1)]
-    }
-    let n = chars.map(c => to-int(c)).sum()
-    let theorem = get(theorems, n)
-    let object = get(objects, n)
 
     align(center)[= Proving #theorem for an arbitrary #object]
     [\ ]
-    for (i, c) in chars.enumerate() {
-        let n = to-int(c)
 
-        if i == 0 {
-            [#non-introduction(n)]
-        } else {
-            [#non-statement(n)]
-        }
+    par(first-line-indent: 1em)[
+        #{for (i, c) in chars.enumerate() {
+            let n = to-int(c)
 
-        [ ]
-        
-    }
-
+            if i == 0 {
+                [#non-introduction(n)]
+            } else {
+                [#non-statement(n)]
+            }
+            [ ]
+        }}
+    ]
 }
 
-#nonsense[x]
+#nonsense[m]
