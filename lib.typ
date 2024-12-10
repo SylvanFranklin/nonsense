@@ -19,9 +19,11 @@
 #let funcs = ("f", $lambda$, "g", "G", $Im$)
 #let joiner = ($and$, $or$, $xor$)
 #let alphabet = "abcdefghijklmnopqrstuvwxyz"
+#let vowels = "aeiouy"
 #let to-int = (char) => {("ab*()&^%$#@!'cd:;efghijklmnopqrstuvwxyz").position(char)}
 #let get = (arr, i) => {arr.at(calc.rem(i, arr.len()))}
 #let cap = (str) => [#upper(str.at(0))#str.slice(1, str.len())]
+#let sing = (str) => {if str.at(0) in vowels [an #str] else [a #str]}
 
 #let objects = (
     "functor", "transformation", "monoid", "groupoid", "topos", 
@@ -32,12 +34,19 @@
     "hyperreal number", "universe", "combinator"
 )
 
+#let symbols = (
+    meta-cyclic-integral: $integral.cont.ccw$,
+    combinator: $lambda Epsilon_1$ ,
+    composition: $f circle.small g$,
+    section: $section$ 
+)
+
 #let buzzwords = (
     "abstract", "relational", "substructural", "discrete", "inerpolated",
     "intuitional", "higher order", "paraconsistent", "interrelational",
     "structural", "ontic", "semi ontic", "modal", "formal", "informal", "psuedo", 
     "natural", "enriched", "simplicial", "abelian", "constructable", "fixed point", 
-    "euclidian", "anti", "meta"
+    "euclidian", "anti", "meta", "stochastically", "bijective"
 )
 
 #let fields = (
@@ -62,7 +71,7 @@
     "Lancaster", "Zilber", "Abou",
 );
 
-#let feild = (i) => {
+#let field = (i) => {
     let b1 = get(buzzwords, i)
     let b2 = get(buzzwords, i + 2)
     let f = get(fields, i)
@@ -71,13 +80,9 @@
 
 #let authors = (i) => {
     // we will make between one and three authors 
-
     range(0, calc.rem(i, 4) + 1).map(n => 
         [#cap(get(alphabet, i + n)). #get(last_names, i + n)]
     ).join(", ")
-
-    
-    
 }
 
 #let theorem = (i) => {
@@ -123,7 +128,8 @@
     "defining", "constructing"
 )
 
-#let openers = ("a problem arises", "a long sought after result", "a common challenge may be")
+#let openers = (
+    "a problem arises", "a long sought after result", "a common challenge may be")
 
 
 #let nonsense(body) = {
@@ -138,7 +144,6 @@
 
     let debug = () => {
         let point-pair = (c) => $vec(delim: "[", #c, #text(blue)[#to-int(c)])$
-
         block(inset: 1em, stroke: 0.1em, radius: 1em, width: 100%)[
             *seed* : #{
                 if chars.len() < 5 {
@@ -150,26 +155,19 @@
             }
         ]
     }
-
     
     let non-statement = (i) => {
-        let q = get(quantifiers, i)
-        let f = get(funcs, i)
-        let f2 = get(funcs, i + 1)
-        let v = get(vars, i)
-        let v2 = get(vars, i - 1)
-        let c = get(connectives, i)
-        [[#q #v2#f\(#v)#c#f2\(#v2)]]
+        let o = get(symbols.keys(), i)
+        [Consider #sing(o) (#symbols.at(o))] 
     }
 
     let non-introduction = (i) => {
         let o = get(openers, i)
-        let f = feild(i)
-        [In #f #o]
+        let f = field(i)
+        [In #f #o: ]
     }
 
-
-    debug()
+    // debug()
     align(center)[= #cap(get(verbs, glob-i)) #thm1 for an arbitrary #obj1]
     align(center)[=== #authors(glob-i)]
     [\ ]
@@ -186,4 +184,4 @@
     ]
 }
 
-#nonsense[en]
+#nonsense[zenly;zastnsteinaiesrntoenz]
