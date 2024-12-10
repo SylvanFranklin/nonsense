@@ -68,6 +68,16 @@
     [#b1 #b2 #f]
 }
 
+#let authors = (i) => {
+    // we will make between one and three authors 
+
+    range(0, calc.rem(i, 4) + 1).map(n => 
+        [#cap(get(alphabet, i + n)). #get(last_names, i + n)]
+    ).join(", ")
+
+    
+    
+}
 
 #let theorem = (i) => {
     let o = get(objects, i)
@@ -139,12 +149,10 @@
 
 
     align(center)[= Proving #theorem for an arbitrary #object]
-    [\ ]
-
+    align(center)[=== #authors(glob-i)]
     par(first-line-indent: 1em)[
         #{for (i, c) in chars.enumerate() {
             let n = to-int(c)
-
             if i == 0 {
                 [#non-introduction(n)]
             } else {
@@ -155,4 +163,4 @@
     ]
 }
 
-#nonsense[m]
+#nonsense[nlozuyolg]
