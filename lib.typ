@@ -24,8 +24,8 @@
 #let cap = (str) => [#upper(str.at(0))#str.slice(1, str.len())]
 
 #let objects = (
-    "functor", "transformation", "monoid", "groupoid", "topos", "cartesian
-    closed category", "homoset", "comonad", "endofunctor", "fibration",
+    "functor", "transformation", "monoid", "groupoid", "topos", 
+    "closed category", "homoset", "comonad", "endofunctor", "fibration",
     "lateral morphism", "coequalizer", "category", "quiver", "bifunctor",
     "object", "sheaf", "torsor", "limit", "operad", "part-whole relation",
     "fusion", "haecceity", "subspace", "ordinal", "large cardinal", 
@@ -36,7 +36,8 @@
     "abstract", "relational", "substructural", "discrete", "inerpolated",
     "intuitional", "higher order", "paraconsistent", "interrelational",
     "structural", "ontic", "semi ontic", "modal", "formal", "informal", "psuedo", 
-    "natural", "enriched", "simplicial", "abelian", "constructable", "fixed point"
+    "natural", "enriched", "simplicial", "abelian", "constructable", "fixed point", 
+    "euclidian", "anti", "meta"
 )
 
 #let fields = (
@@ -117,16 +118,40 @@
     "superficially", "redundantly", "strictly", "presumably", "nominally",
     "essentially", "fundamentally", "superfluously",
 )
+#let verbs = (
+    "generalizing", "proving", "demonstrating", "containing",
+    "defining", "constructing"
+)
 
 #let openers = ("a problem arises", "a long sought after result", "a common challenge may be")
 
 
 #let nonsense(body) = {
     let chars = parse-actions(body).filter(char => char != none)
-    if chars.len() == 0 {
-        return
+    if chars.len() == 0 { return }
+    let glob-i = chars.map(c => to-int(c)).sum()
+    let thm1 = theorem(glob-i)
+    let thm2 = theorem(glob-i + 1)
+    let obj1 = get(objects, glob-i)
+    let obj2 = get(objects, glob-i + 1)
+    let obj3 = get(objects, glob-i + 2)
+
+    let debug = () => {
+        let point-pair = (c) => $vec(delim: "[", #c, #text(blue)[#to-int(c)])$
+
+        block(inset: 1em, stroke: 0.1em, radius: 1em, width: 100%)[
+            *seed* : #{
+                if chars.len() < 5 {
+                    [#chars.map(c => point-pair(c)).join(" + ") = #glob-i]
+                } else {
+                    [#chars.slice(0, 3).map(c => point-pair(c)).join(" + ") + ... + 
+                    #point-pair(chars.last()) = #glob-i]
+                }
+            }
+        ]
     }
 
+    
     let non-statement = (i) => {
         let q = get(quantifiers, i)
         let f = get(funcs, i)
@@ -143,14 +168,12 @@
         [In #f #o]
     }
 
-    let glob-i = chars.map(c => to-int(c)).sum()
-    let theorem = theorem(glob-i)
-    let object = get(objects, glob-i)
 
-
-    align(center)[= Proving #theorem for an arbitrary #object]
+    debug()
+    align(center)[= #cap(get(verbs, glob-i)) #thm1 for an arbitrary #obj1]
     align(center)[=== #authors(glob-i)]
-    par(first-line-indent: 1em)[
+    [\ ]
+    par(first-line-indent: 2em)[
         #{for (i, c) in chars.enumerate() {
             let n = to-int(c)
             if i == 0 {
@@ -163,4 +186,4 @@
     ]
 }
 
-#nonsense[nlozuyolg]
+#nonsense[en]
