@@ -23,7 +23,6 @@
 #let get = (arr, i) => {arr.at(calc.rem(i, arr.len()))}
 #let cap = (str) => [#upper(str.at(0))#str.slice(1, str.len())]
 
-
 #let objects = (
     "functor", "transformation", "monoid", "groupoid", "topos", "cartesian
     closed category", "homoset", "comonad", "endofunctor", "fibration",
@@ -55,6 +54,13 @@
     "predicate abstraction"
 )
 
+#let last_names = (
+    "Euler", "Bernstein", "Schröder", "Pascal", "Samuel", "Gödel", "Nozzle",
+    "Cantor", "Jones", "Pythis", "Noether", "Rubble", "Russell", "Frege",
+    "Zeno", "Curry", "Franklin", "Wager", "Pappas", "Fawkes", "Baccus",
+    "Lancaster", "Zilber", "Abou",
+);
+
 #let feild = (i) => {
     let b1 = get(buzzwords, i)
     let b2 = get(buzzwords, i + 2)
@@ -63,17 +69,15 @@
 }
 
 
-#let last_names = (
-    "Euler", "Bernstein", "Schröder", "Pascal", "Descartes", "Gödel", "Turing",
-    "Cantor", "Fibonacci", "Leibniz", "Pythagoras", "Noether", "Hilbert",
-    "Russell", "Frege", "Zeno", "Curry" 
-);
-
-
 #let theorem = (i) => {
     let o = get(objects, i)
     let b = get(buzzwords, i)
-    let a = if calc.rem(i, 2) == 0 {get(last_names, i)} else {get(buzzwords, i - 2)}
+    let a = if calc.rem(i, 2) == 0 {
+        get(last_names, i)
+    } else {
+        get(buzzwords, i - 2)
+    }
+
     let k = get(
     ("lemma", "theorem", "axiom", "conjecture", "principle", "extension",
     "theory"), i)
