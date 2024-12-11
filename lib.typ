@@ -34,8 +34,8 @@
     "closed category", "homoset", "comonad", "endofunctor", "fibration",
     "lateral morphism", "coequalizer", "category", "quiver", "bifunctor",
     "object", "sheaf", "torsor", "limit", "operad", "part-whole relation",
-    "fusion", "subspace", "ordinal", "cardinal", 
-    "hyperreal number", "universe", "combinator"
+    "fusion", "subspace", "ordinal", "cardinal", "state",
+    "hyperreal number", "universe", "combinator", "space"
 )
 
 #let symbols = (
@@ -77,6 +77,8 @@
 );
 
 #let participles = (
+    "commutes", "permutes", "tiles the plane", "is a monad", "is a functor",
+    "can be derived", "is divisible", "is an action", "repeates", "approximates the golden ratio", "is undefined", "is well ordered", "is a limit ordinal", "is a cardinal", "is natural", "is in a universe"
 );
 
 
@@ -130,9 +132,9 @@
    if rem == 0 [$ integral_(cal(v1))^(v2) #f_(v1) () divides v1^(f2 + v3) diff$]
    else if rem == 1 [$ (v3 + #f\(cal(v2)\))/infinity = i^4^(#f2\(v1\)) $]
    else if rem == 2 [$ #v2 times mat(i, 0; -i, i^2) $]
-   else if rem == 3 [$ sum_0^(v3 = cal(v1))Phi(3/4)$]
-   else if rem == 4 [$ f\(f2\(#v2 + #v1\)\) #c #f2 "finite"$ ]
-   else if rem == 5 [$ "(x|s|r" #v2 cal(e))^f\(#i\)$]
+   else if rem == 3 [$ sum_0^(v3 = cal(v1))Phi(3/4) $]
+   else if rem == 4 [$ f\(f2\(#v2 + #v1\)\) ==> #f2 $ ]
+   else if rem == 5 [$ "(x|s|r" #v2 cal(e))^f\(#i\) $]
    else if rem == 6 [$ v2 in {u = #f(v_3) | psi^(i^(#i)) : v_3 in KK} $]
    else if rem == 7 [$ v3 - cal(v1) + (f\(m\))/n J $]
    else []
@@ -167,6 +169,7 @@
     let glob-i = chars.map(c => to-int(c)).sum()
     let thm1 = theorem(glob-i)
     let thm2 = theorem(glob-i + 1)
+    let b = get(buzzwords, glob-i + 1)
     let obj1 = get(objects, glob-i)
     let obj2 = get(objects, glob-i + 1)
     let obj3 = get(objects, glob-i + 2)
@@ -193,22 +196,24 @@
         let b2 = get(buzzwords, i - 1)
         let b3 = get(buzzwords, i - 2)
         let a = get(adverbs, i)
+        let a2 = get(adverbs, i+1)
         let v = get(verbs, i)
         let (ck, cv) = kv(connectives, i)
         let f = field(i)
+        let p = get(participles, i)
         let l = get(last_names, i)
         
         let case = calc.rem(i, 5) 
         if case == 0 {
-            [By #v #sing(b) #ok on a #ok2, that is $ov$.]
+            [By #v #sing(b) #ok on a #ok2, that is #eq(i) We reach #sing(b3) #b2 #obj3.]
         } else if case == 1 {
             [Assume: #eq(i).]
         } else if case == 2 {
-            [First, #a #v #sing(b2) #obj2, such that: ]
+            [First, #a #v #sing(b2) #obj2]
         } else if case == 3 {
-            [#cap(a) #q #sing(b3) #obj3, #ck #sing(b) #obj1 #() ie #eq(i)]
+            [#cap(a) #q #sing(b3) #obj3, #ck #sing(b) #obj1 #p: #eq(i)]
         } else {
-            [On the other hand, #a #v #sing(b) #obj1, #a #v #sing(b2) #obj2.]
+            [On the other hand, #v #sing(b) #obj1, #a2 creates #sing(b2) #obj2.]
         }
     }
 
@@ -221,7 +226,7 @@
 
     // debug()
     align(center)[
-    = #cap(get(verbs, glob-i)) #thm1 for an arbitrary #obj1
+    = #cap(get(verbs, glob-i)) #thm1 for #sing(b) #obj2
     ==== #authors(glob-i) 
     \
     ]
@@ -239,4 +244,4 @@
     ]
 }
 
-#nonsense[zlm]
+#nonsense[yloooo]
