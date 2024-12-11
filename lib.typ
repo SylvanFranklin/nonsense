@@ -110,8 +110,6 @@
     "defining", "constructing", "extracting", "fixing"
 )
 
-#let openers = (
-    "a problem arises", "a long sought after result", "a common challenge may be")
 
 #let field = (i) => {
     let b1 = get(buzzwords, i)
@@ -129,7 +127,7 @@
    let (_, cv) = kv(connectives, i)
    let f2 = get(funcs, i+1)
 
-   if rem == 0 [$ integral_(cal(v1))^(v2) #f_(v1) () divides v1^(f2 + v3) diff$]
+   if rem == 0 [$ integral_(cal(v1))^(v2) #f\_(v1) () divides v1^(f2 + v3) diff$]
    else if rem == 1 [$ (v3 + #f\(cal(v2)\))/infinity = i^4^(#f2\(v1\)) $]
    else if rem == 2 [$ #v2 times mat(i, 0; -i, i^2) $]
    else if rem == 3 [$ sum_0^(v3 = cal(v1))Phi(3/4) $]
@@ -167,12 +165,12 @@
     let chars = parse-actions(body).filter(char => char != none)
     if chars.len() == 0 { return }
     let glob-i = chars.map(c => to-int(c)).sum()
-    let thm1 = theorem(glob-i)
-    let thm2 = theorem(glob-i + 1)
-    let b = get(buzzwords, glob-i + 1)
-    let obj1 = get(objects, glob-i)
-    let obj2 = get(objects, glob-i + 1)
-    let obj3 = get(objects, glob-i + 2)
+    let glob-thm1 = theorem(glob-i)
+    let glob-thm2 = theorem(glob-i + 1)
+    let glob-b = get(buzzwords, glob-i + 1)
+    let glob-obj1 = get(objects, glob-i)
+    let glob-obj2 = get(objects, glob-i + 1)
+    let glob-obj3 = get(objects, glob-i + 2)
 
     let debug = () => {
         let point-pair = (c) => $vec(delim: "[", #c, #text(blue)[#to-int(c)])$
@@ -191,6 +189,7 @@
     let non-statement = (i) => {
         let (ok, ov) = kv(symbols, i)
         let (ok2, ov2) = kv(symbols, i + 2)
+        let (ok3, ov3) = kv(symbols, i + 5)
         let q = get(quantifiers.keys(), i)
         let b = get(buzzwords, i)
         let b2 = get(buzzwords, i - 1)
@@ -205,28 +204,34 @@
         
         let case = calc.rem(i, 5) 
         if case == 0 {
-            [By #v #sing(b) #ok on a #ok2, that is #eq(i) We reach #sing(b3) #b2 #obj3.]
+            [By #v #sing(b) #ok on a #ok2, that is #eq(i) We reach #sing(b3) #b2 #ok3.]
         } else if case == 1 {
-            [Assume: #eq(i).]
+            [Assume: #eq(i) ]
         } else if case == 2 {
-            [First, #a #v #sing(b2) #obj2]
+            [First, #a #v #sing(b2) #ok2]
         } else if case == 3 {
-            [#cap(a) #q #sing(b3) #obj3, #ck #sing(b) #obj1 #p: #eq(i)]
+            [#cap(a) #q #sing(b3) #ok2, which #ck #sing(b) #ok. It #a2 #p: #eq(i)]
         } else {
-            [On the other hand, #v #sing(b) #obj1, #a2 creates #sing(b2) #obj2.]
+            [On the other hand, #v #sing(b) #glob-obj1, #a2 creates #sing(b2) #ov2.]
         }
     }
 
     let non-introduction = (i) => {
+        let openers = (
+        "surpisingly difficult", "a long sought after result",
+        "well known by all math students", "a widely applicable result", 
+        "extremely notable", "unsolvably complex"
+        )
+
         let o = get(openers, i)
-        let v = get(verbs, i)
-        let f = field(i)
-        [In #f #o #v ]
+        let obj = get(objects, i + 1)
+        let f = field(i+1)
+        [In #f #glob-thm1 for #sing(glob-b) #obj is #o.]
     }
 
     // debug()
     align(center)[
-    = #cap(get(verbs, glob-i)) #thm1 for #sing(b) #obj2
+    = #cap(get(verbs, glob-i)) #glob-thm1 for #sing(glob-b) #glob-obj2
     ==== #authors(glob-i) 
     \
     ]
@@ -235,7 +240,7 @@
         #{for (i, c) in chars.enumerate() {
             let n = to-int(c)
             if i == 0 {
-                [#non-statement(n)]
+                [#non-introduction(glob-i)]
             } else {
                 [#non-statement(n)]
             }
@@ -244,4 +249,4 @@
     ]
 }
 
-#nonsense[yloooo]
+#nonsense[aoseintoasdl]
