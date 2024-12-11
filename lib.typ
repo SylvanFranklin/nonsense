@@ -59,6 +59,12 @@
     "ontology","mereology"
 )
 
+#let stems = (
+    "enrich", "structur", "relat", "form", "inform", "interpolat", "construct",
+    "generaliz", "abstract", "contain", "defin", "extract", "fix", "determin", 
+)
+
+
 #let theorems = (
     "yoneda lemma", "kan extension", "exact sequence principle",
     "spectral sequence lemma",
@@ -104,10 +110,6 @@
     "ostensibly","hypothetically", "obliquely", "indirectly",
     "superficially", "redundantly", "strictly", "presumably", "nominally",
     "fundamentally",
-)
-#let verbs = (
-    "generalizing", "abstracting", "containing",
-    "defining", "constructing", "extracting", "fixing"
 )
 
 
@@ -155,8 +157,9 @@
     }
 
     let k = get(
-    ("lemma", "theorem", "axiom", "conjecture", "principle", "extension",
-    "theory"), i)
+        ("lemma", "theorem", "axiom", "conjecture", "principle", "extension",
+        "theory"), i
+    )
 
     [the #b #a #o #k]
 }
@@ -196,7 +199,7 @@
         let b3 = get(buzzwords, i - 2)
         let a = get(adverbs, i)
         let a2 = get(adverbs, i+1)
-        let v = get(verbs, i)
+        let v = get(stems, i)
         let (ck, cv) = kv(connectives, i)
         let f = field(i)
         let p = get(participles, i)
@@ -217,21 +220,21 @@
     }
 
     let non-introduction = (i) => {
-        let openers = (
-        "surpisingly difficult", "a long sought after result",
-        "well known by all math students", "a widely applicable result", 
-        "extremely notable", "unsolvably complex"
+        let casual = (
+            "extremely", "easily", "widely"
         )
 
-        let o = get(openers, i)
+        let c = get(casual, i)
         let obj = get(objects, i + 1)
         let f = field(i+1)
-        [In #f #glob-thm1 for #sing(glob-b) #obj is #o.]
+        let s = get(stems, i)
+
+        [In #f #glob-thm1 for #sing(glob-b) #obj is #c #s\able.]
     }
 
     // debug()
     align(center)[
-    = #cap(get(verbs, glob-i)) #glob-thm1 for #sing(glob-b) #glob-obj2
+    = #cap(get(stems, glob-i))ing #glob-thm1 for #sing(glob-b) #glob-obj2
     ==== #authors(glob-i) 
     \
     ]
