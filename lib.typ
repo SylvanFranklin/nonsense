@@ -242,12 +242,14 @@
         block(inset: 1em, stroke: 0.1em, radius: 1em, width: 100%)[
             *seed* : #{
                 if chars.len() < 6 {
-                    [#chars.map(c => point-pair(c, to-int(c))).join(" + ") = #glob-i]
+                    [#chars.map(c => point-pair(c, to-int(c))).join(" + ") =
+                     #glob-i - #text(red)[*global seed*]]
                 } else {
                     [#chars.slice(0, 4).map(c => point-pair(c,
                     to-int(c))).join(" + ") + ... + #point-pair(chars.last(),
-                    to-int(chars.last())) = #glob-i]
+                    to-int(chars.last())) = - #glob-i  #text(red)[*global seed*]]
                 }
+
             }
             \
             \
