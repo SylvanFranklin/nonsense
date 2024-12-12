@@ -170,18 +170,15 @@
        let sub2 = eq-small(i + n + 1)
        let bo = get(binary_op, n * i)
 
-       // sets 
        if rem == 0 [$\{sub | (sub2) in bb(se)\}$]
        else if rem == 1 [$v1_v2 ker se$]
        else if rem == 2 [$v1 bo se subset {...v2^n}$]
        else if rem == 3 [$v3 harpoon (sub2)$]
        else if rem == 4 [$sub2 := v2$]
-       // calculus
        else if rem == 5 [$sum_(sub2)^(v2)$]
        else if rem == 6 [$integral_(i * n)^(v3)sub d v2$]
        else if rem == 7 [$(diff)/(v2 diff)$]
        else if rem == 8 [$lim_(v2 -> oo)(sub2)$]
-       // other
        else if rem == 9 [$(sub)/(v2)$]
        else if rem == 10 [$(sub)^(sub2)$]
        else if rem == 11 [$(sub)_(sub2)$]
@@ -235,7 +232,7 @@
     let glob-obj1 = get(objects, glob-i)
     let glob-obj2 = get(objects, glob-i + 1)
     let glob-obj3 = get(objects, glob-i + 2)
-    let cases = 6;
+    let cases = 7;
 
     let debug = () => {
         let point-pair = (a, b) => $vec(delim: "[", #a, #text(blue)[#b])$
@@ -249,7 +246,6 @@
                     to-int(c))).join(" + ") + ... + #point-pair(chars.last(),
                     to-int(chars.last())) = - #glob-i  #text(red)[*global seed*]]
                 }
-
             }
             \
             \
@@ -283,49 +279,40 @@
         let f = field(i)
         let p = get(participles, i)
         let l = get(last_names, i)
-        
-        let case = calc.rem(i, 6) 
-        if case == 0 {
-            [By #v\ing #sing(b) #ok on a #ok2, that is #eq-small(i) We reach
-            #sing(b3) #b2 #ok3.]
-        } else if case == 1 {
-            [#cap(action): #eq-med(i) ]
-        } else if case == 2 {
-            [#cap(a) #sing(ok) is #v\ed by #sing(b2) #ok2.]
-        } else if case == 3 {
-            [#cap(a) #q #sing(b3) #ok2, which #ck #sing(b) #ok. It #a2 #p:
-            #eq-large(i)]
-        } else if case == 4 {
-            [!!!!#theorem(i)!!!!!]
-        } else {
-            [On the other hand, #v\ing #sing(b) #glob-obj1, #a2 creates
-            #sing(b2) #ov2.]
-        }
+        let case = calc.rem(i, cases) 
+
+        if case == 0 [By #v\ing #sing(b) #ok on a #ok2, that is #eq-small(i) We reach #sing(b3) #b2 #ok3.]
+        else if case == 1 [#cap(action): #eq-med(i) ]
+        else if case == 2 [#cap(a) #sing(ok) is #v\ed by #sing(b2) #ok2.]
+        else if case == 3 [#cap(a) #q #sing(b3) #ok2, which #ck #sing(b) #ok. It #a2 #p: #eq-large(i)]
+        else if case == 4 [Everything by #p #v\ing #theorem(i).]
+        else if case == 5 [Most acedemics, provided $eq-med(i)$ would agree that #q #ok.]
+        else if case == 6 [Trivially, #eq-large(i)]
+        else [On the other hand, #v\ing #sing(b) #glob-obj1, #a2 creates #sing(b2) #ov2.]
     }
 
     let non-introduction = (i) => {
         let casual = (
-            "extremely", "easily", "widely"
+            "extremely", "easily", "widely", "long pursued"
         )
 
         let c = get(casual, i)
         let obj = get(objects, i + 1)
         let f = field(i+1)
         let s = get(stems, i)
-
         [In #f #glob-thm1 for #sing(glob-b) #obj is #c #s\able.]
     }
 
     debug()
     align(center)[
     = #cap(get(stems, glob-i))ing #glob-thm1 for #sing(glob-b) #glob-obj2
-    ==== #authors(glob-i) 
+    === #authors(glob-i) 
     \
     ]
     align(center)[1. Introduction]
     par(hanging-indent: -2em, justify: true)[
         #{for (i, c) in chars.enumerate() {
-            let n = to-int(c)
+            let n = to-int(c) + i
             if i == 0 {
                 [#non-introduction(glob-i)]
             } else {
@@ -336,4 +323,4 @@
     ]
 }
 
-#nonsense[isaosnest]
+#nonsense[abcdefghijkl]
