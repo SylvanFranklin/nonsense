@@ -15,7 +15,6 @@
   extract(body).clusters().map(lower)
 }
 
-#let vars = ("x", "y", "z", $theta$, $lambda$)
 #let funcs = ($sin$, $cos$, $arccos$, $log$, $arctan$, $E$, $phi$)
 #let joiner = ($and$, $or$, $xor$)
 #let alphabet = "abcdefghijklmnopqrstuvwxyz"
@@ -88,6 +87,11 @@
 );
 
 
+#let binary_op = (
+    $times$, $+$, $-$, $|$, $in$, $=$, $<$, $<=$, $>=$, $equiv$, $<==>$,
+    $diamond$, $arrow.squiggly$  
+)
+
 #let connectives= (
     "implies": $==>$,
     "it follows that": $-->$,
@@ -120,34 +124,82 @@
     [#b1 #b2 #f]
 }
 
-#let eq = (i, heft: 3) => {
+#let var = (i) => {
+    let v = get(
+    ("x", "y", "π", "ζ", "η", "α", "φ", "ο", "χ",
+    "ε", "θ", "n", "i", "b"), i)
+    if calc.rem(i, 3) == 0 {v = upper(v)}
 
+    if calc.rem(i, 4) == 0 {v = $cal(v)$}
+
+    if calc.rem(i, 17) == 0 {v = $frak(v)$}
+
+    if calc.rem(i, 11) == 0 {v = $bb(v)$}
+
+    return v
+}
+
+#let eq-small = (i, heft: 3) => {
+    let bo = get(binary_op, i)
+    let v1 = var(i)
+    let v2 = var(i+1)
+    let v3 = var(i+3)
+    let fun = get(funcs, i)
+    if calc.rem(i, 6) == 0 [$v1 v2 bo v2$] 
+    else if calc.rem(i, 6) == 1 [$v1 v2$] 
+    else if calc.rem(i, 6) == 2 [$v3 bo v2$] 
+    else if calc.rem(i, 6) == 3 [$fun\(v2\)$] 
+    else if calc.rem(i, 6) == 4 [$v3 bo v2$] 
+    else if calc.rem(i, 6) == 5 [$v3 fun\(v1\) v2$] 
+}
+
+
+
+#let eq-med = (i) => {
     $
-    #{for n in range(0, heft) {
-       let rem = calc.rem(i + n, 10)
-       let v1 = get(alphabet, i + n)
-       let v2 = get(alphabet, i + n - 3)
-       let v3 = get(alphabet, i + n - 2)
-       let f = get(funcs, i + n)
-       let (_, cv) = kv(connectives, i + n)
-       let g = get(funcs, i + 1 + n)
+    #{for n in range(0, 3) {
+       let rem = calc.rem(i + n, 18)
+       // let f = get(funcs, i + n)
+       // let (_, cv) = kv(connectives, i + n)
+       // let g = get(funcs, i + 1 + n)
+       let se = upper(get(alphabet, n))
+       let v1 = var(i)
+       let v2 = var(i + 1)
+       let v3 = var(i + 2)
+       let sub = eq-small(i + n)
+       let sub2 = eq-small(i + n + 1)
+       let bo = get(binary_op, n * i)
 
-       if rem == 0 [$#f$]
-       else if rem == 1 [$(v2 in v3)$]
-       else if rem == 2 [${#f sinh v2}^(cal(v2))$]
-       else if rem == 3 [$f oo g$]
-       else if rem == 4 [$sum_v1^v3$]
-       else if rem == 5 [$product_v2^cal(v2 - v1)$]
-       else if rem == 6 [$(sum_()^()$]
-       else if rem == 7 [$-$]
-       else if rem == 8 [$times$]
-       else if rem == 9 [$==>$]
-       else if rem == 10 [$<==>$]
-       else [$$]
+       // sets 
+       if rem == 0 [$\{sub | (sub2) in bb(se)\}$]
+       else if rem == 1 [$v1_v2 ker se$]
+       else if rem == 2 [$v1 bo se subset {...v2^n}$]
+       else if rem == 3 [$v3 harpoon (sub2)$]
+       else if rem == 4 [$sub2 := v2$]
+       // calculus
+       else if rem == 5 [$sum_(sub2)^(v2)$]
+       else if rem == 6 [$integral_(i * n)^(v3)sub d v2$]
+       else if rem == 7 [$(diff)/(v2 diff)$]
+       else if rem == 8 [$lim_(v2 -> oo)(sub2)$]
+       // other
+       else if rem == 9 [$(sub)/(v2)$]
+       else if rem == 10 [$(sub)^(sub2)$]
+       else if rem == 11 [$(sub)_(sub2)$]
+       else if rem == 12 [$v2$]
+       else if rem == 13 [$v3$]
+       else if rem == 14 [$sub$]
+       else if rem == 15 [$sub2$]
+       else if rem == 16 [$bo$]
+       else [$v1$]
     }}
     $
-
 }
+
+#let eq-large = (i) => {
+    if calc.rem(i, 4) == 0 {$ (#eq-med(i))/(#eq-med(i+1)) $} 
+    if calc.rem(i, 4) == 1 {$ lr(#eq-med(i)|) --> #eq-med(i + 1) $} 
+}
+
 
 #let authors = (i) => {
     // we will make between one and three authors 
@@ -217,13 +269,13 @@
         
         let case = calc.rem(i, 5) 
         if case == 0 {
-            [By #v\ing #sing(b) #ok on a #ok2, that is #eq(i) We reach #sing(b3) #b2 #ok3.]
+            [By #v\ing #sing(b) #ok on a #ok2, that is #eq-small(i) We reach #sing(b3) #b2 #ok3.]
         } else if case == 1 {
-            [#action: #eq(i, heft: 12) ]
+            [#action: #eq-large(i) ]
         } else if case == 2 {
             [#a #sing(ok) is #v\ed by #sing(b2) #ok2.]
         } else if case == 3 {
-            [#cap(a) #q #sing(b3) #ok2, which #ck #sing(b) #ok. It #a2 #p: #eq(i)]
+            [#cap(a) #q #sing(b3) #ok2, which #ck #sing(b) #ok. It #a2 #p: #eq-large(i)]
         } else {
             [On the other hand, #v\ing #sing(b) #glob-obj1, #a2 creates #sing(b2) #ov2.]
         }
@@ -262,4 +314,5 @@
     ]
 }
 
-#nonsense[andkaezazll]
+#nonsense[noexuokcoarisu]
+
