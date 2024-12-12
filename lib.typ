@@ -48,9 +48,9 @@
 #let buzzwords = (
     "abstract", "relational", "substructural", "discrete", "inerpolated",
     "intuitional", "higher order", "paraconsistent", "interrelational",
-    "structural", "ontic", "semi ontic", "modal", "formal", "informal", "psuedo", 
+    "structural", "ontic", "ontic", "modal", "formal", "informal", "psuedo", 
     "natural", "enriched", "simplicial", "abelian", "constructable", "fixed", 
-    "euclidian", "anti", "meta", "stochastically", "bijective"
+    "euclidian", "anti", "meta", "stochastically", "bijective", "semi"
 )
 
 #let fields = (
@@ -61,17 +61,6 @@
 #let stems = (
     "enrich", "structur", "relat", "form", "inform", "interpolat", "construct",
     "generaliz", "abstract", "contain", "defin", "extract", "fix", "determin", 
-)
-
-
-#let theorems = (
-    "yoneda lemma", "kan extension", "exact sequence principle",
-    "spectral sequence lemma",
-    "truthmaker theory", 
-    "modal collapse", "essentialism",
-    "counterfactual dependence theorem", "axiom of choice", "ordinal collapse",
-    "kripke frame", "curry-howard correspondence",
-    "predicate abstraction"
 )
 
 #let last_names = (
@@ -129,11 +118,8 @@
     ("x", "y", "π", "ζ", "η", "α", "φ", "ο", "χ",
     "ε", "θ", "n", "i", "b"), i)
     if calc.rem(i, 3) == 0 {v = upper(v)}
-
     if calc.rem(i, 4) == 0 {v = $cal(v)$}
-
     if calc.rem(i, 17) == 0 {v = $frak(v)$}
-
     if calc.rem(i, 11) == 0 {v = $bb(v)$}
 
     return v
@@ -197,7 +183,6 @@
     if calc.rem(i, 4) == 1 {$ lr(#eq-med(i)|) --> #eq-med(i + 1) $} 
 }
 
-
 #let authors = (i) => {
     // we will make between one and three authors 
     range(0, calc.rem(i, 4) + 1).map(n => 
@@ -223,6 +208,8 @@
 }
 
 #let nonsense(body) = {
+    let count = counter("all")
+    let section-types = ("lemma", "theorem", "defenition")
     let chars = parse-actions(body).filter(char => char != none)
     if chars.len() == 0 { return }
     let glob-i = chars.map(c => to-int(c)).sum()
@@ -303,24 +290,30 @@
         [In #f #glob-thm1 for #sing(glob-b) #obj is #c #s\able.]
     }
 
-    debug()
+    // debug()
     align(center)[
-    = #cap(get(stems, glob-i))ing #glob-thm1 for #sing(glob-b) #glob-obj2
-    === #authors(glob-i) 
-    \
+        = #cap(get(stems, glob-i))ing #glob-thm1 for #sing(glob-b) #glob-obj2
+        #v(1em) #authors(glob-i) #v(2em)
     ]
-    align(center)[1. Introduction]
+
+
+    
+
+    align(center)[1. INTRODUCTION]
     par(hanging-indent: -2em, justify: true)[
         #{for (i, c) in chars.enumerate() {
             let n = to-int(c) + i
-            if i == 0 {
+            if i == 0 { 
+                count.step()
                 [#non-introduction(glob-i)]
-            } else {
-                [#non-statement(n)]
+            } else if calc.rem(i, 3) == 0 and calc.rem(n, 2) == 0 {
+                count.step(level: 2)
+                [\ *#get(section-types, n) 1.2*]
             }
+            else [#non-statement(n)]
             [ ]
         }}
     ]
 }
 
-#nonsense[abcdefghijkl]
+#nonsense[asozarsztoarseoarsiularstneioaosetnarosietnorsieanit]
