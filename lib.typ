@@ -235,16 +235,31 @@
     let glob-obj1 = get(objects, glob-i)
     let glob-obj2 = get(objects, glob-i + 1)
     let glob-obj3 = get(objects, glob-i + 2)
+    let cases = 6;
 
     let debug = () => {
-        let point-pair = (c) => $vec(delim: "[", #c, #text(blue)[#to-int(c)])$
+        let point-pair = (a, b) => $vec(delim: "[", #a, #text(blue)[#b])$
         block(inset: 1em, stroke: 0.1em, radius: 1em, width: 100%)[
             *seed* : #{
-                if chars.len() < 5 {
-                    [#chars.map(c => point-pair(c)).join(" + ") = #glob-i]
+                if chars.len() < 6 {
+                    [#chars.map(c => point-pair(c, to-int(c))).join(" + ") = #glob-i]
                 } else {
-                    [#chars.slice(0, 3).map(c => point-pair(c)).join(" + ") + ... + 
-                    #point-pair(chars.last()) = #glob-i]
+                    [#chars.slice(0, 4).map(c => point-pair(c,
+                    to-int(c))).join(" + ") + ... + #point-pair(chars.last(),
+                    to-int(chars.last())) = #glob-i]
+                }
+            }
+            \
+            \
+            *sentences* : #{
+                if chars.len() < 6 {
+                    [#chars.map(c => point-pair([#to-int(c) mod #cases],
+                    [#calc.rem(to-int(c), 6)])).join(" + ")]
+                } else {
+                    [#chars.slice(0, 4).map(c => point-pair([#to-int(c) mod #cases],
+                    calc.rem(to-int(c), 6))).join(", "), ... 
+                    #point-pair([#to-int(chars.last()) mod #cases],
+                    [#calc.rem(to-int(chars.last()), 6)])]
                 }
             }
         ]
@@ -319,5 +334,4 @@
     ]
 }
 
-#nonsense[isetn]
-
+#nonsense[isaosnest]
