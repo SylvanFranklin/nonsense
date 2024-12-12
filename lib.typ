@@ -267,17 +267,22 @@
         let p = get(participles, i)
         let l = get(last_names, i)
         
-        let case = calc.rem(i, 5) 
+        let case = calc.rem(i, 6) 
         if case == 0 {
-            [By #v\ing #sing(b) #ok on a #ok2, that is #eq-small(i) We reach #sing(b3) #b2 #ok3.]
+            [By #v\ing #sing(b) #ok on a #ok2, that is #eq-small(i) We reach
+            #sing(b3) #b2 #ok3.]
         } else if case == 1 {
-            [#action: #eq-large(i) ]
+            [#cap(action): #eq-med(i) ]
         } else if case == 2 {
-            [#a #sing(ok) is #v\ed by #sing(b2) #ok2.]
+            [#cap(a) #sing(ok) is #v\ed by #sing(b2) #ok2.]
         } else if case == 3 {
-            [#cap(a) #q #sing(b3) #ok2, which #ck #sing(b) #ok. It #a2 #p: #eq-large(i)]
+            [#cap(a) #q #sing(b3) #ok2, which #ck #sing(b) #ok. It #a2 #p:
+            #eq-large(i)]
+        } else if case == 4 {
+            [!!!!#theorem(i)!!!!!]
         } else {
-            [On the other hand, #v\ing #sing(b) #glob-obj1, #a2 creates #sing(b2) #ov2.]
+            [On the other hand, #v\ing #sing(b) #glob-obj1, #a2 creates
+            #sing(b2) #ov2.]
         }
     }
 
@@ -294,7 +299,7 @@
         [In #f #glob-thm1 for #sing(glob-b) #obj is #c #s\able.]
     }
 
-    // debug()
+    debug()
     align(center)[
     = #cap(get(stems, glob-i))ing #glob-thm1 for #sing(glob-b) #glob-obj2
     ==== #authors(glob-i) 
@@ -314,5 +319,5 @@
     ]
 }
 
-#nonsense[noexuokcoarisu]
+#nonsense[isetn]
 
