@@ -120,24 +120,33 @@
     [#b1 #b2 #f]
 }
 
-#let eq = (i) => {
-   let rem = calc.rem(i, 7)
-   let v1 = get(alphabet, i)
-   let v2 = get(alphabet, i - 3)
-   let v3 = get(alphabet, i - 2)
-   let f = get(funcs, i)
-   let (_, cv) = kv(connectives, i)
-   let f2 = get(funcs, i+1)
+#let eq = (i, heft: 3) => {
 
-   if rem == 0 [$ integral_(cal(v1))^(v2) #f\_(v1) () divides v1^(f2 + v3) diff $]
-   else if rem == 1 [$ (v3 + #f\(cal(v2)\))/infinity = i^4^(#f2\(v1\)) $]
-   else if rem == 2 [$ #v2 times mat(i, 0; -i, i^2) $]
-   else if rem == 3 [$ sum_0^(v3 = cal(v1))Phi(3/4) $]
-   else if rem == 4 [$ f\(f2\(#v2 + #v1\)\) ==> #f2 $ ]
-   else if rem == 5 [$ "(x|s|r" #v2 cal(e))^f\(#i\) $]
-   else if rem == 6 [$ v2 in {u = #f(v_3) | psi^(i^(#i)) : v_3 in KK} $]
-   else if rem == 7 [$ v3 - cal(v1) + (f\(m\))/n J $]
-   else []
+    $
+    #{for n in range(0, heft) {
+       let rem = calc.rem(i + n, 10)
+       let v1 = get(alphabet, i + n)
+       let v2 = get(alphabet, i + n - 3)
+       let v3 = get(alphabet, i + n - 2)
+       let f = get(funcs, i + n)
+       let (_, cv) = kv(connectives, i + n)
+       let g = get(funcs, i + 1 + n)
+
+       if rem == 0 [$#f$]
+       else if rem == 1 [$(v2 in v3)$]
+       else if rem == 2 [${#f sinh v2}^(cal(v2))$]
+       else if rem == 3 [$f oo g$]
+       else if rem == 4 [$sum_v1^v3$]
+       else if rem == 5 [$product_v2^cal(v2 - v1)$]
+       else if rem == 6 [$(sum_()^()$]
+       else if rem == 7 [$-$]
+       else if rem == 8 [$times$]
+       else if rem == 9 [$==>$]
+       else if rem == 10 [$<==>$]
+       else [$$]
+    }}
+    $
+
 }
 
 #let authors = (i) => {
@@ -192,6 +201,7 @@
     let non-statement = (i) => {
         let action = get(("Assume", "Observe", "By showing"), i);
         let (ok, ov) = kv(symbols, i)
+        let (ck, cv) = kv(connectives, i)
         let (ok2, ov2) = kv(symbols, i + 2)
         let (ok3, ov3) = kv(symbols, i + 5)
         let q = get(quantifiers.keys(), i)
@@ -201,7 +211,6 @@
         let a = get(adverbs, i)
         let a2 = get(adverbs, i+1)
         let v = get(stems, i)
-        let (ck, cv) = kv(connectives, i)
         let f = field(i)
         let p = get(participles, i)
         let l = get(last_names, i)
@@ -210,7 +219,7 @@
         if case == 0 {
             [By #v\ing #sing(b) #ok on a #ok2, that is #eq(i) We reach #sing(b3) #b2 #ok3.]
         } else if case == 1 {
-            [#action: #eq(i) ]
+            [#action: #eq(i, heft: 12) ]
         } else if case == 2 {
             [#a #sing(ok) is #v\ed by #sing(b2) #ok2.]
         } else if case == 3 {
@@ -253,4 +262,4 @@
     ]
 }
 
-#nonsense[jyuqnrstn]
+#nonsense[andkaezazll]
