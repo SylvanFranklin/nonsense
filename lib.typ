@@ -48,9 +48,9 @@
 #let buzzwords = (
     "abstract", "relational", "substructural", "discrete", "inerpolated",
     "intuitional", "higher order", "paraconsistent", "interrelational",
-    "structural", "ontic", "ontic", "modal", "formal", "informal", "psuedo", 
+    "structural", "ontic", "ontic", "modal", "formal", "informal", "pseudo", 
     "natural", "enriched", "simplicial", "abelian", "constructable", "fixed", 
-    "euclidian", "anti", "meta", "stochastically", "bijective", "semi"
+    "euclidean", "anti", "meta", "stochastically", "bijective", "semi"
 )
 
 #let fields = (
@@ -72,7 +72,7 @@
 
 #let participles = (
     "commutes", "permutes", "tiles the plane", "is a monad", "is a functor",
-    "can be derived", "is divisible", "is an action", "repeates", "approximates the golden ratio", "is undefined", "is well ordered", "is a limit ordinal", "is a cardinal", "is natural", "is in a universe"
+    "can be derived", "is divisible", "is an action", "repeats", "approximates the golden ratio", "is undefined", "is well ordered", "is a limit ordinal", "is a cardinal", "is natural", "is in a universe"
 );
 
 
@@ -211,7 +211,7 @@
 
 #let nonsense(body) = {
     let count = counter("all")
-    let section-types = ("lemma", "theorem", "defenition")
+    let section-types = ("lemma", "theorem", "definition")
     let chars = parse-actions(body).filter(char => char != none)
     if chars.len() == 0 { return }
     let glob-i = chars.map(c => to-int(c)).sum()
