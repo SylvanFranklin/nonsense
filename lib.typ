@@ -115,14 +115,16 @@
 
 #let var = (i) => {
     let v = get(
-    ("x", "y", "π", "ζ", "η", "α", "φ", "ο", "χ",
-    "ε", "θ", "n", "i", "b"), i)
+    ("x", "y", "μ", "Γ", "η", "α", "φ", "ο", "χ",
+    "ε", "θ", "n", "i", "b", "z", "Κ", $W$ 
+
+    ), i)
     if calc.rem(i, 3) == 0 {v = upper(v)}
     if calc.rem(i, 4) == 0 {v = $cal(v)$}
     if calc.rem(i, 17) == 0 {v = $frak(v)$}
     if calc.rem(i, 11) == 0 {v = $bb(v)$}
 
-    return v
+    return $v$
 }
 
 #let eq-small = (i, heft: 3) => {
