@@ -249,7 +249,9 @@
         ]
     }
 
-    let generation_symbol = (i) => box(fill: red, inset: 0.2em)[#i]
+    let generation_symbol = (i, color: red) => {
+        box(fill: color, width: 16pt, height: 16pt, radius: 1pt, baseline: 50%)[#text(white)[#i]]
+    }
 
     let non-statement = (i, case) => {
         let action = get(("Assume", "Observe", "By showing"), i);
@@ -269,6 +271,7 @@
         let l = get(last_names, i)
 
         [#generation_symbol(i)]
+        [#generation_symbol(case, color: blue)]
 
         // plain text
         if case == 0 [Certain #ok\s in #f remain #v]
