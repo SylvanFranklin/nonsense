@@ -250,11 +250,11 @@
     }
 
     let generation_symbol = (i, color: red) => {
-        box(fill: color, width: 16pt, height: 16pt, radius: 1pt, baseline: 50%)[#text(white)[#i]]
+        box(fill: color, inset: .3em, radius: 1pt, baseline: 30%)[#text(white)[#i]]
     }
 
     let non-statement = (i, case) => {
-        let action = get(("Assume", "Observe", "By showing"), i);
+        let action = get(("assume", "observe", "show", "extrapolate", "determine"), i);
         let (ok, ov) = kv(symbols, i)
         let (ck, cv) = kv(connectives, i)
         let (ok2, ov2) = kv(symbols, i + 2)
@@ -265,29 +265,29 @@
         let b3 = get(buzzwords, i - 2)
         let a = get(adverbs, i)
         let a2 = get(adverbs, i+1)
-        let v = get(stems, i)
+        let stem = get(stems, i)
         let f = field(i)
         let p = get(participles, i)
         let l = get(last_names, i)
 
-        [#generation_symbol(i)]
-        [#generation_symbol(case, color: blue)]
+        [#generation_symbol(i) ]
+        [#generation_symbol(case, color: blue) ]
 
         // plain text
         if case == 0 [Certain #ok\s in #f remain #v]
-        else if case == 1 [#incomplete]
-        else if case == 2 [#cap(a) #sing(ok) is #v\ed by #sing(b2) #ok2.]
+        else if case == 1 [Provided, #theorem(i) we have that: ]
+        else if case == 2 [#cap(a) #sing(ok) is #stem\ed by #sing(b2) #ok2.]
         else if case == 3 [#cap(a) #q #sing(b3) #ok2, which #ck #sing(b) #ok. It #a2 #p: #eq-med(i)]
-        else if case == 4 [#ok #p #v\ing #theorem(i).]
-        else if case == 5 [#incomplete]
-        else if case == 6 [#incomplete]
+        else if case == 4 [#ok #p #stem\ing #theorem(i).]
+        else if case == 5 [#cap(action) that #theorem(i) #ck #theorem(i+1) holds]
+        else if case == 6 [#cap(a) we can #action #sing(ok) #p]
         // Inline text
-        else if case == 7 [By #v\ing #sing(b) #ok on a #ok2, that is #eq-small(i) We reach #sing(b3) #b2 #ok3.]
+        else if case == 7 [By #stem\ing #sing(b) #ok on a #ok2, that is #eq-small(i) We reach #sing(b3) #b2 #ok3.]
         else if case == 8 [#sing(b2) #a #p, provided #eq-small(i)#eq-small(i + 1)]
         else if case == 9 [However, #eq-small(i).]
         else if case == 10 [#eq-small(i).]
         else if case == 11 [Of course #eq-small(i), provided #eq-small(i - 1).]
-        else if case == 12 [#incomplete]
+        else if case == 12 [#eq-small(i)]
         else if case == 13 [#incomplete]
         // medium
         else if case == 14 [#cap(action): #eq-med(i)]
@@ -325,15 +325,27 @@
             let case = calc.rem(i, cases) 
             if i == 0 { 
                 count.step()
+                ontext [#generation_symbol(count.get().first(), color:
+                    green) ]
                 [#non-introduction(glob-i)]
-            } else if calc.rem(i, 3) == 0 and calc.rem(n, 2) == 0 {
-                count.step(level: 2)
-                [\ *#get(section-types, n) 1.2*]
+            } else {
+                [#non-statement(n + glob-i, case)]
+                // we want to advance to the theorem
+                // stage provided there have been enough
+                // non theorems, say 10 - 18
+                if calc.rem(i, calc.rem(glob-i, 8) + 10) == 0 {
+                    count.step()
+                    context [ #generation_symbol(count.get().first(), color: green)]
+                }
             }
-            else [#non-statement(n, case)]
+            
+            context {
+                if (count.get().first() > 1 and calc.rem(n, 3) == 0 and calc.rem(i,  3) == 0) [\ *#get(section-types, i)*]
+            }
+
             [ ]
         }}
     ]
 }
 
-#nonsense[arstneiobjvk]
+#nonsense[lkrnksliaooksnsule]
