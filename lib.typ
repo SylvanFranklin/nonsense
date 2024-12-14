@@ -144,23 +144,20 @@
     else if calc.rem(i, 6) == 5 [$v3 fun\(v1\) v2$] 
 }
 
-
-
 #let eq-med = (i) => {
-    $
-    #{for n in range(0, 3) {
-       let rem = calc.rem(i + n, 18)
        // let f = get(funcs, i + n)
        // let (_, cv) = kv(connectives, i + n)
        // let g = get(funcs, i + 1 + n)
-       let se = upper(get(alphabet, n))
+       let se = upper(get(alphabet, i))
        let v1 = var(i)
        let v2 = var(i + 1)
        let v3 = var(i + 2)
-       let sub = eq-small(i + n)
-       let sub2 = eq-small(i + n + 1)
-       let bo = get(binary_op, n * i)
-
+       let sub = eq-small(i)
+       let sub2 = eq-small(i)
+       let bo = get(binary_op, i)
+    $
+    #{for n in range(0, 3) {
+       let rem = calc.rem(i + n, 18)
        if rem == 0 [$\{sub | (sub2) in bb(se)\}$]
        else if rem == 1 [$v1_v2 ker se$]
        else if rem == 2 [$v1 bo se subset {...v2^n}$]
@@ -183,10 +180,6 @@
     $
 }
 
-#let eq-large = (i) => {
-    if calc.rem(i, 4) == 0 {$ (#eq-med(i))/(#eq-med(i+1)) $} 
-    if calc.rem(i, 4) == 1 {$ lr(#eq-med(i)|) --> #eq-med(i + 1) $} 
-}
 
 #let authors = (i) => {
     // we will make between one and three authors 
