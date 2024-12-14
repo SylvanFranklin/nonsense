@@ -114,17 +114,20 @@
 }
 
 #let var = (i) => {
-    let v = get(
-    ("x", "y", "μ", "Γ", "η", "α", "φ", "ο", "χ",
-    "ε", "θ", "n", "i", "b", "z", "Κ", $W$ 
+    let vars = ("x", "y", "μ", "Γ", "η", "α", "φ", "ο", "χ",
+            "ε", "θ", "n", "i", "b", "z", "Κ", $W$, "r")
 
-    ), i)
+    let v = get(vars, i)
+
     if calc.rem(i, 3) == 0 {v = upper(v)}
-    if calc.rem(i, 4) == 0 {v = $cal(v)$}
-    if calc.rem(i, 17) == 0 {v = $frak(v)$}
-    if calc.rem(i, 11) == 0 {v = $bb(v)$}
+    if calc.rem(i, 4) == 0 {v = $cal(#v)$}
+    if calc.rem(i, 5) == 0 {v = $#v _(#calc.rem(i, 16))$}
+    if calc.rem(i, 17) == 0 {v = $frak(#v)$}
+    if calc.rem(i, 11) == 0 {v = $bb(#v)$}
+    if calc.rem(i, 6) == 0 {v = $#v _(#get(vars, i + 3))$}
+    if calc.rem(i, 7) == 0 {v = $#v ^(#get(vars, i * 2))$}
 
-    return $v$
+    return $#v$
 }
 
 #let eq-small = (i, heft: 3) => {
@@ -297,9 +300,6 @@
         = #cap(get(stems, glob-i))ing #glob-thm1 for #sing(glob-b) #glob-obj2
         #v(1em) #authors(glob-i) #v(2em)
     ]
-
-
-    
 
     align(center)[1. INTRODUCTION]
     par(hanging-indent: -2em, justify: true)[
