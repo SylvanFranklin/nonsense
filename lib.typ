@@ -325,7 +325,7 @@
             let case = calc.rem(i, cases) 
             if i == 0 { 
                 count.step()
-                ontext [#generation_symbol(count.get().first(), color:
+                context [#generation_symbol(count.get().first(), color:
                     green) ]
                 [#non-introduction(glob-i)]
             } else {
@@ -333,19 +333,24 @@
                 // we want to advance to the theorem
                 // stage provided there have been enough
                 // non theorems, say 10 - 18
-                if calc.rem(i, calc.rem(glob-i, 8) + 10) == 0 {
+                if calc.rem(i, calc.rem(glob-i, 8) + 12) == 0 {
                     count.step()
+                    count.step(level: 2)
                     context [ #generation_symbol(count.get().first(), color: green)]
+                    context align(center)[
+                    #count.get().first(). MAIN RESULT
+                    ]
                 }
             }
-            
-            context {
-                if (count.get().first() > 1 and calc.rem(n, 3) == 0 and calc.rem(i,  3) == 0) [\ *#get(section-types, i)*]
-            }
+                context if (count.get().first() > 1 and calc.rem(n, 3) == 0) {
+                    [\ *#get(section-types, i) #count.display()*]
+                    count.step(level: 2)
+                }
+        
 
             [ ]
         }}
     ]
 }
 
-#nonsense[lkrnksliaooksnsule]
+#nonsense[aososektktotlaiaiklsekl]
