@@ -274,9 +274,9 @@
         [#generation_symbol(case, color: blue) ]
 
         // plain text
-        if case == 0 [Certain #ok\s in #f remain #v]
+        if case == 0 [Certain #ok\s in #f remain #stem\ed]
         else if case == 1 [Provided, #theorem(i) we have that: ]
-        else if case == 2 [#cap(a) #sing(ok) is #stem\ed by #sing(b2) #ok2.]
+        else if case== 2 [#cap(a) #sing(ok) is #stem\ed by #sing(b2) #ok2.]
         else if case == 3 [#cap(a) #q #sing(b3) #ok2, which #ck #sing(b) #ok. It #a2 #p: #eq-med(i)]
         else if case == 4 [#ok #p #stem\ing #theorem(i).]
         else if case == 5 [#cap(action) that #theorem(i) #ck #theorem(i+1) holds]
@@ -318,11 +318,13 @@
         #v(1em) #authors(glob-i) #v(2em)
     ]
 
+
     align(center)[1. INTRODUCTION]
     par(hanging-indent: -2em, justify: true)[
         #{for (i, c) in chars.enumerate() {
             let n = to-int(c)
-            let case = calc.rem(i, cases) 
+            let case = calc.rem(i + n, cases) 
+
             if i == 0 { 
                 count.step()
                 context [#generation_symbol(count.get().first(), color:
@@ -330,27 +332,37 @@
                 [#non-introduction(glob-i)]
             } else {
                 [#non-statement(n + glob-i, case)]
-                // we want to advance to the theorem
-                // stage provided there have been enough
-                // non theorems, say 10 - 18
                 if calc.rem(i, calc.rem(glob-i, 8) + 12) == 0 {
                     count.step()
                     count.step(level: 2)
-                    context [ #generation_symbol(count.get().first(), color: green)]
-                    context align(center)[
-                    #count.get().first(). MAIN RESULT
-                    ]
+                    context {
+                        let level = count.get().first()
+                        [ #generation_symbol(level, color: green)]
+                        align(center)[
+                            #level. 
+                            #{
+                                if level == 2 [MAIN RESULT]
+                                else [#upper(theorem(i)) CASE]
+                            }
+                        ]
+                    }
                 }
             }
                 context if (count.get().first() > 1 and calc.rem(n, 3) == 0) {
                     [\ *#get(section-types, i) #count.display()*]
                     count.step(level: 2)
                 }
-        
-
             [ ]
         }}
     ]
+
+    context align(center)[REFERENCES]
+
+    let references = 5
+    for i in range(0, references) [
+         #par()[[#i] #h(4pt)
+        #authors(i). #theorem(i) #h(4pt) _test_ #h(4pt) March #h(4pt) 2022] 
+    ]
 }
 
-#nonsense[aososektktotlaiaiklsekl]
+#nonsense[estenstoakslaisksesleksnsusnskaosnseslsksess]
