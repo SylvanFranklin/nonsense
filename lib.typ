@@ -248,7 +248,9 @@
             }
         ]
     }
-    
+
+    let generation_symbol = (i) => box(fill: red, inset: 0.2em)[#i]
+
     let non-statement = (i, case) => {
         let action = get(("Assume", "Observe", "By showing"), i);
         let (ok, ov) = kv(symbols, i)
@@ -265,6 +267,8 @@
         let f = field(i)
         let p = get(participles, i)
         let l = get(last_names, i)
+
+        [#generation_symbol(i)]
 
         // plain text
         if case == 0 [Certain #ok\s in #f remain #v]
@@ -305,7 +309,7 @@
         [In #f #glob-thm1 for #sing(glob-b) #obj is #c #s\able.]
     }
 
-    debug()
+    // debug()
     align(center)[
         = #cap(get(stems, glob-i))ing #glob-thm1 for #sing(glob-b) #glob-obj2
         #v(1em) #authors(glob-i) #v(2em)
