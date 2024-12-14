@@ -217,7 +217,8 @@
     let glob-obj1 = get(objects, glob-i)
     let glob-obj2 = get(objects, glob-i + 1)
     let glob-obj3 = get(objects, glob-i + 2)
-    let cases = 7;
+    let cases = 20;
+    let incomplete = text(red)[*incomplete*]
 
     let debug = () => {
         let point-pair = (a, b) => $vec(delim: "[", #a, #text(blue)[#b])$
@@ -248,7 +249,7 @@
         ]
     }
     
-    let non-statement = (i) => {
+    let non-statement = (i, case) => {
         let action = get(("Assume", "Observe", "By showing"), i);
         let (ok, ov) = kv(symbols, i)
         let (ck, cv) = kv(connectives, i)
@@ -264,16 +265,32 @@
         let f = field(i)
         let p = get(participles, i)
         let l = get(last_names, i)
-        let case = calc.rem(i, cases) 
 
-        if case == 0 [By #v\ing #sing(b) #ok on a #ok2, that is #eq-small(i) We reach #sing(b3) #b2 #ok3.]
-        else if case == 1 [#cap(action): #eq-med(i) ]
+        // plain text
+        if case == 0 [Certain #ok\s in #f remain #v]
+        else if case == 1 [#incomplete]
         else if case == 2 [#cap(a) #sing(ok) is #v\ed by #sing(b2) #ok2.]
-        else if case == 3 [#cap(a) #q #sing(b3) #ok2, which #ck #sing(b) #ok. It #a2 #p: #eq-large(i)]
-        else if case == 4 [Everything by #p #v\ing #theorem(i).]
-        else if case == 5 [Most acedemics, provided $eq-med(i)$ would agree that #q #ok.]
-        else if case == 6 [Trivially, #eq-large(i)]
-        else [On the other hand, #v\ing #sing(b) #glob-obj1, #a2 creates #sing(b2) #ov2.]
+        else if case == 3 [#cap(a) #q #sing(b3) #ok2, which #ck #sing(b) #ok. It #a2 #p: #eq-med(i)]
+        else if case == 4 [#ok #p #v\ing #theorem(i).]
+        else if case == 5 [#incomplete]
+        else if case == 6 [#incomplete]
+        // Inline text
+        else if case == 7 [By #v\ing #sing(b) #ok on a #ok2, that is #eq-small(i) We reach #sing(b3) #b2 #ok3.]
+        else if case == 8 [#cap(sing(b2)) #a #p, provided #eq-small(i)#eq-small(i + 1)]
+        else if case == 9 [However, #eq-small(i). ]
+        else if case == 10 [#incomplete]
+        else if case == 11 [#incomplete]
+        else if case == 12 [#incomplete]
+        else if case == 13 [#incomplete]
+        // medium
+        else if case == 14 [#cap(action): #eq-med(i)]
+        else if case == 15 [Most acedemics, provided $eq-med(i)$ would agree that #q #ok.]
+        else if case == 16 [#incomplete]
+        else if case == 17 [#incomplete]
+        else if case == 18 [#incomplete]
+        // big equation
+        else if case == 19 [#incomplete]
+        else [#incomplete]
     }
 
     let non-introduction = (i) => {
@@ -288,7 +305,7 @@
         [In #f #glob-thm1 for #sing(glob-b) #obj is #c #s\able.]
     }
 
-    // debug()
+    debug()
     align(center)[
         = #cap(get(stems, glob-i))ing #glob-thm1 for #sing(glob-b) #glob-obj2
         #v(1em) #authors(glob-i) #v(2em)
@@ -298,6 +315,7 @@
     par(hanging-indent: -2em, justify: true)[
         #{for (i, c) in chars.enumerate() {
             let n = to-int(c) + i
+            let case = calc.rem(i, cases) 
             if i == 0 { 
                 count.step()
                 [#non-introduction(glob-i)]
@@ -305,10 +323,10 @@
                 count.step(level: 2)
                 [\ *#get(section-types, n) 1.2*]
             }
-            else [#non-statement(n)]
+            else [#non-statement(n, case)]
             [ ]
         }}
     ]
 }
 
-#nonsense[asozarsztoarseoarsiularstneioaosetnarosietnorsieanit]
+#nonsense[arstneiobjvk]
