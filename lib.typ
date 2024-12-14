@@ -238,10 +238,10 @@
             *sentences* : #{
                 if chars.len() < 6 {
                     [#chars.map(c => point-pair([#to-int(c) mod #cases],
-                    [#calc.rem(to-int(c), 6)])).join(" + ")]
+                    [#calc.rem(to-int(c), cases)])).join(" + ")]
                 } else {
                     [#chars.slice(0, 4).map(c => point-pair([#to-int(c) mod #cases],
-                    calc.rem(to-int(c), 6))).join(", "), ... 
+                    calc.rem(to-int(c), cases))).join(", "), ... 
                     #point-pair([#to-int(chars.last()) mod #cases],
                     [#calc.rem(to-int(chars.last()), 6)])]
                 }
@@ -276,10 +276,10 @@
         else if case == 6 [#incomplete]
         // Inline text
         else if case == 7 [By #v\ing #sing(b) #ok on a #ok2, that is #eq-small(i) We reach #sing(b3) #b2 #ok3.]
-        else if case == 8 [#cap(sing(b2)) #a #p, provided #eq-small(i)#eq-small(i + 1)]
-        else if case == 9 [However, #eq-small(i). ]
-        else if case == 10 [#incomplete]
-        else if case == 11 [#incomplete]
+        else if case == 8 [#sing(b2) #a #p, provided #eq-small(i)#eq-small(i + 1)]
+        else if case == 9 [However, #eq-small(i).]
+        else if case == 10 [#eq-small(i).]
+        else if case == 11 [Of course #eq-small(i), provided #eq-small(i - 1).]
         else if case == 12 [#incomplete]
         else if case == 13 [#incomplete]
         // medium
@@ -314,7 +314,7 @@
     align(center)[1. INTRODUCTION]
     par(hanging-indent: -2em, justify: true)[
         #{for (i, c) in chars.enumerate() {
-            let n = to-int(c) + i
+            let n = to-int(c)
             let case = calc.rem(i, cases) 
             if i == 0 { 
                 count.step()
