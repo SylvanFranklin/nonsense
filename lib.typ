@@ -20,13 +20,15 @@
 #let alphabet = "abcdefghijklmnopqrstuvwxyz"
 #let vowels = "aeiouy"
 #let to-int = (char) => {("ab*()&^%$#@!'cd:;efghijklmnopqrstuvwxyz").position(char)}
-#let get = (arr, i) => {arr.at(calc.rem(i, arr.len()))}
-#let kv = (dict, i) => {
+#let get(arr, i) = {arr.at(calc.rem(i, arr.len()))}
+#let kv(dict, i) = {
     let k = dict.keys().at(calc.rem(i, dict.keys().len()))
     return (k, dict.at(k))
 }
-#let cap = (str) => [#upper(str.at(0))#str.slice(1, str.len())]
-#let sing = (str) => {if str.at(0) in vowels [an #str] else [a #str]}
+#let cap(str) = [#upper(str.at(0))#str.slice(1, str.len())]
+#let sing(str) = {if str.at(0) in vowels [an #str] else [a #str]}
+
+#let fix = () => {}
 
 #let objects = (
     "functor", "transformation", "monoid", "groupoid", "topos", 
@@ -365,4 +367,4 @@
     ]
 }
 
-#nonsense[estenstoakslaisksesleksnsusnskaosnseslsksess]
+#nonsense[oakslaisksesleksnsusnskaosnseslsksess]
