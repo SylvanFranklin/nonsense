@@ -60,6 +60,10 @@
     "ontology","mereology"
 )
 
+#let glaze = (
+    "ground breaking", "useful", "interesting", "highly relevant"
+)
+
 #let stems = (
     "enrich", "structur", "relat", "form", "inform", "interpolat", "construct",
     "generaliz", "abstract", "contain", "defin", "extract", "fix", "determin", 
@@ -112,7 +116,7 @@
     let b1 = get(buzzwords, i)
     let b2 = get(buzzwords, i + 2)
     let f = get(fields, i)
-    [#b1 #b2 #f]
+    return b1 + " " + b2 + " " + f
 }
 
 #let var = (i) => {
@@ -204,7 +208,7 @@
         "theory"), i
     )
 
-    [the #b #a #o #k]
+    return "the" + " " + b + " " + a + " " + " " + o + " " + " " + k
 }
 
 #let fix(i) = {
@@ -227,6 +231,7 @@
     let glob-obj2 = get(objects, glob-i + 1)
     let glob-obj3 = get(objects, glob-i + 2)
     let cases = 20;
+    let references = calc.floor(chars.len() / 5) + calc.rem(glob-i, 3)
     let incomplete = text(red)[*incomplete*]
 
     let debug = () => {
@@ -264,6 +269,7 @@
 
     let non-statement = (i, case) => {
         let action = get(("assume", "observe", "show", "extrapolate", "determine"), i);
+        let awareness = get(("every student is aware", "it is easy to see", "one can easily see"), i);
         let (ok, ov) = kv(symbols, i)
         let (ck, cv) = kv(connectives, i)
         let (ok2, ov2) = kv(symbols, i + 2)
@@ -276,8 +282,10 @@
         let a2 = get(adverbs, i+1)
         let stem = get(stems, i)
         let f = field(i)
+        let g = get(glaze, i)
         let p = get(participles, i)
         let l = get(last_names, i)
+        let reference = [\[#{1 + calc.rem(i, references)}\]] 
 
         [#generation_symbol(i) ]
         [#generation_symbol(case, color: blue) ]
@@ -287,9 +295,10 @@
         else if case == 1 [Provided, #theorem(i) we have that: ]
         else if case== 2 [#cap(a) #sing(ok) is #stem\ed by #sing(b2) #ok2.]
         else if case == 3 [#cap(a) #q #sing(b3) #ok2, which #ck #sing(b) #ok. It #a2 #p: #eq-med(i)]
-        else if case == 4 [#ok #p #stem\ing #theorem(i).]
-        else if case == 5 [#cap(action) that #theorem(i) #ck #theorem(i+1) holds, as shown in \[12\]]
-        else if case == 6 [#cap(a) we can #action #sing(ok) #p]
+        else if case == 4 [#ok #p #stem\ing #theorem(i), which #awareness.]
+        else if case == 5 [#cap(action) that #theorem(i) #ck #theorem(i+1) holds, as shown in #reference]
+        else if case == 6 [#cap(a) we can #action #sing(ok) by #reference]
+        else if case == 16 [The work of #get(last_names, i) on #theorem(i) is #g for #a2 #stem\ing #ok2 #p.]
         // Inline text
         else if case == 7 [By #stem\ing #sing(b) #ok on a #ok2, that is #eq-small(i) We reach #sing(b3) #b2 #ok3.]
         else if case == 8 [#sing(b2) #a #p, provided #eq-small(i)#eq-small(i + 1)]
@@ -297,11 +306,10 @@
         else if case == 10 [#eq-small(i).]
         else if case == 11 [Of course #eq-small(i), provided #eq-small(i - 1).]
         else if case == 12 [#eq-small(i)]
-        else if case == 13 [#incomplete]
+        else if case == 13 [#cap(awareness) that #eq-small(i)]
         // medium
         else if case == 14 [#cap(action): #eq-med(i)]
         else if case == 15 [Most acedemics, provided $eq-med(i)$ would agree that #q #ok.]
-        else if case == 16 [#incomplete]
         else if case == 17 [#incomplete]
         else if case == 18 [#incomplete]
         // big equation
@@ -365,13 +373,54 @@
         }}
     ]
 
-    context align(center)[REFERENCES]
+    let reference(i, case) = {
+        case = calc.rem(case, 6)
+        let title = {
+            if case == 0 [_#theorem(i).split().map(it => cap(it)).join(" ")_]
+            else if case == 1 [On the #cap(get(buzzwords, i)) #cap(get(objects, i))s]
+            else if case == 2 [#theorem(i).split().map(it => cap(it)).join(" ") and Applications]
+            else if case == 3 [On #field(i).split().map(it=> cap(it)).join(" ") and #get(objects, i)]
+            else if case == 4 [#cap(get(buzzwords, i)) #field(i).split().map(it => cap(it)).join(" ")]
+            else if case == 5 [#cap(get(buzzwords, i)) Methods in #field(i).split().map(it => cap(it)).join(" ")]
+        }
 
-    let references = 5
+        let publisher(i, case) = {
+
+            let c = get(("American", "English", "Canadian", "Australian",
+            "German", "French", "Italian", "Spanish", "Japanese", "Chinese",
+            "Indian", "Russian", "Brazilian", "Mexican", "South African",
+            "Korean", "Turkish", "Dutch", "Swedish", "Norwegian"), i);
+
+                
+            case = calc.rem(case, 20)
+            if case < 4 [#c Mathematical Society]
+            else if case < 8 [Society for #field]
+            else if case == 8 [Cambridge University Press]
+            else if case < 12 [Journal of #get(buzzwords, i) #get(objects, i+1)]
+            else [#c Journal of mathematics]
+        }
+
+        let date(i) = {
+            let month = get(("January", "February", "March", "April", "May",
+            "June", "July", "August", "September", "October", "November",
+            "December"), i)
+            // between 1803 and 2028
+            let year = 1803 + calc.rem(i, 225)
+            [ #month #year]
+        }
+
+        if calc.rem(i, 7) == 0 {
+            [#authors(i). #h(6pt) _#{title}_,  #authors(i * 9), #date(i)]
+        } else {
+            [#authors(i). #h(6pt) #title,  _#publisher(i * 7, i * 13)_, #date(i)]
+        }
+    }
+
+    align(center)[REFERENCES]
     for i in range(0, references) [
-         #par()[[#i] #h(4pt)
-        #authors(i). #theorem(i) #h(4pt) _test_ #h(4pt) March #h(4pt) 2022] 
+         #par()[[#i] #h(4pt) #reference(i * glob-i, i + calc.rem(glob-i, 20))
+        ] 
     ]
 }
 
-#nonsense[oakslaisksesleksnsusnskaosnseslsksess]
+#nonsense[asoteinsoteksoalaoskosoaierusutksoaaosteisktoaestoeiarstlasrutstkaoasenstust]
