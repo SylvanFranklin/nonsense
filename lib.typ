@@ -25,10 +25,10 @@
     let k = dict.keys().at(calc.rem(i, dict.keys().len()))
     return (k, dict.at(k))
 }
+
 #let cap(str) = [#upper(str.at(0))#str.slice(1, str.len())]
 #let sing(str) = {if str.at(0) in vowels [an #str] else [a #str]}
 
-#let fix = () => {}
 
 #let objects = (
     "functor", "transformation", "monoid", "groupoid", "topos", 
@@ -207,6 +207,13 @@
     [the #b #a #o #k]
 }
 
+#let fix(i) = {
+    let obj = get(objects, i)
+    let obj2 = get(objects, i+1)
+
+    [Fix #obj2 in #obj]
+}
+
 #let nonsense(body) = {
     let count = counter("all")
     let section-types = ("lemma", "theorem", "definition")
@@ -281,7 +288,7 @@
         else if case== 2 [#cap(a) #sing(ok) is #stem\ed by #sing(b2) #ok2.]
         else if case == 3 [#cap(a) #q #sing(b3) #ok2, which #ck #sing(b) #ok. It #a2 #p: #eq-med(i)]
         else if case == 4 [#ok #p #stem\ing #theorem(i).]
-        else if case == 5 [#cap(action) that #theorem(i) #ck #theorem(i+1) holds]
+        else if case == 5 [#cap(action) that #theorem(i) #ck #theorem(i+1) holds, as shown in \[12\]]
         else if case == 6 [#cap(a) we can #action #sing(ok) #p]
         // Inline text
         else if case == 7 [By #stem\ing #sing(b) #ok on a #ok2, that is #eq-small(i) We reach #sing(b3) #b2 #ok3.]
@@ -320,7 +327,6 @@
         #v(1em) #authors(glob-i) #v(2em)
     ]
 
-
     align(center)[1. INTRODUCTION]
     par(hanging-indent: -2em, justify: true)[
         #{for (i, c) in chars.enumerate() {
@@ -351,7 +357,8 @@
                 }
             }
                 context if (count.get().first() > 1 and calc.rem(n, 3) == 0) {
-                    [\ *#get(section-types, i) #count.display()*]
+                    // abstract this into a method of some kind
+                    [\ *#get(section-types, i) #count.display()*: #fix(i)]
                     count.step(level: 2)
                 }
             [ ]
