@@ -310,11 +310,11 @@
         // medium
         else if case == 14 [#cap(action): #eq-med(i)]
         else if case == 15 [Most acedemics, provided $eq-med(i)$ would agree that #q #ok.]
-        else if case == 17 [#incomplete]
-        else if case == 18 [#incomplete]
+        else if case == 17 [And as shown in #reference #eq-med]
+        else if case == 18 [By #theorem #eq-med]
         // big equation
-        else if case == 19 [#incomplete]
-        else [#incomplete]
+        else if case == 19 [#eq-med #eq-med #eq-med]
+        else [#eq-med #eq-med]
     }
 
     let non-introduction = (i) => {
