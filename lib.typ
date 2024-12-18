@@ -88,7 +88,7 @@
 
 #let binary_op = (
     $times$, $+$, $-$, $|$, $in$, $=$, $<$, $<=$, $>=$, $equiv$, $<==>$,
-    $diamond$, $arrow.squiggly$  
+    $diamond$, $arrow.squiggly$, $:=$, $subset$, $supset$, $ker$, $harpoon$,  
 )
 
 #let connectives= (
@@ -141,12 +141,13 @@
 }
 
 #let eq-small = (i, heft: 3) => {
-    let bo = get(binary_op, i)
+    let bo = get(binary_op, i*17)
     let v1 = var(i)
-    let v2 = var(i+1)
-    let v3 = var(i+3)
-    let fun = get(funcs, i)
-    if calc.rem(i, 6) == 0 [$v1 v2 bo v2$] 
+    let v2 = var(i*4+1)
+    let v3 = var((i*6)+3)
+    let fun = get(funcs, i*9)
+    [#generation_symbol(calc.rem(i, 6), color: black) ]
+    if calc.rem(i, 6) == 0 [$v1 v2 bo v3$] 
     else if calc.rem(i, 6) == 1 [$v1 v2$] 
     else if calc.rem(i, 6) == 2 [$v3 bo v2$] 
     else if calc.rem(i, 6) == 3 [$fun\(v2\)$] 
@@ -162,8 +163,8 @@
        let v1 = var(i)
        let v2 = var(i + 1)
        let v3 = var(i + 2)
-       let sub = eq-small(i)
-       let sub2 = eq-small(i)
+       let sub = eq-small(i * 3)
+       let sub2 = eq-small(i+4)
        let bo = get(binary_op, i)
     $
     #{for n in range(0, calc.floor(3.0 * heft)) {
@@ -172,9 +173,9 @@
        if rem == 0 [$\{sub | (sub2) in bb(se)\}$]
        else if rem == 1 [$v1_v2 ker se$]
        else if rem == 2 [$v1 bo se subset {...v2^n}$]
-       else if rem == 3 [$v3 harpoon (sub2)$]
-       else if rem == 4 [$sub2 := v2$]
-       else if rem == 5 [$sum_(sub2)^(v2)$]
+       else if rem == 3 [$sub2/(sub bo v2)$]
+       else if rem == 4 [$sub2 := abs(v1)v3$]
+       else if rem == 5 [$(sum_(sub2)^(v2))/v3$]
        else if rem == 6 [$integral_(i * n)^(v3)sub d v2$]
        else if rem == 7 [$(diff)/(v2 diff)$]
        else if rem == 8 [$lim_(v2 -> oo)(sub2)$]
