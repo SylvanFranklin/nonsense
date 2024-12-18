@@ -1,3 +1,50 @@
 # Nonsense
 
-> Prodedural nonsense generation with the Typst markup language 
+Nonsensical math paper generator inspired by
+[mathgen](https://thatsmathematics.com/mathgen/), which is awesome but not super visual. I wanted something snappier, more embeddable, and I wanted to use my favorite $\LaTeX$ alternative, [**Typst**](https://typst.app). All the generation takes place within **Typst**, which in practice means any stage of generation can be exported as a *PDF*, and you can experiment with the code *Live*!  
+
+## How it works
+Since the **Typst** language is deterministic and lacks a random number generator, I had to rely on number theory tricks. Each step of the process uses a linear congruential generation to create the illusion of randomness.  
+
+#### 1. Each letter inputted is turned into an integer by extracting its index from the alphabet. For instance with `"g"`:
+
+> ```typ 
+> "abcdefghijklmnopqrstuvwxyz".at("g") # = 6
+> ```
+
+#### 2. By doing step `1` for every inputted letters and summing the result we get a `global-seed` value. 
+
+> $$ \sum \{\text{int(letter) : letters}\} = G_{seed}$$
+> This `global-seed` will be used for continuity of certain variables, and increased randomness in others, it also ties all characters together so that a single letter change will "_randomize_" the entire document.
+
+#### 3. A special getter function takes in a seed and a list of template sentences, and selects one of the sentences. 
+
+> The seed, which is the integer value of the current letter, plus the `global-seed` times a constant large prime, is modded by the number of sentences in the template array, this step insures that there will never be index errors, and it further randomizes the sentences.  
+> $$ i = (L_{seed} \times p \times G_{seed} ) \ \mathrm{mod}\  |\text{sentences}| $$
+
+#### 4. The selected sentence will have a template that is filled in **MadLibs** style. 
+
+>```typ
+> For every #obj, it is #adjective to #action a #buzzword #obj2.
+> ```
+> These placeholders will be passed down similarly to step `3`, with another layer of pseudo randomness injected by multiplying with another large prime. This will continue recursively down to the smallest level
+> ```typ
+> For every coequalizer, it is trivial to dismantle a bijective left
+> coset.
+> ```
+
+### Additional detail
+The `global seed` is re-used to create a stronger sense of continuity in the title and first few sentences and to re-use the same author throughout the paper. 
+
+Title sections and other document objects like proofs, theorems, and lemmas are tied to counters that advance the progress of the paper. After a certain number of proofs (around 7 usually), the section is advanced i.e.
+
+`Lemma 1.7` → Section II → `Theorem 2.1` 
+
+### Performance
+**Typst** has no problem doing even hundreds of these calculations every time a letter changes, pretty awesome!
+
+# Contribution
+
+PR's and issues are welcome! Help make the nonsense make more sense, there are some known bugs that I'm still working on. 
+
+Leave a *star*, share with friends, help get me hired one day! 🙏
