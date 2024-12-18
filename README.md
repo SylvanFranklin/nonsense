@@ -25,7 +25,9 @@ $$\sum \{\text{int(letter) : letters}\} = G_{seed}$$
 
     The seed, which is the integer value of the current letter, plus the `global-seed` times a constant large prime, is modded by the number of sentences in the template array, this step insures that there will never be index errors, and it further randomizes the sentences.  
 
-$$i = (L_{seed} \times p \times G_{seed} ) \ \mathrm{mod}\  |\text{sentences}| \newline \text{sentence} = \text{sentences}[i]$$
+$$i = (L_{seed} \times p \times G_{seed} ) \ \mathrm{mod}\  |\text{sentences}|$$ 
+
+$$\text{sentence} = \text{sentences}[i]$$
 
 4. The selected sentence is a template that is filled in **MadLibs** style. 
 
