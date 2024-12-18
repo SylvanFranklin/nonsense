@@ -1,6 +1,10 @@
 #set text(size: 12pt)
 #set page(margin: (x: 20%))
 
+#let generation_symbol = (i, color: red) => {
+    box(fill: color, inset: .3em, radius: 1pt, baseline: 30%)[#text(white)[#i]]
+}
+
 #let parse-actions(body) = {
   let extract(it) = {
     ""
@@ -150,7 +154,7 @@
     else if calc.rem(i, 6) == 5 [$v3 fun\(v1\) v2$] 
 }
 
-#let eq-med = (i) => {
+#let eq-med = (i, heft: 1) => {
        // let f = get(funcs, i + n)
        // let (_, cv) = kv(connectives, i + n)
        // let g = get(funcs, i + 1 + n)
@@ -162,8 +166,9 @@
        let sub2 = eq-small(i)
        let bo = get(binary_op, i)
     $
-    #{for n in range(0, 3) {
+    #{for n in range(0, calc.floor(3.0 * heft)) {
        let rem = calc.rem(i + n, 18)
+       [ #generation_symbol(rem, color: orange) ]
        if rem == 0 [$\{sub | (sub2) in bb(se)\}$]
        else if rem == 1 [$v1_v2 ker se$]
        else if rem == 2 [$v1 bo se subset {...v2^n}$]
@@ -180,7 +185,7 @@
        else if rem == 13 [$v3$]
        else if rem == 14 [$sub$]
        else if rem == 15 [$sub2$]
-       else if rem == 16 [$bo$]
+       else if rem == 16 [$v2^(sub)|$]
        else [$v1$]
     }}
     $
@@ -263,9 +268,6 @@
         ]
     }
 
-    let generation_symbol = (i, color: red) => {
-        box(fill: color, inset: .3em, radius: 1pt, baseline: 30%)[#text(white)[#i]]
-    }
 
     let non-statement = (i, case) => {
         let action = get(("assume", "observe", "show", "extrapolate", "determine"), i);
@@ -311,10 +313,10 @@
         else if case == 14 [#cap(action): #eq-med(i)]
         else if case == 15 [Most acedemics, provided $eq-med(i)$ would agree that #q #ok.]
         else if case == 17 [And as shown in #reference #eq-med]
-        else if case == 18 [By #theorem #eq-med]
+        else if case == 18 [By #theorem(i) #eq-med(i)]
         // big equation
-        else if case == 19 [#eq-med #eq-med #eq-med]
-        else [#eq-med #eq-med]
+        else if case == 19 [#eq-med(i+1, heft: 2.2)]
+        else [#eq-med(i, heft: 3.0)]
     }
 
     let non-introduction = (i) => {
@@ -423,4 +425,4 @@
     ]
 }
 
-#nonsense[asoteinsoteksoalaoskosoaierusutksoaaosteisktoaestoeiarstlasrutstkaoasenstust]
+#nonsense[atetkses]
