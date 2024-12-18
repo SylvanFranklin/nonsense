@@ -17,15 +17,15 @@ Since the **Typst** language is deterministic and lacks a random number generato
 
 2. We create a `global-seed` by summing all the letters as integers like in step 1.
 
-    $$\sum \{\text{int(letter) : letters}\} = G_{seed}$$
-
     This `global-seed` will be used for continuity of certain variables, and increased randomness in others, it also ties all characters together so that a single letter change will "_randomize_" the entire document.
+
+$$\sum \{\text{int(letter) : letters}\} = G_{seed}$$
 
 3. A special getter function takes in a seed and a list of template sentences, and selects one of the sentences. 
 
     The seed, which is the integer value of the current letter, plus the `global-seed` times a constant large prime, is modded by the number of sentences in the template array, this step insures that there will never be index errors, and it further randomizes the sentences.  
 
-    $$i = (L_{seed} \times p \times G_{seed} ) \ \mathrm{mod}\  |\text{sentences}| \newline \text{sentence} = \text{sentences}[i]$$
+$$i = (L_{seed} \times p \times G_{seed} ) \ \mathrm{mod}\  |\text{sentences}| \newline \text{sentence} = \text{sentences}[i]$$
 
 4. The selected sentence is a template that is filled in **MadLibs** style. 
 
