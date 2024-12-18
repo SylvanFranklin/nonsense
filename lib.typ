@@ -19,12 +19,16 @@
   extract(body).clusters().map(lower)
 }
 
-#let funcs = ($sin$, $cos$, $arccos$, $log$, $arctan$, $E$, $phi$)
-#let joiner = ($and$, $or$, $xor$)
+#let binary_op = (
+    $times$, $+$, $-$, $|$, $in$, $<$, $equiv$, $emptyset.circle$, $~$,
+    $diamond$, $arrow.squiggly$, $:=$, $subset$, $supset$, $ker$, $harpoon$, $mod$,   
+    $supset$, $union.sq.big$, $hexa.stroked$, $alef$, $succ$, $fence.r$, $|->$      
+)
 #let alphabet = "abcdefghijklmnopqrstuvwxyz"
 #let vowels = "aeiouy"
 #let to-int = (char) => {("ab*()&^%$#@!'cd:;efghijklmnopqrstuvwxyz").position(char)}
 #let get(arr, i) = {arr.at(calc.rem(i, arr.len()))}
+
 #let kv(dict, i) = {
     let k = dict.keys().at(calc.rem(i, dict.keys().len()))
     return (k, dict.at(k))
@@ -35,37 +39,29 @@
 
 
 #let objects = (
-    "functor", "transformation", "monoid", "groupoid", "topos", 
-    "closed category", "homoset", "comonad", "endofunctor", "fibration",
-    "lateral morphism", "coequalizer", "category", "quiver", "bifunctor",
-    "object", "sheaf", "torsor", "limit", "operad", "part-whole relation",
+    "functor", "monoid", "groupoid", "topos", 
+    "category", "homoset", "comonad", "endofunctor", "fibration",
+    "morphism", "coequalizer", "category", "quiver", "bifunctor",
+    "object", "sheaf", "torsor", "limit", "operad", "relation",
     "fusion", "subspace", "ordinal", "cardinal", "state",
-    "hyperreal number", "universe", "combinator", "space"
-)
-
-#let symbols = (
-    "metacyclic integral": $integral.cont.ccw$,
-    combinator: $lambda Epsilon_1$ ,
-    "functoral cardial hackset": $f circle.small g$,
-    section: $section$,
-    "oblique vector": $vec(cal(m), cal(Z))$ 
+    "number", "universe", "combinator", "space"
 )
 
 #let buzzwords = (
     "abstract", "relational", "substructural", "discrete", "inerpolated",
     "intuitional", "higher order", "paraconsistent", "interrelational",
-    "structural", "ontic", "ontic", "modal", "formal", "informal", "pseudo", 
+    "structural", "ontic", "modal", "formal", "pseudo", "ananoumous",
     "natural", "enriched", "simplicial", "abelian", "constructable", "fixed", 
-    "euclidean", "anti", "meta", "stochastically", "bijective", "semi"
+    "euclidean", "anti", "meta", "stochastically", "bijective", "semi", "uncountable"
 )
 
 #let fields = (
-    "calculus", "statistics", "logic", "algebra", "set theory", "topology",
-    "ontology","mereology"
+    "calculus", "logic", "algebra", "set theory", "topology",
+    "ontology", "mereology"
 )
 
 #let glaze = (
-    "ground breaking", "useful", "interesting", "highly relevant"
+    "ground breaking", "useful", "interesting", "highly relevant", "elegant"
 )
 
 #let stems = (
@@ -76,37 +72,25 @@
 #let last_names = (
     "Euler", "Bernstein", "Schröder", "Pascal", "Samuel", "Gödel", "Nozzle",
     "Cantor", "Jones", "Pythis", "Noether", "Rubble", "Russell", "Frege",
-    "Zeno", "Curry", "Franklin", "Wager", "Pappas", "Fawkes", "Baccus",
-    "Lancaster", "Zilber", "Abou",
+    "Zeno", "Curry", "Franklin", "Wager", "Pappas", "Fawkes", "Bacchus",
+    "Lancaster", "Zilber", "Abou", "Snaggle"
 );
 
-#let participles = (
-    "commutes", "permutes", "tiles the plane", "is a monad", "is a functor",
-    "can be derived", "is divisible", "is an action", "repeats", "approximates the golden ratio", "is undefined", "is well ordered", "is a limit ordinal", "is a cardinal", "is natural", "is in a universe"
+#let properties = (
+    "commutes", "permutes", "tiles the plane", "is a monad", "is a functor", "can be derived", "is divisible", "is an action",
+    "repeats", "approximates the golden ratio", "is undefined", "is well ordered", "is a limit ordinal", "is a cardinal", "is natural",
+    "is in a universe", "is even under in the standard sense"
 );
-
-
-#let binary_op = (
-    $times$, $+$, $-$, $|$, $in$, $=$, $<$, $<=$, $>=$, $equiv$, $<==>$,
-    $diamond$, $arrow.squiggly$, $:=$, $subset$, $supset$, $ker$, $harpoon$,  
-)
 
 #let connectives= (
     "implies": $==>$,
     "it follows that": $-->$,
-    "only if": $<==>$,
+    "if and only if": $<==>$,
     "is equivalent to": $equiv$,
-    "does not imply": $equiv$,
+    "does not imply": $arrow.double.not$,
     "is coextensive with": $union$, 
 )
 
-
-#let quantifiers = (
-    "for all": $forall$,
-    "there exists": $exists$,
-    "there does not exist": $exists.not$,
-    "there exists a unique": $!exists$ 
-)
 
 #let adverbs = (
     "vacuously", "trivially", "logically", "necessarily", "formally",
@@ -123,7 +107,7 @@
     return b1 + " " + b2 + " " + f
 }
 
-#let var = (i) => {
+#let var(i) = {
     let vars = ("x", "y", "μ", "Γ", "η", "α", "φ", "ο", "χ",
             "ε", "θ", "n", "i", "b", "z", "Κ", $W$, "r")
 
@@ -140,49 +124,75 @@
     return $#v$
 }
 
-#let eq-small = (i, heft: 3) => {
-    let bo = get(binary_op, i*17)
-    let v1 = var(i)
-    let v2 = var(i*4+1)
-    let v3 = var((i*6)+3)
-    let fun = get(funcs, i*9)
-    [#generation_symbol(calc.rem(i, 6), color: black) ]
-    if calc.rem(i, 6) == 0 [$v1 v2 bo v3$] 
-    else if calc.rem(i, 6) == 1 [$v1 v2$] 
-    else if calc.rem(i, 6) == 2 [$v3 bo v2$] 
-    else if calc.rem(i, 6) == 3 [$fun\(v2\)$] 
-    else if calc.rem(i, 6) == 4 [$v3 bo v2$] 
-    else if calc.rem(i, 6) == 5 [$v3 fun\(v1\) v2$] 
+#let func(i, case) = {
+    let base = get(($sin$, $cos$, $log$, $sec$, $E$, $phi$, $"exp"$, $ln$, $sup$, $"efr"$, $zeta$, $det$, $tr$), i)
+    case = calc.rem(case, 20)
+    if case < 5 {base = $base^(-1)$}
+    else if case < 8 {base = $base^2$}
+    else if case == 9 {base = $base_2$}
+    else if case == 10 {base = $overline(base)$}
+    else if case == 11 {base = $underline(base)$}
+    else if case == 12 {base = $hat(base)$}
+    [#base]
 }
 
-#let eq-med = (i, heft: 1) => {
-       // let f = get(funcs, i + n)
-       // let (_, cv) = kv(connectives, i + n)
-       // let g = get(funcs, i + 1 + n)
-       let se = upper(get(alphabet, i))
-       let v1 = var(i)
-       let v2 = var(i + 1)
-       let v3 = var(i + 2)
-       let sub = eq-small(i * 3)
-       let sub2 = eq-small(i+4)
-       let bo = get(binary_op, i)
+#let eq-small(i, n) = {
+    let bo = get(binary_op, i*17+n*3)
+    let v1 = var(i+n)
+    let v2 = var(i*4+1+n)
+    let v3 = var((i*6)+3+n)
+    let fun = func(i, i+1+n)
+    [#generation_symbol(calc.rem(i+n, 6), color: black) ]
+    let quan = get(($forall$, $exists$, $exists.not$, $!exists$), i*3+n)
+    let case = calc.rem(i, 17)
+
+    if case == 0 [$v1 v2 bo v3$] 
+    else if case == 1 [$quan\(fun(v2) bo v1\)$] 
+    else if case == 2 [$v3 bo v2$] 
+    else if case == 3 [$fun(v2 / v1)$] 
+    else if case == 4 [$quan \[v2 bo v3\]$] 
+    else if case == 5 [$v3 fun\(v1\) v2$] 
+    else if case == 6 [$v3^v2$] 
+    else if case == 7 [$fun(v1 bo v3)$] 
+    else if case == 8 [$v3 fun(2)$] 
+    else if case == 9 [$case v1$] 
+    else if case == 10 [$v1 bo v3$] 
+    else if case == 11 [$v2 bo v3$] 
+    else if case == 12 [$fun(func(#i, #i))$] 
+    else if case == 13 [$v3 bo fun$] 
+    else if case == 13 [$fun / v2$] 
+    else if case == 13 [$abs(v3)$] 
+    else if case == 14 [$v3_v2$] 
+    else if case == 15 [$v1 bo v3$] 
+}
+
+#let eq-med = (i, heft: 3) => {
     $
-    #{for n in range(0, calc.floor(3.0 * heft)) {
-       let rem = calc.rem(i + n, 18)
+    #{for n in range(0, calc.floor(heft)) {
+       let se = upper(get(alphabet, i+n))
+       let v1 = var(i+n)
+       let v2 = var(i + 1+n)
+       let v3 = var(i + 2+n)
+       let sub = eq-small(i*67+n, n+i+7)
+       let sub2 = eq-small(i+73+n, n+i+4)
+       let bo = get(binary_op, i+n)
+       let g = func(i*4, i+1+n)
+       let rem = calc.rem(i + n*n*17, 18)
+
        [ #generation_symbol(rem, color: orange) ]
        if rem == 0 [$\{sub | (sub2) in bb(se)\}$]
-       else if rem == 1 [$v1_v2 ker se$]
+       else if rem == 1 [$v1_v2 #g se$]
        else if rem == 2 [$v1 bo se subset {...v2^n}$]
        else if rem == 3 [$sub2/(sub bo v2)$]
        else if rem == 4 [$sub2 := abs(v1)v3$]
-       else if rem == 5 [$(sum_(sub2)^(v2))/v3$]
+       else if rem == 5 [$(sub)_(sub2)$]
        else if rem == 6 [$integral_(i * n)^(v3)sub d v2$]
        else if rem == 7 [$(diff)/(v2 diff)$]
        else if rem == 8 [$lim_(v2 -> oo)(sub2)$]
        else if rem == 9 [$(sub)/(v2)$]
-       else if rem == 10 [$(sub)^(sub2)$]
-       else if rem == 11 [$(sub)_(sub2)$]
-       else if rem == 12 [$v2$]
+       else if rem == 10 [$(sub2)^(#g v3)$]
+       else if rem == 11 [$cases(v1\:sub=v2,v3\:rem=#g)$]
+       else if rem == 12 [$(sum_(sub2)^(v2))/v3$]
        else if rem == 13 [$v3$]
        else if rem == 14 [$sub$]
        else if rem == 15 [$sub2$]
@@ -210,23 +220,29 @@
     }
 
     let k = get(
-        ("lemma", "theorem", "axiom", "conjecture", "principle", "extension",
-        "theory"), i
+        ("lemma", "theorem", "axiom", "conjecture", "principle",
+        "extension", "theory"), i
     )
 
     return "the" + " " + b + " " + a + " " + " " + o + " " + " " + k
 }
 
-#let fix(i) = {
-    let obj = get(objects, i)
-    let obj2 = get(objects, i+1)
 
-    [Fix #obj2 in #obj]
-}
+#let proof-theorem-lemma(i, heading) = {
+    let case = calc.rem(i, 3)
+    if case == 0 {
 
+    } else if case == 1 {
+
+    } else {
+
+    }
+
+
+} 
+ 
 #let nonsense(body) = {
     let count = counter("all")
-    let section-types = ("lemma", "theorem", "definition")
     let chars = parse-actions(body).filter(char => char != none)
     if chars.len() == 0 { return }
     let glob-i = chars.map(c => to-int(c)).sum()
@@ -236,7 +252,7 @@
     let glob-obj1 = get(objects, glob-i)
     let glob-obj2 = get(objects, glob-i + 1)
     let glob-obj3 = get(objects, glob-i + 2)
-    let cases = 20;
+    let cases = 21;
     let references = calc.floor(chars.len() / 5) + calc.rem(glob-i, 3)
     let incomplete = text(red)[*incomplete*]
 
@@ -272,52 +288,55 @@
 
     let non-statement = (i, case) => {
         let action = get(("assume", "observe", "show", "extrapolate", "determine"), i);
-        let awareness = get(("every student is aware", "it is easy to see", "one can easily see"), i);
-        let (ok, ov) = kv(symbols, i)
+        let awareness = get(("it is obvious", "it is easy to see", "one can easily see"), i);
+        let person = get(("self respecting", "well educated", "logical", "sane", "competent"), i*3)
+        person += " " + get(("student", "mathematician", "logician", "author"), i)
+
+        let obj1 = get(objects, i * 7 + 9) 
+        let obj2 = get(objects, i * 8 + 7) 
+        let obj3 = get(objects, i * 9 + 8) 
+        let buzz1 = get(buzzwords, i)
+        let buzz2 = get(buzzwords, i - 1)
+        let buzz3 = get(buzzwords, i - 2)
         let (ck, cv) = kv(connectives, i)
-        let (ok2, ov2) = kv(symbols, i + 2)
-        let (ok3, ov3) = kv(symbols, i + 5)
-        let q = get(quantifiers.keys(), i)
-        let b = get(buzzwords, i)
-        let b2 = get(buzzwords, i - 1)
-        let b3 = get(buzzwords, i - 2)
-        let a = get(adverbs, i)
-        let a2 = get(adverbs, i+1)
+        let adverb1 = get(adverbs, i)
+        let adverb2 = get(adverbs, i+1)
         let stem = get(stems, i)
-        let f = field(i)
-        let g = get(glaze, i)
-        let p = get(participles, i)
-        let l = get(last_names, i)
+        let field = field(i)
+        let glaze = get(glaze, i)
+        let property = get(properties, i)
+        let last-name = get(last_names, i)
+        let res = theorem(i*3)
         let reference = [\[#{1 + calc.rem(i, references)}\]] 
 
-        [#generation_symbol(i) ]
+        // [#generation_symbol(i) ]
         [#generation_symbol(case, color: blue) ]
 
         // plain text
-        if case == 0 [Certain #ok\s in #f remain #stem\ed]
-        else if case == 1 [Provided, #theorem(i) we have that: ]
-        else if case== 2 [#cap(a) #sing(ok) is #stem\ed by #sing(b2) #ok2.]
-        else if case == 3 [#cap(a) #q #sing(b3) #ok2, which #ck #sing(b) #ok. It #a2 #p: #eq-med(i)]
-        else if case == 4 [#ok #p #stem\ing #theorem(i), which #awareness.]
-        else if case == 5 [#cap(action) that #theorem(i) #ck #theorem(i+1) holds, as shown in #reference]
-        else if case == 6 [#cap(a) we can #action #sing(ok) by #reference]
-        else if case == 16 [The work of #get(last_names, i) on #theorem(i) is #g for #a2 #stem\ing #ok2 #p.]
+        if case == 0 [Certain #obj1\s in #field remain #stem\ed, under the assumtption that #res holds for all #obj2\s.]
+        else if case == 1 [Provided, #res we have that: ]
+        else if case== 2 [#cap(adverb1) #sing(obj1) is #stem\ed by #sing(buzz2) #obj2.]
+        else if case == 3 [#cap(adverb1) there exists #sing(buzz3) #obj2, which #ck #sing(buzz3) #obj1. It #adverb2 #property: #eq-med(i)]
+        else if case == 4 [#obj1 #property #stem\ing #res, as #awareness.]
+        else if case == 5 [#cap(stem)ing that #res #ck #theorem(i+1) holds, as shown in #reference]
+        else if case == 6 [#cap(adverb1) we can #action #sing(obj1) by #reference]
+        else if case == 14 [#cap(action): #eq-small(case, i*5)]
+        else if case == 16 [The work of #get(last_names, i) on #res #reference is #glaze for #adverb2 #stem\ing #obj2 #property.]
         // Inline text
-        else if case == 7 [By #stem\ing #sing(b) #ok on a #ok2, that is #eq-small(i) We reach #sing(b3) #b2 #ok3.]
-        else if case == 8 [#sing(b2) #a #p, provided #eq-small(i)#eq-small(i + 1)]
-        else if case == 9 [However, #eq-small(i).]
-        else if case == 10 [#eq-small(i).]
-        else if case == 11 [Of course #eq-small(i), provided #eq-small(i - 1).]
-        else if case == 12 [#eq-small(i)]
-        else if case == 13 [#cap(awareness) that #eq-small(i)]
+        else if case == 7 [By #stem\ing #sing(buzz1) #obj1 on a #obj2, that is #eq-small(case+i, i+case*3) We reach #sing(buzz3) *#buzz2* #obj3.]
+        else if case == 8 [#sing(buzz2) #adverb1 #property, provided #eq-small(i, i*case+3)#eq-small(i + 1, case*i*83)]
+        else if case == 9 [However, #eq-small(i, case*i*3).]
+        else if case == 10 [#eq-small(i+case, case*17).]
+        else if case == 11 [Of course in #reference #eq-small(i, case*i+1), provided #eq-small(i - 1, case+19).]
+        else if case == 12 [#eq-small(i, case * 9)]
+        else if case == 13 [#cap(awareness) that #eq-small(i*17, case+i)]
         // medium
-        else if case == 14 [#cap(action): #eq-med(i)]
-        else if case == 15 [Most acedemics, provided $eq-med(i)$ would agree that #q #ok.]
-        else if case == 17 [And as shown in #reference #eq-med]
-        else if case == 18 [By #theorem(i) #eq-med(i)]
+        else if case == 15 [Provided #eq-small(i, i*case*3), as shown in #reference any #person would agree that every #obj1 #property]
+        else if case == 17 [And as shown in #reference #eq-med(i, heft:2)]
+        else if case == 18 [By #res #eq-med(i, heft: 2)]
         // big equation
-        else if case == 19 [#eq-med(i+1, heft: 2.2)]
-        else [#eq-med(i, heft: 3.0)]
+        else if case == 19 [#eq-med(i+1, heft: 3)]
+        else [Breaking into the two cases:  #grid(gutter: 6em, columns: (1fr, 1fr), [#align(center)[Case I] #eq-med(i+3, heft: 3)], [#align(center)[Case II] #eq-med(i, heft:1)])]
     }
 
     let non-introduction = (i) => {
@@ -369,7 +388,7 @@
             }
                 context if (count.get().first() > 1 and calc.rem(n, 3) == 0) {
                     // abstract this into a method of some kind
-                    [\ *#get(section-types, i) #count.display()*: #fix(i)]
+                    [\ *#proof-theorem-lemma(i, count.display())*]
                     count.step(level: 2)
                 }
             [ ]
@@ -397,10 +416,10 @@
                 
             case = calc.rem(case, 20)
             if case < 4 [#c Mathematical Society]
-            else if case < 8 [Society for #field]
+            else if case < 8 [Society for #field(i)]
             else if case == 8 [Cambridge University Press]
             else if case < 12 [Journal of #get(buzzwords, i) #get(objects, i+1)]
-            else [#c Journal of mathematics]
+            else [#generation_symbol(case, color: olive) #c Journal of mathematics]
         }
 
         let date(i) = {
@@ -413,9 +432,9 @@
         }
 
         if calc.rem(i, 7) == 0 {
-            [#authors(i). #h(6pt) _#{title}_,  #authors(i * 9), #date(i)]
+            [#authors(i+case*5). #h(6pt) _#{title}_,  #authors(i * 9), #date(i)]
         } else {
-            [#authors(i). #h(6pt) #title,  _#publisher(i * 7, i * 13)_, #date(i)]
+            [#authors(i+7*case+4). #h(6pt) #title,  _#publisher(i * 7, i * 13)_, #date(i)]
         }
     }
 
@@ -426,4 +445,4 @@
     ]
 }
 
-#nonsense[atetkses]
+#nonsense[isinaesneeiesin]
