@@ -1,8 +1,9 @@
 #set text(size: 12pt)
-#set page(margin: (x: 20%))
+#let opacity = state("opacity", 80%) 
 
-#let generation_symbol = (i, color: red) => {
-    box(fill: color, inset: .3em, radius: 1pt, baseline: 30%)[#text(white)[#i]]
+#let generation_symbol = (i, color: red) => context {
+    box(fill: color.transparentize(opacity.get()), inset: .3em, radius: 1pt,
+    baseline: 30%)[#text(white)[#i]]
 }
 
 #let parse-actions(body) = {
@@ -25,7 +26,6 @@
     $supset$, $union.sq.big$, $hexa.stroked$, $alef$, $succ$, $fence.r$, $|->$      
 )
 #let alphabet = "abcdefghijklmnopqrstuvwxyz"
-#let vowels = "aeiouy"
 #let to-int = (char) => {("ab*()&^%$#@!'cd:;efghijklmnopqrstuvwxyz").position(char)}
 #let get(arr, i) = {arr.at(calc.rem(i, arr.len()))}
 
@@ -35,33 +35,36 @@
 }
 
 #let cap(str) = [#upper(str.at(0))#str.slice(1, str.len())]
-#let sing(str) = {if str.at(0) in vowels [an #str] else [a #str]}
+#let sing(str) = {if lower(str.at(0)) in "aeiouy" {"an " + str} else {"a " + str}}
 
 
 #let objects = (
-    "functor", "monoid", "groupoid", "topos", 
-    "category", "homoset", "comonad", "endofunctor", "fibration",
-    "morphism", "coequalizer", "category", "quiver", "bifunctor",
-    "object", "sheaf", "torsor", "limit", "operad", "relation",
-    "fusion", "subspace", "ordinal", "cardinal", "state",
-    "number", "universe", "combinator", "space"
+    "functor", "monoid", "groupoid", "matrix", "group", "ring",
+    "superset","category", "homoset", "co-monad", "endofunctor", "fibration",
+    "morphism", "coequalizer", "category", "quiver", "bifunctor", "object",
+    "sheaf", "torsor", "limit", "operad", "relation", "fusion", "subspace",
+    "ordinal", "cardinal", "state", "number", "universe", "combinator", "vector",
+    "scalar", "isomorphism", "manifold"
 )
 
 #let buzzwords = (
     "abstract", "relational", "substructural", "discrete", "inerpolated",
-    "intuitional", "higher order", "paraconsistent", "interrelational",
-    "structural", "ontic", "modal", "formal", "pseudo", "ananoumous",
-    "natural", "enriched", "simplicial", "abelian", "constructable", "fixed", 
-    "euclidean", "anti", "meta", "stochastically", "bijective", "semi", "uncountable"
+    "higher order", "paraconsistent", "interrelational", 
+    "structural", "ontic", "modal", "formal", "pseudo",
+    "natural", "enriched", "simplicial", "abelian", "constructable", "fixed",
+    "non-euclidian", "bijective", "linear", "surjective",
+    "uncountable", "differential", "ordered", "countable", "left-compact", 
+    "connected", "hyprebolic", "anti-standard", "maximal"
 )
 
 #let fields = (
-    "calculus", "logic", "algebra", "set theory", "topology",
-    "ontology", "mereology"
+    "calculus", "logic", "algebra", "set theory", "topology", "ontology",
+    "metrology", "measure theory", "combinatorics", "order theory", 
+    "graph theory", "game theory", "geometry", 
 )
 
 #let glaze = (
-    "ground breaking", "useful", "interesting", "highly relevant", "elegant"
+    "ground breaking", "useful", "interesting", "highly relevant", "vital"
 )
 
 #let stems = (
@@ -69,17 +72,11 @@
     "generaliz", "abstract", "contain", "defin", "extract", "fix", "determin", 
 )
 
-#let last_names = (
+#let last-names = (
     "Euler", "Bernstein", "Schröder", "Pascal", "Samuel", "Gödel", "Nozzle",
     "Cantor", "Jones", "Pythis", "Noether", "Rubble", "Russell", "Frege",
     "Zeno", "Curry", "Franklin", "Wager", "Pappas", "Fawkes", "Bacchus",
-    "Lancaster", "Zilber", "Abou", "Snaggle"
-);
-
-#let properties = (
-    "commutes", "permutes", "tiles the plane", "is a monad", "is a functor", "can be derived", "is divisible", "is an action",
-    "repeats", "approximates the golden ratio", "is undefined", "is well ordered", "is a limit ordinal", "is a cardinal", "is natural",
-    "is in a universe", "is even under in the standard sense"
+    "Lancaster", "Zilber", "Abou", "Snaggle", "Hitches", "Wumpin", "Quabosh"
 );
 
 #let connectives= (
@@ -112,7 +109,6 @@
             "ε", "θ", "n", "i", "b", "z", "Κ", $W$, "r")
 
     let v = get(vars, i)
-
     if calc.rem(i, 3) == 0 {v = upper(v)}
     if calc.rem(i, 4) == 0 {v = $cal(#v)$}
     if calc.rem(i, 5) == 0 {v = $#v _(#calc.rem(i, 16))$}
@@ -120,7 +116,6 @@
     if calc.rem(i, 11) == 0 {v = $bb(#v)$}
     if calc.rem(i, 6) == 0 {v = $#v _(#get(vars, i + 3))$}
     if calc.rem(i, 7) == 0 {v = $#v ^(#get(vars, i * 2))$}
-
     return $#v$
 }
 
@@ -139,12 +134,12 @@
 #let eq-small(i, n) = {
     let bo = get(binary_op, i*17+n*3)
     let v1 = var(i+n)
-    let v2 = var(i*4+1+n)
-    let v3 = var((i*6)+3+n)
+    let v2 = var((i*19)+1+n)
+    let v3 = var((i*17)+3+n)
     let fun = func(i, i+1+n)
-    [#generation_symbol(calc.rem(i+n, 6), color: black) ]
     let quan = get(($forall$, $exists$, $exists.not$, $!exists$), i*3+n)
     let case = calc.rem(i, 17)
+    [#generation_symbol(case, color: black)]
 
     if case == 0 [$v1 v2 bo v3$] 
     else if case == 1 [$quan\(fun(v2) bo v1\)$] 
@@ -206,7 +201,7 @@
 #let authors = (i) => {
     // we will make between one and three authors 
     range(0, calc.rem(i, 4) + 1).map(n => 
-        [#cap(get(alphabet, i + n)). #get(last_names, i + n)]
+        [#cap(get(alphabet, i + n)). #get(last-names, i + n)]
     ).join(", ")
 }
 
@@ -214,7 +209,7 @@
     let o = get(objects, i)
     let b = get(buzzwords, i)
     let a = if calc.rem(i, 2) == 0 {
-        get(last_names, i)
+        get(last-names, i)
     } else {
         get(buzzwords, i - 2)
     }
@@ -227,17 +222,57 @@
     return "the" + " " + b + " " + a + " " + " " + o + " " + " " + k
 }
 
+#let property(i, case) = {
+    let case = calc.rem(case, 5)
+    [#generation_symbol(case, color: olive) ]
+    if case == 0 [approximates #var(i)]
+    else if case == 1 [is #sing(get(objects, i))]
+    else if case == 2 [#get(("commutes", "permutes", "repeats", "tiles the plane"), i)]
+    else if case == 3 [is #get(("undefined", "in a universe", "well defined", "even", "a basis"), i)]
+    else [is #get((buzzwords), i + 3)]
+}
+
+#let non-setup(i, case ) = {
+    let case = calc.rem(case, 5)
+    let buzz1 = get(buzzwords, i+22*case+1)
+    let buzz2 = get(buzzwords, i+5*case+1)
+    let buzz3 = get(buzzwords, i+6*case+2)
+    let obj1 = get(objects, i+88*case+1)
+    let obj2 = get(objects, i+19*case+1)
+    let eq1 = eq-small(case + 1, i+1)
+    let eq2 = eq-small(case + 3, i * 13 + 1)
+    let prop = property(case * 3, i+1)
+    let (name, symbol) = kv(connectives, i*7)
+
+    [ #generation_symbol(case, color: navy) ]
+    if case == 0 [Fix #sing(buzz1) #buzz2 #obj1, #eq1 in #sing(buzz3) #obj2, #eq2.]
+    else if case == 1 [Let #sing(buzz2) #obj1 that #prop, be defined #eq2]
+    else if case == 2 [Fix #sing(buzz1) #obj1 in #sing(buzz2) #buzz3 #obj2.]
+    else if case == 3 [Assume #sing(buzz1) #sing(buzz2) #obj1 #prop.]
+    else [Assume #eq1 #symbol #eq2.]
+}
+
 
 #let proof-theorem-lemma(i, heading) = {
-    let case = calc.rem(i, 3)
-    if case == 0 {
+    let case = calc.rem(i, 10)
+    let var = var(i)
+    let buzz = get(buzzwords, i*59+1)
+    let obj = get(objects, i + 1)
+    let prop = property(i+1, case * 3)
+    let prop2 = property(i, case * 3 * i + 3)
+    let qed = [#v(0.2em)#h(1fr)$square.big$]
+    let setup = non-setup(case, i)
+    let setup2 = non-setup(case+1, i+1)
 
-    } else if case == 1 {
-
-    } else {
-
-    }
-
+    if case == 0 [#strong[Theorem #heading] #setup2 #setup]
+    else if case == 1 [#strong[Proposition #heading] #setup]
+    else if case == 2 [#strong[Definition #heading] Let #eq-small(i*5, case * 13) be #buzz. #cap(sing(obj)) #prop if it #prop2.]
+    else if case == 3 [#strong[Definition #heading] #setup2]
+    else if case == 4 [#strong[Definition #heading] #setup #setup2]
+    else if case == 5 [#strong[Lemma #heading] #math.italic([#setup2 #setup1])]
+    else if case == 5 [#strong[Lemma #heading] #emph([#setup1])]
+    else if case == 6 [#strong[Theorem #heading] #emph([#setup #setup2])]
+    else [#strong[Lemma #heading] #text(weight: "regular", style: "italic", [Let #eq-small(i+3, case * 79) be #buzz, then #eq-small(i+5, case * 97).])]
 
 } 
  
@@ -255,145 +290,10 @@
     let cases = 21;
     let references = calc.floor(chars.len() / 5) + calc.rem(glob-i, 3)
     let incomplete = text(red)[*incomplete*]
-
-    let debug = () => {
-        let point-pair = (a, b) => $vec(delim: "[", #a, #text(blue)[#b])$
-        block(inset: 1em, stroke: 0.1em, radius: 1em, width: 100%)[
-            *seed* : #{
-                if chars.len() < 6 {
-                    [#chars.map(c => point-pair(c, to-int(c))).join(" + ") =
-                     #glob-i - #text(red)[*global seed*]]
-                } else {
-                    [#chars.slice(0, 4).map(c => point-pair(c,
-                    to-int(c))).join(" + ") + ... + #point-pair(chars.last(),
-                    to-int(chars.last())) = - #glob-i  #text(red)[*global seed*]]
-                }
-            }
-            \
-            \
-            *sentences* : #{
-                if chars.len() < 6 {
-                    [#chars.map(c => point-pair([#to-int(c) mod #cases],
-                    [#calc.rem(to-int(c), cases)])).join(" + ")]
-                } else {
-                    [#chars.slice(0, 4).map(c => point-pair([#to-int(c) mod #cases],
-                    calc.rem(to-int(c), cases))).join(", "), ... 
-                    #point-pair([#to-int(chars.last()) mod #cases],
-                    [#calc.rem(to-int(chars.last()), 6)])]
-                }
-            }
-        ]
+    let entropy = chars.dedup().len() 
+    context {
+        opacity.update(val => 4% * entropy)
     }
-
-
-    let non-statement = (i, case) => {
-        let action = get(("assume", "observe", "show", "extrapolate", "determine"), i);
-        let awareness = get(("it is obvious", "it is easy to see", "one can easily see"), i);
-        let person = get(("self respecting", "well educated", "logical", "sane", "competent"), i*3)
-        person += " " + get(("student", "mathematician", "logician", "author"), i)
-
-        let obj1 = get(objects, i * 7 + 9) 
-        let obj2 = get(objects, i * 8 + 7) 
-        let obj3 = get(objects, i * 9 + 8) 
-        let buzz1 = get(buzzwords, i)
-        let buzz2 = get(buzzwords, i - 1)
-        let buzz3 = get(buzzwords, i - 2)
-        let (ck, cv) = kv(connectives, i)
-        let adverb1 = get(adverbs, i)
-        let adverb2 = get(adverbs, i+1)
-        let stem = get(stems, i)
-        let field = field(i)
-        let glaze = get(glaze, i)
-        let property = get(properties, i)
-        let last-name = get(last_names, i)
-        let res = theorem(i*3)
-        let reference = [\[#{1 + calc.rem(i, references)}\]] 
-
-        // [#generation_symbol(i) ]
-        [#generation_symbol(case, color: blue) ]
-
-        // plain text
-        if case == 0 [Certain #obj1\s in #field remain #stem\ed, under the assumtption that #res holds for all #obj2\s.]
-        else if case == 1 [Provided, #res we have that: ]
-        else if case== 2 [#cap(adverb1) #sing(obj1) is #stem\ed by #sing(buzz2) #obj2.]
-        else if case == 3 [#cap(adverb1) there exists #sing(buzz3) #obj2, which #ck #sing(buzz3) #obj1. It #adverb2 #property: #eq-med(i)]
-        else if case == 4 [#obj1 #property #stem\ing #res, as #awareness.]
-        else if case == 5 [#cap(stem)ing that #res #ck #theorem(i+1) holds, as shown in #reference]
-        else if case == 6 [#cap(adverb1) we can #action #sing(obj1) by #reference]
-        else if case == 14 [#cap(action): #eq-small(case, i*5)]
-        else if case == 16 [The work of #get(last_names, i) on #res #reference is #glaze for #adverb2 #stem\ing #obj2 #property.]
-        // Inline text
-        else if case == 7 [By #stem\ing #sing(buzz1) #obj1 on a #obj2, that is #eq-small(case+i, i+case*3) We reach #sing(buzz3) *#buzz2* #obj3.]
-        else if case == 8 [#sing(buzz2) #adverb1 #property, provided #eq-small(i, i*case+3)#eq-small(i + 1, case*i*83)]
-        else if case == 9 [However, #eq-small(i, case*i*3).]
-        else if case == 10 [#eq-small(i+case, case*17).]
-        else if case == 11 [Of course in #reference #eq-small(i, case*i+1), provided #eq-small(i - 1, case+19).]
-        else if case == 12 [#eq-small(i, case * 9)]
-        else if case == 13 [#cap(awareness) that #eq-small(i*17, case+i)]
-        // medium
-        else if case == 15 [Provided #eq-small(i, i*case*3), as shown in #reference any #person would agree that every #obj1 #property]
-        else if case == 17 [And as shown in #reference #eq-med(i, heft:2)]
-        else if case == 18 [By #res #eq-med(i, heft: 2)]
-        // big equation
-        else if case == 19 [#eq-med(i+1, heft: 3)]
-        else [Breaking into the two cases:  #grid(gutter: 6em, columns: (1fr, 1fr), [#align(center)[Case I] #eq-med(i+3, heft: 3)], [#align(center)[Case II] #eq-med(i, heft:1)])]
-    }
-
-    let non-introduction = (i) => {
-        let casual = (
-            "extremely", "easily", "widely", "long pursued"
-        )
-
-        let c = get(casual, i)
-        let obj = get(objects, i + 1)
-        let f = field(i+1)
-        let s = get(stems, i)
-        [In #f #glob-thm1 for #sing(glob-b) #obj is #c #s\able.]
-    }
-
-    // debug()
-    align(center)[
-        = #cap(get(stems, glob-i))ing #glob-thm1 for #sing(glob-b) #glob-obj2
-        #v(1em) #authors(glob-i) #v(2em)
-    ]
-
-    align(center)[1. INTRODUCTION]
-    par(hanging-indent: -2em, justify: true)[
-        #{for (i, c) in chars.enumerate() {
-            let n = to-int(c)
-            let case = calc.rem(i + n, cases) 
-
-            if i == 0 { 
-                count.step()
-                context [#generation_symbol(count.get().first(), color:
-                    green) ]
-                [#non-introduction(glob-i)]
-            } else {
-                [#non-statement(n + glob-i, case)]
-                if calc.rem(i, calc.rem(glob-i, 8) + 12) == 0 {
-                    count.step()
-                    count.step(level: 2)
-                    context {
-                        let level = count.get().first()
-                        [ #generation_symbol(level, color: green)]
-                        align(center)[
-                            #level. 
-                            #{
-                                if level == 2 [MAIN RESULT]
-                                else [#upper(theorem(i)) CASE]
-                            }
-                        ]
-                    }
-                }
-            }
-                context if (count.get().first() > 1 and calc.rem(n, 3) == 0) {
-                    // abstract this into a method of some kind
-                    [\ *#proof-theorem-lemma(i, count.display())*]
-                    count.step(level: 2)
-                }
-            [ ]
-        }}
-    ]
 
     let reference(i, case) = {
         case = calc.rem(case, 6)
@@ -438,6 +338,145 @@
         }
     }
 
+    let debug = () => {
+        let point-pair = (a, b) => $vec(delim: "[", #a, #text(blue)[#b])$
+        block(inset: 1em, stroke: 0.1em, radius: 1em, width: 100%)[
+            *entropy: * #entropy \ \ 
+            *seed* : #{
+                if chars.len() < 6 {
+                    [#chars.map(c => point-pair(c, to-int(c))).join(" + ") =
+                     #glob-i - #text(red)[*global seed*]]
+                } else {
+                    [#chars.slice(0, 4).map(c => point-pair(c,
+                    to-int(c))).join(" + ") + ... + #point-pair(chars.last(),
+                    to-int(chars.last())) = - #glob-i  #text(red)[*global seed*]]
+                }
+            }
+            \
+            \
+            *sentences* : #{
+                if chars.len() < 6 {
+                    [#chars.map(c => point-pair([#to-int(c) mod #cases],
+                    [#calc.rem(to-int(c), cases)])).join(" + ")]
+                } else {
+                    [#chars.slice(0, 4).map(c => point-pair([#to-int(c) mod #cases],
+                    calc.rem(to-int(c), cases))).join(", "), ... 
+                    #point-pair([#to-int(chars.last()) mod #cases],
+                    [#calc.rem(to-int(chars.last()), 6)])]
+                }
+            }
+        ]
+    }
+
+    let non-statement = (i, case) => {
+        let action = get(("assume", "observe", "show", "determine"), i);
+        let awareness = get(("it is obvious", "it is easy to see", "one can easily see", "of course"), i);
+        let person = get(("self respecting", "well educated", "logical", "sane", "competent"), i*3)
+        person += " " + get(("student", "mathematician", "logician", "author"), i)
+
+        let obj1 = get(objects, i * 7 + 9) 
+        let obj2 = get(objects, i * 8 + 7) 
+        let obj3 = get(objects, i * 9 + 8) 
+        let buzz1 = get(buzzwords, i)
+        let buzz2 = get(buzzwords, i - 1)
+        let buzz3 = get(buzzwords, i - 2)
+        let (ck, cv) = kv(connectives, i)
+        let adverb1 = get(adverbs, i)
+        let adverb2 = get(adverbs, i+1)
+        let stem = get(stems, i)
+        let field = field(i)
+        let glaze = get(glaze, i)
+        let property = property(i, i * case * 799)
+        let last-name = get(last-names, i)
+        let res = theorem(i*3)
+        let reference = [[#{1 + calc.rem(i * case * 979, references)}]] 
+
+        // [#generation_symbol(i) ]
+        [#generation_symbol(case, color: blue) ]
+
+        // plain text
+        if case == 0 [Certain #obj1\s in #field remain #stem\ed, under the assumtption that #res holds for all #obj2\s.]
+        else if case == 1 [Provided, #res we have that: ]
+        else if case== 2 [#cap(adverb1) #sing(obj1) is #stem\ed by #sing(buzz2) #obj2.]
+        else if case == 3 [#cap(adverb1) there exists #sing(buzz3) #obj2, which #ck #sing(buzz3) #obj1. It #adverb2 #property: #eq-med(i)]
+        else if case == 4 [#cap(obj1) #property #stem\ing #res, as #awareness.]
+        else if case == 5 [#cap(action) that #res #ck #theorem(i+1), as shown in #reference]
+        else if case == 6 [#cap(adverb1) we can #action #sing(obj1) by #reference]
+        else if case == 14 [#cap(action): #eq-small(case, i*5)]
+        else if case == 16 [The work of #get(last-names, i) on #res #reference is #glaze for #adverb2 #stem\ing #sing(buzz1) #obj1, which #adverb1 #property.]
+        // Inline text
+        else if case == 7 [By #stem\ing #sing(buzz1) #obj1 on a #obj2, that is #eq-small(case+i, i+case*3) We reach #sing(buzz3) *#buzz2* #obj3.]
+        else if case == 8 [#cap(sing(buzz2)) #adverb1 #property, provided #eq-small(i, i*case+3)#eq-small(i + 1, case*i*83)]
+        else if case == 9 [However, #eq-small(i, case*i*3), as shown #adverb2 in #reference is #sing(buzz2) #obj3 and #property.]
+        else if case == 10 [#eq-small(i+case, case*17).]
+        else if case == 11 [#cap(awareness) #reference #eq-small(i, case*i+1), provided #eq-small(i - 1, case+19).]
+        else if case == 12 [#eq-small(i, case * 9)]
+        else if case == 13 [#cap(awareness) that #eq-small(i*17, case+i)]
+        // medium
+        else if case == 15 [Provided #eq-small(i, i*case*3), as shown in #reference any #person would agree that every #obj1 #property]
+        else if case == 17 [And as shown in #reference, by #last-name #eq-med(i, heft:2)]
+        else if case == 18 [By #res #eq-med(i, heft: 2)]
+        // big equation
+        else if case == 19 [#eq-med(i+1, heft: 3)]
+        else [Breaking into the two cases:  #grid(gutter: 6em, columns: (1fr, 1fr), [#align(center)[Case I] #eq-med(i+3, heft: 3)], [#align(center)[Case II] #eq-med(i, heft:1)])]
+    }
+
+    let non-introduction = (i) => {
+        let casual = (
+            "extremely", "easily", "widely", "long pursued"
+        )
+
+        let c = get(casual, i)
+        let obj = get(objects, i + 1)
+        let f = field(i+1)
+        let s = get(stems, i)
+        [In #f #glob-thm1 for #sing(glob-b) #obj is #c #s\able.]
+    }
+
+    // debug()
+    align(center)[
+        = #cap(get(stems, glob-i))ing #glob-thm1 for #sing(glob-b) #glob-obj2
+        #v(1em) #authors(glob-i) #v(2em)
+    ]
+
+    align(center)[1. INTRODUCTION]
+    par(hanging-indent: -2em, justify: true)[
+        #{for (i, c) in chars.enumerate() {
+            let n = to-int(c)
+            let case = calc.rem(i + n + 1, cases) 
+
+            if i == 0 { 
+                count.step()
+                context [#generation_symbol(count.get().first(), color:
+                    green) ]
+                [#non-introduction(glob-i)]
+            } else {
+                [#non-statement(n + glob-i, case)]
+                if calc.rem(i, calc.rem(glob-i, 8) + 12) == 0 {
+                    count.step()
+                    count.step(level: 2)
+                    context {
+                        let level = count.get().first()
+                        [ #generation_symbol(level, color: green)]
+                        align(center)[
+                            #level. 
+                            #{
+                                if level == 2 [MAIN RESULT]
+                                else [#upper(theorem(i)) CASE]
+                            }
+                        ]
+                    }
+                }
+            }
+                context if (count.get().first() > 1 and calc.rem(n, 3) == 0) {
+                    // abstract this into a method of some kind
+                    [\ *#proof-theorem-lemma(i, count.display())*]
+                    count.step(level: 2)
+                }
+            [ ]
+        }}
+    ]
+
     align(center)[REFERENCES]
     for i in range(0, references) [
          #par()[[#i] #h(4pt) #reference(i * glob-i, i + calc.rem(glob-i, 20))
@@ -445,4 +484,4 @@
     ]
 }
 
-#nonsense[isinaesneeiesin]
+#nonsense[intntakeslttnsteaksnslaaostesktoearstrstle]
