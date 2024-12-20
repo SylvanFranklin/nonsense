@@ -165,7 +165,7 @@
         else if case == 6 [$v3^v2$] 
         else if case == 7 [$fun(v1 bo v3)$] 
         else if case == 8 [$v3 fun(2)$] 
-        else if case == 9 [$case v1$] 
+        else if case == 9 [$v1 bo abs(v2)$] 
         else if case == 10 [$v1 bo v3$] 
         else if case == 11 [$v2 bo v3$] 
         else if case == 12 [$fun(func(#i, #i))$] 
@@ -284,7 +284,6 @@
         let quans = get(("there exists", "there does not exist",
         "there exists a unique"), i)
 
-
         let obj1 = object(i)
         let obj2 = object(i+1)
         let obj3 = object(i+2)
@@ -389,19 +388,8 @@
         else [#strong[Lemma #heading] #text(weight: "regular", style: "italic", [Let #eq-small(i+3, case * 79) be #buzz, then #eq-small(i+5, case * 97).]) #pf]
     }]
 } 
- 
-#let nonsense(body) = {
-    let chars = parse-actions(body).filter(char => char != none)
-    if chars.len() == 0 { return }
-    let glob-i = chars.map(c => to-int(c)).sum()
-    let glob-thm1 = theorem(glob-i)
-    let glob-thm2 = theorem(glob-i + 1)
-    let cases = 21;
-    
-    entropy.update(val => chars.len() * 3)
-    references.update(val => calc.floor(chars.len() / 5) + calc.rem(glob-i, 3))
 
-    let reference(i, case) = {
+    #let reference(i, case) = {
         case = calc.rem(case, 6)
         let title = generation-symbol(case, color: eastern)[#{
             if case == 0 [_#theorem(i, title-case: true)_]
@@ -445,58 +433,54 @@
         }
     }
 
-    let debug = () => {
-        let point-pair = (a, b) => $vec(delim: "[", #a, #text(blue)[#b])$
-        block(inset: 1em, stroke: 0.1em, radius: 1em, width: 100%)[
-            *entropy: * #entropy \ \ 
-            *seed* : #{
-                if chars.len() < 6 {
-                    [#chars.map(c => point-pair(c, to-int(c))).join(" + ") =
-                     #glob-i - #text(red)[*global seed*]]
-                } else {
-                    [#chars.slice(0, 4).map(c => point-pair(c,
-                    to-int(c))).join(" + ") + ... + #point-pair(chars.last(),
-                    to-int(chars.last())) = - #glob-i  #text(red)[*global seed*]]
-                }
-            }
-            \
-            \
-            *sentences* : #{
-                if chars.len() < 6 {
-                    [#chars.map(c => point-pair([#to-int(c) mod #cases],
-                    [#calc.rem(to-int(c), cases)])).join(" + ")]
-                } else {
-                    [#chars.slice(0, 4).map(c => point-pair([#to-int(c) mod #cases],
-                    calc.rem(to-int(c), cases))).join(", "), ... 
-                    #point-pair([#to-int(chars.last()) mod #cases],
-                    [#calc.rem(to-int(chars.last()), 6)])]
-                }
-            }
-        ]
-    }
 
+#let non-introduction = (i) => {
+    let casual = (
+        "extremely", "easily", "widely", "long pursued"
+    )
 
-    let non-introduction = (i) => {
-        let casual = (
-            "extremely", "easily", "widely", "long pursued"
-        )
+    let c = get(casual, i)
+    let obj = object(i)
+    let f = field(i+1)
+    let s = get(stems, i)
+    [In #f #theorem(i) for #bgs(sing(buzzword(i))) #bgs(obj) is #c #s\able.]
+}
+ 
+#let nonsense(body) = {
+    let chars = parse-actions(body).filter(char => alphabet.contains(char))
+    if chars.len() == 0 { return }
+    let glob-i = chars.map(c => to-int(c)).sum()
+    let glob-thm1 = theorem(glob-i)
+    let glob-thm2 = theorem(glob-i + 1)
+    let cases = 21;
+    
+    entropy.update(val => chars.len() * 3)
+    references.update(val => calc.floor(chars.len() / 10) + calc.rem(glob-i, 3))
 
-        let c = get(casual, i)
-        let obj = object(i)
-        let f = field(i+1)
-        let s = get(stems, i)
-        [In #f #glob-thm1 for #bgs(sing(buzzword(glob-i))) #bgs(obj) is #c #s\able.]
-    }
-
-    // debug()
     align(center)[
         = #generation-symbol(1, color: green)[#cap(get(stems, glob-i))ing #glob-thm1 for #bgs(sing(buzzword(glob-i + 1))) #object(glob-i)]
         #v(1em) #authors(glob-i) #v(2em)
     ]
 
+    align(center)[
+        *Abstract*
+        #set text(10pt)
+        #block(inset: 2em)[
+        #align(left)[
+        #par(justify: true, hanging-indent: -2em)[
+            #non-statement(glob-i, 1)
+            #non-statement(glob-i, 2)
+            #non-statement(glob-i, 5)
+            #non-statement(glob-i, 7)
+        ]
+        ]
+        ]
+    ]
+
+    
     align(center)[1. INTRODUCTION]
     par(hanging-indent: -2em, justify: true)[
-        #{for (i, c) in chars.enumerate() {
+        #{for (i, c) in chars.enumerate().slice(0, calc.min(chars.len(), 65)) {
             let n = to-int(c)
             let case = calc.rem(i + n + 1, cases) 
             if i == 0 { 
@@ -506,6 +490,7 @@
 
             } else {
                 [#non-statement(n + glob-i, case)]
+                [#non-statement(n + glob-i+1, case+1)]
                 if calc.rem(i, calc.rem(glob-i, 8) + 12) == 0 {
                     count.step()
                     count.step(level: 2)
@@ -513,7 +498,7 @@
                         let level = count.get().first()
                         generation-symbol(level, color: green)[
                         #align(center)[
-                            #level. 
+                            \ #level. 
                             #{
                                 if level == 2 [MAIN RESULT]
                                 else [#upper(theorem(i)) CASE]
@@ -523,7 +508,6 @@
                 }
             }
                 context if (count.get().first() > 1 and calc.rem(n, 3) == 0) {
-                    // abstract this into a method of some kind
                     [\ \ #proof-theorem-lemma(i* 3, count.display())]
                     count.step(level: 2)
                 }
@@ -531,11 +515,22 @@
         }}
     ]
 
-    align(center)[REFERENCES]
+    
+    align(center)[\ CONCLUSION]
+    par(hanging-indent: -2em)[
+        We have therefore #generation-symbol(1, color: green)[#cap(get(stems, glob-i))ed #glob-thm1 for #bgs(sing(buzzword(glob-i + 1))) #object(glob-i)]. 
+            #non-statement(glob-i + 1, 1)
+            #non-statement(glob-i, 2)
+            #non-statement(glob-i + 1, 5)
+            #non-statement(glob-i, 7)
+            And most of all thank you for using my generator!
+    ]
+
+    align(center)[\ REFERENCES]
     context for i in range(0, references.get()) [
          #par()[[#i] #h(4pt) #reference(i * glob-i, i + calc.rem(glob-i, 20))
         ] 
     ]
 }
 
-#nonsense[aoenstkaestlsetnaosestasetnstlseskaeslse]
+#nonsense[aosientoarsktoaeirstylarstinarsoitekarsoeitnarosutlarisntoairesnt]
