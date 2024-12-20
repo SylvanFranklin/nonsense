@@ -26,7 +26,7 @@
 
     text(fill: color.darken(1% * percent))[
         #{
-            if i != -1 and percent < 100 {
+            if i != -1 and percent < 100 and false {
                 [#box(fill: color, inset: .3em, radius: 1pt, baseline:
                 30%)[#text(white)[#i]] #body] 
             } else [#body]
@@ -347,7 +347,7 @@
         #par[
             _proof:_ #h(3pt) #sgs(non-setup(i, case+1)) #sgs(non-setup(i+1, case - 1))
             #non-statement(i, case+1)
-            #eq-med(i)
+            #eq-med(i+1)
             #{
                 if case == 0 [
                     #non-statement(i+7, case+3)
@@ -538,4 +538,4 @@
     ]
 }
 
-#nonsense[abcdefghijklmnopqrstuvwxyzqrstuvwxyzneiolmnoseskw]
+#nonsense[aoenstkaestlsetnaosestasetnstlseskaeslse]
