@@ -1,26 +1,15 @@
 #set text(size: 12pt)
-#let entropy = state("entropy", 10) 
-#let references = state("references", 0.0) 
-
-#context {[#entropy.get()]}
-#let generation-symbol = (i, color: red, body) => context {
-    text(fill: black)[
-        #if i != -1 and entropy.get() > 90 {
-            let op = 100 - entropy.get()
-            box(fill: color, inset: .3em, radius: 1pt, baseline:
-            30%)[#text(white)[#i]]
-        } #body
-    ]
-}
-
-#let ogs(ob) = generation-symbol([ob], color: maroon)[#ob]
-#let bgs(buzz) = generation-symbol([buzz], color: eastern)[#buzz]
+#let entropy = state("entropy", 0) 
+#let references = state("references", 0) 
+#let count = counter("all")
 
 #let parse-actions(body) = {
   let extract(it) = {
     ""
     if it == [ ] {
       " "
+    } else if type(it) == type(3) {
+        str(it)
     } else if it.func() == text {
       it.text
     } else if it.func() == [].func() {
@@ -29,6 +18,23 @@
   }
   extract(body).clusters().map(lower)
 }
+
+#let generation-symbol = (i, color: red, body) => context {
+    let offset = calc.rem(parse-actions(i).len() + 1, 4) * 10
+    let percent = calc.exp((entropy.final() - (80 + offset)) / 8)
+
+    text(fill: color.darken(1% * percent))[
+        // #if i != -1 and percent < 100 {
+        //     box(fill: color, inset: .3em, radius: 1pt, baseline:
+        //     30%)[#text(white)[#i]]
+        // } 
+        #body
+    ]
+}
+
+#let ogs(ob) = generation-symbol([ob], color: maroon)[#ob]
+#let bgs(buzz) = generation-symbol([buzz], color: eastern)[#buzz]
+
 
 #let binary_op = (
     $times$, $+$, $-$, $|$, $in$, $<$, $equiv$, $emptyset.circle$, $~$,
@@ -45,7 +51,7 @@
     return (k, dict.at(k))
 }
 
-#let cap(str) = generation-symbol([^])[#upper(str.at(0))#str.slice(1, str.len())]
+#let cap(str) = [#upper(str.at(0))#str.slice(1, str.len())]
 #let sing(str) = {if lower(str.at(0)) in "aeiouy" {"an " + str} else {"a " + str}}
 
 
@@ -370,18 +376,15 @@
 } 
  
 #let nonsense(body) = {
-    let count = counter("all")
     let chars = parse-actions(body).filter(char => char != none)
     if chars.len() == 0 { return }
     let glob-i = chars.map(c => to-int(c)).sum()
     let glob-thm1 = theorem(glob-i)
     let glob-thm2 = theorem(glob-i + 1)
     let cases = 21;
-
-    context {
-        // entropy.update(val => 0)
-        references.update(val => calc.floor(chars.len() / 5) + calc.rem(glob-i, 3))
-    }
+    
+    entropy.update(val => chars.len() * 3)
+    references.update(val => calc.floor(chars.len() / 5) + calc.rem(glob-i, 3))
 
     let reference(i, case) = {
         case = calc.rem(case, 6)
@@ -520,4 +523,4 @@
     ]
 }
 
-#nonsense[oasetkiarosytlarostzqofetkqofisnaorskt]
+#nonsense[iesntewenaosesntkstenstlaensenstlansoestestenstlaesn]
