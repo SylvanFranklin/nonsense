@@ -1,12 +1,16 @@
 [package]
-name = "tinyset"
+name = "nonsense"
 version = "0.1.0"
 entrypoint = "lib.typ"
 authors = ["Sylvan Franklin"]
-license = "MIT"
-description = "Simple, consistent, and appealing math homework template"
-repository = "https://github.com/sylvanfranklin/tinyset"
-categories = ["Layout"]
-keywords = ["Math", "HW", "pset", "Minimal"]
-exclude = ["*.pdf"]
-disciplines = ["mathematics"]
+license = "MIT-0"
+repository = "https://github.com/sylvanfranklin/nonsense"
+categories = ["Fun"]
+keywords = ["Fun"]
+exclude = ["*.pdf", "*.jpg"]
+description = "Generate nonsensical math papers"
+
+[template]
+path = "lib"
+entrypoint = "main.typ"
+thumbnail = "thumbnail.png"
