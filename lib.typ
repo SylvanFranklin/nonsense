@@ -1,9 +1,20 @@
 #set text(size: 12pt)
-#let opacity = state("opacity", 80%) 
+#let entropy = state("entropy", 10) 
+#let references = state("references", 0.0) 
 
-#let generation_symbol = (i, color: red) => context {
-    box(fill: color.transparentize(opacity.get()), inset: .3em, radius: 1pt,
-    baseline: 30%)[#text(white)[#i]]
+
+#context {[#entropy.get()]}
+
+#let generation_symbol = (i, color: red, body) => context {
+    // Scale the color by the entropy 
+
+    text(fill: color)[
+        #if i != -1 and entropy.get() < 90 {
+            let op = 100 - entropy.get()
+            box(fill: color, inset: .3em, radius: 1pt, baseline:
+            30%)[#text(white)[#i]]
+        } #body
+    ]
 }
 
 #let parse-actions(body) = {
@@ -22,8 +33,9 @@
 
 #let binary_op = (
     $times$, $+$, $-$, $|$, $in$, $<$, $equiv$, $emptyset.circle$, $~$,
-    $diamond$, $arrow.squiggly$, $:=$, $subset$, $supset$, $ker$, $harpoon$, $mod$,   
-    $supset$, $union.sq.big$, $hexa.stroked$, $alef$, $succ$, $fence.r$, $|->$      
+    $diamond$, $arrow.squiggly$, $:=$, $subset$, $supset$, $ker$, $harpoon$, $mod$,  
+    $supset$, $union.sq.big$, $hexa.stroked$, $alef$, $succ$, $fence.r$, $|->$,
+    $<==>$, $triangle$, $psi$   
 )
 #let alphabet = "abcdefghijklmnopqrstuvwxyz"
 #let to-int = (char) => {("ab*()&^%$#@!'cd:;efghijklmnopqrstuvwxyz").position(char)}
@@ -35,8 +47,9 @@
 }
 
 #let cap(str) = [#upper(str.at(0))#str.slice(1, str.len())]
-#let sing(str) = {if lower(str.at(0)) in "aeiouy" {"an " + str} else {"a " + str}}
 
+
+#let sing(str) = {if lower(str.at(0)) in "aeiouy" {"an " + str} else {"a " + str}}
 
 #let objects = (
     "functor", "monoid", "groupoid", "matrix", "group", "ring",
@@ -109,14 +122,15 @@
             "ε", "θ", "n", "i", "b", "z", "Κ", $W$, "r")
 
     let v = get(vars, i)
-    if calc.rem(i, 3) == 0 {v = upper(v)}
-    if calc.rem(i, 4) == 0 {v = $cal(#v)$}
-    if calc.rem(i, 5) == 0 {v = $#v _(#calc.rem(i, 16))$}
-    if calc.rem(i, 17) == 0 {v = $frak(#v)$}
-    if calc.rem(i, 11) == 0 {v = $bb(#v)$}
-    if calc.rem(i, 6) == 0 {v = $#v _(#get(vars, i + 3))$}
-    if calc.rem(i, 7) == 0 {v = $#v ^(#get(vars, i * 2))$}
-    return $#v$
+    let case = calc.rem(i, 14) 
+    if case == 0 {v = upper(v)}
+    if case == 1 {v = $cal(#v)$}
+    if case == 2 {v = $#v _(#calc.rem(i, 16))$}
+    if case == 3 {v = $frak(#v)$}
+    if case == 4 {v = $bb(#v)$}
+    if case == 5 {v = $#v _(#get(vars, i + 3))$}
+    if case == 6 {v = $#v ^(#get(vars, i * 2))$}
+    return generation_symbol(-1, color: red)[$#v$]
 }
 
 #let func(i, case) = {
@@ -128,7 +142,7 @@
     else if case == 10 {base = $overline(base)$}
     else if case == 11 {base = $underline(base)$}
     else if case == 12 {base = $hat(base)$}
-    [#base]
+    generation_symbol(case, color: aqua)[#base]
 }
 
 #let eq-small(i, n) = {
@@ -139,26 +153,27 @@
     let fun = func(i, i+1+n)
     let quan = get(($forall$, $exists$, $exists.not$, $!exists$), i*3+n)
     let case = calc.rem(i, 17)
-    [#generation_symbol(case, color: black)]
 
-    if case == 0 [$v1 v2 bo v3$] 
-    else if case == 1 [$quan\(fun(v2) bo v1\)$] 
-    else if case == 2 [$v3 bo v2$] 
-    else if case == 3 [$fun(v2 / v1)$] 
-    else if case == 4 [$quan \[v2 bo v3\]$] 
-    else if case == 5 [$v3 fun\(v1\) v2$] 
-    else if case == 6 [$v3^v2$] 
-    else if case == 7 [$fun(v1 bo v3)$] 
-    else if case == 8 [$v3 fun(2)$] 
-    else if case == 9 [$case v1$] 
-    else if case == 10 [$v1 bo v3$] 
-    else if case == 11 [$v2 bo v3$] 
-    else if case == 12 [$fun(func(#i, #i))$] 
-    else if case == 13 [$v3 bo fun$] 
-    else if case == 13 [$fun / v2$] 
-    else if case == 13 [$abs(v3)$] 
-    else if case == 14 [$v3_v2$] 
-    else if case == 15 [$v1 bo v3$] 
+    generation_symbol(case, color: black)[#{
+        if case == 0 [$v1 v2 bo v3$] 
+        else if case == 1 [$quan\(fun(v2) bo v1\)$] 
+        else if case == 2 [$v3 bo v2$] 
+        else if case == 3 [$fun(v2 / v1)$] 
+        else if case == 4 [$quan \[v2 bo v3\]$] 
+        else if case == 5 [$v3 fun\(v1\) v2$] 
+        else if case == 6 [$v3^v2$] 
+        else if case == 7 [$fun(v1 bo v3)$] 
+        else if case == 8 [$v3 fun(2)$] 
+        else if case == 9 [$case v1$] 
+        else if case == 10 [$v1 bo v3$] 
+        else if case == 11 [$v2 bo v3$] 
+        else if case == 12 [$fun(func(#i, #i))$] 
+        else if case == 13 [$v3 bo fun$] 
+        else if case == 13 [$fun / v2$] 
+        else if case == 13 [$abs(v3)$] 
+        else if case == 14 [$v3_v2$] 
+        else if case == 15 [$v1 bo v3$] 
+    }]
 }
 
 #let eq-med = (i, heft: 3) => {
@@ -174,34 +189,35 @@
        let g = func(i*4, i+1+n)
        let rem = calc.rem(i + n*n*17, 18)
 
-       [ #generation_symbol(rem, color: orange) ]
-       if rem == 0 [$\{sub | (sub2) in bb(se)\}$]
-       else if rem == 1 [$v1_v2 #g se$]
-       else if rem == 2 [$v1 bo se subset {...v2^n}$]
-       else if rem == 3 [$sub2/(sub bo v2)$]
-       else if rem == 4 [$sub2 := abs(v1)v3$]
-       else if rem == 5 [$(sub)_(sub2)$]
-       else if rem == 6 [$integral_(i * n)^(v3)sub d v2$]
-       else if rem == 7 [$(diff)/(v2 diff)$]
-       else if rem == 8 [$lim_(v2 -> oo)(sub2)$]
-       else if rem == 9 [$(sub)/(v2)$]
-       else if rem == 10 [$(sub2)^(#g v3)$]
-       else if rem == 11 [$cases(v1\:sub=v2,v3\:rem=#g)$]
-       else if rem == 12 [$(sum_(sub2)^(v2))/v3$]
-       else if rem == 13 [$v3$]
-       else if rem == 14 [$sub$]
-       else if rem == 15 [$sub2$]
-       else if rem == 16 [$v2^(sub)|$]
-       else [$v1$]
+       generation_symbol(rem, color: orange)[#{
+           if rem == 0 [$\{sub | (sub2) in bb(se)\}$]
+           else if rem == 1 [$v1_v2 #g se$]
+           else if rem == 2 [$v1 bo se subset {...v2^n}$]
+           else if rem == 3 [$sub2/(sub bo v2)$]
+           else if rem == 4 [$sub2 := abs(v1)v3$]
+           else if rem == 5 [$(sub)_(sub2)$]
+           else if rem == 6 [$integral_(i * n)^(v3)sub d v2$]
+           else if rem == 7 [$(diff)/(v2 diff)$]
+           else if rem == 8 [$lim_(v2 -> oo)(sub2)$]
+           else if rem == 9 [$(sub)/(v2)$]
+           else if rem == 10 [$(sub2)^(#g v3)$]
+           else if rem == 11 [$cases(v1\:sub=v2,v3\:rem=#g)$]
+           else if rem == 12 [$(sum_(sub2)^(v2))/v3$]
+           else if rem == 13 [$v3$]
+           else if rem == 14 [$sub$]
+           else if rem == 15 [$sub2$]
+           else if rem == 16 [$v2^(sub)|$]
+           else [$v1$]
+        }]
+
     }}
     $
 }
 
 
 #let authors = (i) => {
-    // we will make between one and three authors 
     range(0, calc.rem(i, 4) + 1).map(n => 
-        [#cap(get(alphabet, i + n)). #get(last-names, i + n)]
+        [#generation_symbol(n, color: gray)[#upper(get(alphabet, i + n))]. #generation_symbol(i+n, color: orange)[#get(last-names, i + n)]]
     ).join(", ")
 }
 
@@ -224,34 +240,106 @@
 
 #let property(i, case) = {
     let case = calc.rem(case, 5)
-    [#generation_symbol(case, color: olive) ]
-    if case == 0 [approximates #var(i)]
-    else if case == 1 [is #sing(get(objects, i))]
-    else if case == 2 [#get(("commutes", "permutes", "repeats", "tiles the plane"), i)]
-    else if case == 3 [is #get(("undefined", "in a universe", "well defined", "even", "a basis"), i)]
-    else [is #get((buzzwords), i + 3)]
+    generation_symbol(case, color: olive)[#{
+        if case == 0 [approximates #var(i)]
+        else if case == 1 [is #sing(get(objects, i))]
+        else if case == 2 [#get(("commutes", "permutes", "repeats", "tiles the plane"), i)]
+        else if case == 3 [is #get(("undefined", "in a universe", "well defined", "even", "a basis"), i)]
+        else [is #get((buzzwords), i + 3)]
+    }]
 }
 
-#let non-setup(i, case ) = {
+#let non-setup(i, case) = {
     let case = calc.rem(case, 5)
-    let buzz1 = get(buzzwords, i+22*case+1)
-    let buzz2 = get(buzzwords, i+5*case+1)
-    let buzz3 = get(buzzwords, i+6*case+2)
-    let obj1 = get(objects, i+88*case+1)
-    let obj2 = get(objects, i+19*case+1)
+    let buzz1 = get(buzzwords, i+1)
+    let buzz2 = get(buzzwords, i+2)
+    let buzz3 = get(buzzwords, i+3)
+    let obj1 = get(objects, i+88)
+    let obj2 = get(objects, i+19+1)
     let eq1 = eq-small(case + 1, i+1)
     let eq2 = eq-small(case + 3, i * 13 + 1)
     let prop = property(case * 3, i+1)
     let (name, symbol) = kv(connectives, i*7)
 
-    [ #generation_symbol(case, color: navy) ]
-    if case == 0 [Fix #sing(buzz1) #buzz2 #obj1, #eq1 in #sing(buzz3) #obj2, #eq2.]
-    else if case == 1 [Let #sing(buzz2) #obj1 that #prop, be defined #eq2]
-    else if case == 2 [Fix #sing(buzz1) #obj1 in #sing(buzz2) #buzz3 #obj2.]
-    else if case == 3 [Assume #sing(buzz1) #sing(buzz2) #obj1 #prop.]
-    else [Assume #eq1 #symbol #eq2.]
+    generation_symbol(case, color: navy)[#{
+        if case == 0 [Fix #sing(buzz1) #buzz2 #obj1, #eq1 in #sing(buzz3) #obj2, #eq2.]
+        else if case == 1 [Let #sing(buzz2) #obj1 that #prop, be defined #eq2]
+        else if case == 2 [Fix #sing(buzz1) #obj1 in #sing(buzz2) #buzz3 #obj2.]
+        else if case == 3 [Assume #sing(buzz1) #sing(buzz2) #obj1 #prop.]
+        else [Assume #eq1 #symbol #eq2.]
+    }]
+}
+#let non-statement = (i, case) => {
+        let action = get(("assume", "observe", "show", "determine"), i);
+        let awareness = get(("it is obvious", "it is easy to see", "one can easily see", "of course"), i);
+        let person = generation_symbol(calc.rem(i*3, 6))[#get(("self respecting", "well educated", "logical", "sane", "competent"), i*3)]
+
+        person += " " + get(("student", "mathematician", "logician", "author"), i)
+
+        let obj1 = get(objects, i * 7 + 9)
+        let obj2 = get(objects, i * 8 + 7) 
+        let quanp = get(("for all", "for every", "each", "every"), i)
+        let quans = get(("there exists", "there does not exist",
+        "there exists a unique"), i)
+        let obj3 = get(objects, i * 9 + 8) 
+        let buzz1 = get(buzzwords, i)
+        let buzz2 = get(buzzwords, i - 1)
+        let buzz3 = get(buzzwords, i - 2)
+        let (ck, cv) = kv(connectives, i)
+        ck = generation_symbol(case, color: purple)[#ck]
+        cv = generation_symbol(case, color: purple)[#cv]
+        let adverb1 = get(adverbs, i)
+        let adverb2 = get(adverbs, i+1)
+        let stem = generation_symbol(case, color: olive)[#get(stems, i)]
+        let field = field(i)
+        let glaze = generation_symbol(i)[#get(glaze, i)]
+        let property = property(i, i * case * 799)
+        let last-name = generation_symbol(calc.rem(i, last-names.len()))[#get(last-names, i)]
+        let res = theorem(i*3)
+        context {
+        let reference = generation_symbol(-1, color: orange)[[#{1 + calc.rem(i * case * 979, references.get())}]] 
+
+        generation_symbol(case, color: blue)[
+        #{
+            if case == 0 [Certain #obj1\s in #field remain #stem\ed, under the assumtption that #res holds for all #obj2\s.]
+            else if case == 1 [Provided, #res we have that: ]
+            else if case== 2 [#cap(adverb1) #sing(obj1) is #stem\ed by #sing(buzz2) #obj2.]
+            else if case == 3 [#cap(adverb1) there exists #sing(buzz3) #obj2, which #ck #sing(buzz3) #obj1. It #adverb2 #property: #eq-med(i)]
+            else if case == 4 [#cap(sing(obj1)) #property if it is #sing(buzz3) #obj1, which #awareness.]
+            else if case == 5 [Since #res #property #quans #sing(obj1), as shown in #reference]
+            else if case == 6 [#cap(adverb1) we can #action #sing(obj1) by #reference]
+            else if case == 14 [#cap(action): #eq-small(case, i*5)]
+            else if case == 16 [The work of #last-name on #res #reference is #glaze for #adverb2 #stem\ing #sing(buzz1) #obj1, which #adverb1 #property.]
+            // Inline text
+            else if case == 7 [By #stem\ing #sing(buzz1) #obj1 on a #obj2, that is #eq-small(case+i, i+case*3) We reach #sing(buzz3) *#buzz2* #obj3.]
+            else if case == 8 [#cap(sing(buzz2)) #adverb1 #property, provided #eq-small(i, i*case+3)#eq-small(i + 1, case*i*83)]
+            else if case == 9 [However, #eq-small(i, case*i*3), as shown #adverb2 in #reference is #sing(buzz2) #obj3 and #property.]
+            else if case == 10 [#eq-small(i+case, case*17).]
+            else if case == 11 [#cap(awareness) #reference #eq-small(i, case*i+1), provided #eq-small(i - 1, case+19).]
+            else if case == 12 [#eq-small(i, case * 9)]
+            else if case == 13 [#cap(awareness) that #eq-small(i*17, case+i)]
+            // medium
+            else if case == 15 [Provided #eq-small(i, i*case*3), as shown in #reference any #person would agree that every #obj1 #property]
+            else if case == 17 [And as shown in #reference, by #last-name #eq-med(i, heft:2)]
+            else if case == 18 [By #res #eq-med(i, heft: 2)]
+            // big equation
+            else if case == 19 [#eq-med(i+1, heft: 3)]
+            else [Breaking into the two cases:  #grid(gutter: 6em, columns: (1fr, 1fr), [#align(center)[Case I] #eq-med(i+3, heft: 3)], [#align(center)[Case II] #eq-med(i, heft:1)])]
+                }
+            ]
+        }
 }
 
+#let non-proof(i, case) = {
+    let case = calc.rem(case, 5)
+    par[
+        #generation_symbol(case, color: fuchsia)[
+        _proof_ #non-setup(i, case+1) #non-setup(i+1, case - 1).
+        It therefore follows
+        #v(0.2em)#h(1fr)$square.big$]
+    ]
+    
+}
 
 #let proof-theorem-lemma(i, heading) = {
     let case = calc.rem(i, 10)
@@ -263,17 +351,19 @@
     let qed = [#v(0.2em)#h(1fr)$square.big$]
     let setup = non-setup(case, i)
     let setup2 = non-setup(case+1, i+1)
-
-    if case == 0 [#strong[Theorem #heading] #setup2 #setup]
-    else if case == 1 [#strong[Proposition #heading] #setup]
-    else if case == 2 [#strong[Definition #heading] Let #eq-small(i*5, case * 13) be #buzz. #cap(sing(obj)) #prop if it #prop2.]
-    else if case == 3 [#strong[Definition #heading] #setup2]
-    else if case == 4 [#strong[Definition #heading] #setup #setup2]
-    else if case == 5 [#strong[Lemma #heading] #math.italic([#setup2 #setup1])]
-    else if case == 5 [#strong[Lemma #heading] #emph([#setup1])]
-    else if case == 6 [#strong[Theorem #heading] #emph([#setup #setup2])]
-    else [#strong[Lemma #heading] #text(weight: "regular", style: "italic", [Let #eq-small(i+3, case * 79) be #buzz, then #eq-small(i+5, case * 97).])]
-
+    let pf = non-proof(i, case+1)
+    
+    generation_symbol(case, color: purple)[#{
+        if case == 0 [#strong[Theorem #heading] #setup2 #setup #pf]
+        else if case == 1 [#strong[Proposition #heading] #setup #pf]
+        else if case == 2 [#strong[Definition #heading] Let #eq-small(i*5, case * 13) be #buzz. #cap(sing(obj)) #prop if it #prop2. #pf]
+        else if case == 3 [#strong[Definition #heading] #setup2 #pf]
+        else if case == 4 [#strong[Definition #heading] #setup #setup2 #pf]
+        else if case == 5 [#strong[Lemma #heading] #math.italic([#setup2 #setup])]
+        else if case == 5 [#strong[Lemma #heading] #emph([#setup1])]
+        else if case == 6 [#strong[Theorem #heading] #emph([#setup #setup2]). #pf]
+        else [#strong[Lemma #heading] #text(weight: "regular", style: "italic", [Let #eq-small(i+3, case * 79) be #buzz, then #eq-small(i+5, case * 97).]) #pf]
+    }]
 } 
  
 #let nonsense(body) = {
@@ -288,23 +378,22 @@
     let glob-obj2 = get(objects, glob-i + 1)
     let glob-obj3 = get(objects, glob-i + 2)
     let cases = 21;
-    let references = calc.floor(chars.len() / 5) + calc.rem(glob-i, 3)
-    let incomplete = text(red)[*incomplete*]
-    let entropy = chars.dedup().len() 
+
     context {
-        opacity.update(val => 4% * entropy)
+        // entropy.update(val => 0)
+        references.update(val => calc.floor(chars.len() / 5) + calc.rem(glob-i, 3))
     }
 
     let reference(i, case) = {
         case = calc.rem(case, 6)
-        let title = {
+        let title = generation_symbol(case, color: eastern)[#{
             if case == 0 [_#theorem(i).split().map(it => cap(it)).join(" ")_]
             else if case == 1 [On the #cap(get(buzzwords, i)) #cap(get(objects, i))s]
             else if case == 2 [#theorem(i).split().map(it => cap(it)).join(" ") and Applications]
             else if case == 3 [On #field(i).split().map(it=> cap(it)).join(" ") and #get(objects, i)]
             else if case == 4 [#cap(get(buzzwords, i)) #field(i).split().map(it => cap(it)).join(" ")]
             else if case == 5 [#cap(get(buzzwords, i)) Methods in #field(i).split().map(it => cap(it)).join(" ")]
-        }
+        }]
 
         let publisher(i, case) = {
 
@@ -313,13 +402,14 @@
             "Indian", "Russian", "Brazilian", "Mexican", "South African",
             "Korean", "Turkish", "Dutch", "Swedish", "Norwegian"), i);
 
-                
-            case = calc.rem(case, 20)
-            if case < 4 [#c Mathematical Society]
-            else if case < 8 [Society for #field(i)]
-            else if case == 8 [Cambridge University Press]
-            else if case < 12 [Journal of #get(buzzwords, i) #get(objects, i+1)]
-            else [#generation_symbol(case, color: olive) #c Journal of mathematics]
+            generation_symbol(case, color: olive)[#{
+                case = calc.rem(case, 20)
+                if case < 4 [#c Mathematical Society]
+                else if case < 8 [Society for #field(i)]
+                else if case == 8 [Cambridge University Press]
+                else if case < 12 [Journal of #get(buzzwords, i) #get(objects, i+1)]
+                else [#c Journal of mathematics]
+            }]
         }
 
         let date(i) = {
@@ -328,7 +418,7 @@
             "December"), i)
             // between 1803 and 2028
             let year = 1803 + calc.rem(i, 225)
-            [ #month #year]
+            generation_symbol(calc.rem(i, 12), color: gray)[#month #year]
         }
 
         if calc.rem(i, 7) == 0 {
@@ -368,58 +458,6 @@
         ]
     }
 
-    let non-statement = (i, case) => {
-        let action = get(("assume", "observe", "show", "determine"), i);
-        let awareness = get(("it is obvious", "it is easy to see", "one can easily see", "of course"), i);
-        let person = get(("self respecting", "well educated", "logical", "sane", "competent"), i*3)
-        person += " " + get(("student", "mathematician", "logician", "author"), i)
-
-        let obj1 = get(objects, i * 7 + 9) 
-        let obj2 = get(objects, i * 8 + 7) 
-        let obj3 = get(objects, i * 9 + 8) 
-        let buzz1 = get(buzzwords, i)
-        let buzz2 = get(buzzwords, i - 1)
-        let buzz3 = get(buzzwords, i - 2)
-        let (ck, cv) = kv(connectives, i)
-        let adverb1 = get(adverbs, i)
-        let adverb2 = get(adverbs, i+1)
-        let stem = get(stems, i)
-        let field = field(i)
-        let glaze = get(glaze, i)
-        let property = property(i, i * case * 799)
-        let last-name = get(last-names, i)
-        let res = theorem(i*3)
-        let reference = [[#{1 + calc.rem(i * case * 979, references)}]] 
-
-        // [#generation_symbol(i) ]
-        [#generation_symbol(case, color: blue) ]
-
-        // plain text
-        if case == 0 [Certain #obj1\s in #field remain #stem\ed, under the assumtption that #res holds for all #obj2\s.]
-        else if case == 1 [Provided, #res we have that: ]
-        else if case== 2 [#cap(adverb1) #sing(obj1) is #stem\ed by #sing(buzz2) #obj2.]
-        else if case == 3 [#cap(adverb1) there exists #sing(buzz3) #obj2, which #ck #sing(buzz3) #obj1. It #adverb2 #property: #eq-med(i)]
-        else if case == 4 [#cap(obj1) #property #stem\ing #res, as #awareness.]
-        else if case == 5 [#cap(action) that #res #ck #theorem(i+1), as shown in #reference]
-        else if case == 6 [#cap(adverb1) we can #action #sing(obj1) by #reference]
-        else if case == 14 [#cap(action): #eq-small(case, i*5)]
-        else if case == 16 [The work of #get(last-names, i) on #res #reference is #glaze for #adverb2 #stem\ing #sing(buzz1) #obj1, which #adverb1 #property.]
-        // Inline text
-        else if case == 7 [By #stem\ing #sing(buzz1) #obj1 on a #obj2, that is #eq-small(case+i, i+case*3) We reach #sing(buzz3) *#buzz2* #obj3.]
-        else if case == 8 [#cap(sing(buzz2)) #adverb1 #property, provided #eq-small(i, i*case+3)#eq-small(i + 1, case*i*83)]
-        else if case == 9 [However, #eq-small(i, case*i*3), as shown #adverb2 in #reference is #sing(buzz2) #obj3 and #property.]
-        else if case == 10 [#eq-small(i+case, case*17).]
-        else if case == 11 [#cap(awareness) #reference #eq-small(i, case*i+1), provided #eq-small(i - 1, case+19).]
-        else if case == 12 [#eq-small(i, case * 9)]
-        else if case == 13 [#cap(awareness) that #eq-small(i*17, case+i)]
-        // medium
-        else if case == 15 [Provided #eq-small(i, i*case*3), as shown in #reference any #person would agree that every #obj1 #property]
-        else if case == 17 [And as shown in #reference, by #last-name #eq-med(i, heft:2)]
-        else if case == 18 [By #res #eq-med(i, heft: 2)]
-        // big equation
-        else if case == 19 [#eq-med(i+1, heft: 3)]
-        else [Breaking into the two cases:  #grid(gutter: 6em, columns: (1fr, 1fr), [#align(center)[Case I] #eq-med(i+3, heft: 3)], [#align(center)[Case II] #eq-med(i, heft:1)])]
-    }
 
     let non-introduction = (i) => {
         let casual = (
@@ -435,7 +473,7 @@
 
     // debug()
     align(center)[
-        = #cap(get(stems, glob-i))ing #glob-thm1 for #sing(glob-b) #glob-obj2
+        = #generation_symbol(1, color: green)[#cap(get(stems, glob-i))ing #glob-thm1 for #sing(glob-b) #glob-obj2]
         #v(1em) #authors(glob-i) #v(2em)
     ]
 
@@ -444,12 +482,11 @@
         #{for (i, c) in chars.enumerate() {
             let n = to-int(c)
             let case = calc.rem(i + n + 1, cases) 
-
             if i == 0 { 
                 count.step()
-                context [#generation_symbol(count.get().first(), color:
-                    green) ]
-                [#non-introduction(glob-i)]
+                context generation_symbol(count.get().first(), color:
+                    green)[#non-introduction(glob-i)]
+
             } else {
                 [#non-statement(n + glob-i, case)]
                 if calc.rem(i, calc.rem(glob-i, 8) + 12) == 0 {
@@ -457,20 +494,20 @@
                     count.step(level: 2)
                     context {
                         let level = count.get().first()
-                        [ #generation_symbol(level, color: green)]
-                        align(center)[
+                        generation_symbol(level, color: green)[
+                        #align(center)[
                             #level. 
                             #{
                                 if level == 2 [MAIN RESULT]
                                 else [#upper(theorem(i)) CASE]
                             }
-                        ]
+                        ]]
                     }
                 }
             }
                 context if (count.get().first() > 1 and calc.rem(n, 3) == 0) {
                     // abstract this into a method of some kind
-                    [\ *#proof-theorem-lemma(i, count.display())*]
+                    [\ \ #proof-theorem-lemma(i* 3, count.display())]
                     count.step(level: 2)
                 }
             [ ]
@@ -478,10 +515,10 @@
     ]
 
     align(center)[REFERENCES]
-    for i in range(0, references) [
+    context for i in range(0, references.get()) [
          #par()[[#i] #h(4pt) #reference(i * glob-i, i + calc.rem(glob-i, 20))
         ] 
     ]
 }
 
-#nonsense[intntakeslttnsteaksnslaaostesktoearstrstle]
+#nonsense[nkaeskaosesltuamskteslaoskseslteskseruaorstenst]
