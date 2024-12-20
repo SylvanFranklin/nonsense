@@ -52,9 +52,6 @@ Nonsensical math paper generator inspired by
 
 # Contribution
 
-PR's and issues / bug reports are welcome! 
-
-> [!DANGER]
-> There are still quite a few gramatical mistakes floating around. 
+PR's and issues / bug reports are welcome!  There are still quite a few gramatical mistakes floating around that would be great to fix. 
 
 Leave a *star*, share with friends, help get me hired one day! 🙏
