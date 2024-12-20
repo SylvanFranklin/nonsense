@@ -1,4 +1,5 @@
 #set text(size: 12pt)
+#set page(margin: (x: 9em))
 #let entropy = state("entropy", 0) 
 #let references = state("references", 0) 
 #let count = counter("all")
@@ -24,16 +25,17 @@
     let percent = calc.exp((entropy.final() - (80 + offset)) / 8)
 
     text(fill: color.darken(1% * percent))[
-        // #if i != -1 and percent < 100 {
-        //     box(fill: color, inset: .3em, radius: 1pt, baseline:
-        //     30%)[#text(white)[#i]]
-        // } 
-        #body
-    ]
+        #{
+            if i != -1 and percent < 100 {
+                [#box(fill: color, inset: .3em, radius: 1pt, baseline:
+                30%)[#text(white)[#i]] #body] 
+            } else [#body]
+        }]
 }
 
 #let ogs(ob) = generation-symbol([ob], color: maroon)[#ob]
 #let bgs(buzz) = generation-symbol([buzz], color: eastern)[#buzz]
+#let sgs(up) = generation-symbol([up], color: red)[#up]
 
 
 #let binary_op = (
@@ -313,7 +315,7 @@
             if case == 0 [Certain #ogs([#obj1\s]) in #field remain #stem\ed, under the assumtption that #res holds for all #ogs[#obj2\s].]
             else if case == 1 [Provided, #res we have that: ]
             else if case== 2 [#cap(adverb1) #ogs(sing(obj1)) is #stem\ed by #bgs(sing(buzz2)) #ogs(obj2).]
-            else if case == 3 [#cap(adverb1) there exists #bgs(sing(buzz3)) #ogs(obj2), which #ck #bgs(sing(buzz3)) #ogs(obj2). It #adverb2 #property: #eq-med(i)]
+            else if case == 3 [#cap(adverb1) there exists #bgs(sing(buzz3)) #ogs(obj2,) which #ck #bgs(sing(buzz3)) #ogs(obj3). It #adverb2 #property: #eq-med(i)]
             else if case == 4 [#ogs(cap(sing(obj1))) #property if it is #bgs(sing(buzz3)) #ogs(obj1), which #awareness.]
             else if case == 5 [Since #res #property #quans #ogs(sing(obj1)), as shown in #reference]
             else if case == 6 [#cap(adverb1) we can #action #ogs(sing(obj1)) by #reference]
@@ -341,11 +343,24 @@
 
 #let non-proof(i, case) = {
     let case = calc.rem(case, 5)
-    par[
-        #generation-symbol(case, color: fuchsia)[
-        _proof_ #non-setup(i, case+1) #non-setup(i+1, case - 1).
-        It therefore follows
-        #v(0.2em)#h(1fr)$square.big$]
+    generation-symbol(case, color: fuchsia)[
+        #par[
+            _proof:_ #h(3pt) #sgs(non-setup(i, case+1)) #sgs(non-setup(i+1, case - 1))
+            #non-statement(i, case+1)
+            #eq-med(i)
+            #{
+                if case == 0 [
+                    #non-statement(i+7, case+3)
+                    #non-statement(i+1, case+2)
+                ] else if case == 1 [
+                    #non-statement(i+1, case+2)
+                    #eq-med(i+3)
+                ] else [
+                    The rest is trivial.
+                ]
+            }
+            #v(0.2em)#h(1fr)$square.big$
+        ]
     ]
     
 }
@@ -523,4 +538,4 @@
     ]
 }
 
-#nonsense[iesntewenaosesntkstenstlaensenstlansoestestenstlaesn]
+#nonsense[abcdefghijklmnopqrstuvwxyzqrstuvwxyzneiolmnoseskw]
