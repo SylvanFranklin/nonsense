@@ -47,8 +47,14 @@ Nonsensical math paper generator inspired by
 <!---->
 <!-- `Lemma 1.7` → Section II → `Theorem 2.1`  -->
 
+# Try it
+On [Typst.app](https://typst.app/project/w9w2Hdb3XwhyAaAQuiJY4W). Eventually I
+would like to make a dedicated webview for this, but you can use it pretty well
+on this site. 
+
 ### Performance
 **Typst** has no problem doing even hundreds of these calculations every time a letter changes, pretty awesome!
+
 
 # Contribution
 
