@@ -3,6 +3,8 @@
 Nonsensical math paper generator inspired by
 [mathgen](https://thatsmathematics.com/mathgen/), which is awesome but not super visual. I wanted something snappier, more embeddable, and I wanted to use my favorite $\LaTeX$ alternative, [**Typst**](https://typst.app). All the generation takes place within **Typst**, which in practice means any stage of generation can be exported as a *PDF*, and you can experiment with the code *Live*!  
 
+![](generator.gif)
+
 <!-- ## How it works -->
 <!-- Since the **Typst** language is deterministic and lacks a random number generator, I had to rely on number theory tricks. Each step of the process uses a linear congruential generation to create the illusion of randomness.   -->
 <!---->
@@ -50,7 +52,8 @@ Nonsensical math paper generator inspired by
 # Try it
 On [Typst.app](https://typst.app/project/w9w2Hdb3XwhyAaAQuiJY4W). Eventually I
 would like to make a dedicated webview for this, but you can use it pretty well
-on this site. 
+on this site. Go to the bottom and change the seed to mess with how the pdf is
+outputted. 
 
 ### Performance
 **Typst** has no problem doing even hundreds of these calculations every time a letter changes, pretty awesome!
