@@ -1,14 +1,11 @@
 # Nonsense
-Nonsensical math paper generator inspired by [mathgen](https://thatsmathematics.com/mathgen/).
+Nonsensical math paper generator inspired by
+[mathgen](https://thatsmathematics.com/mathgen/). Try it on
+[Typst.app](https://typst.app/project/w9w2Hdb3XwhyAaAQuiJY4W), scroll to the
+bottom to change the seed.
 
 ![](generation.gif)
 
-# Try it
-On [Typst.app](https://typst.app/project/w9w2Hdb3XwhyAaAQuiJY4W), scroll to the
-bottom to change the seed.
-> [!NOTE]
-
->  Eventually I would like to make a dedicated webview for this, but you can use it pretty well on this site. 
 ## How it works
 Since the **Typst** language is deterministic and lacks a random number generator, I had to rely on number theory tricks. Each step of the process uses a linear congruential generation to create the illusion of randomness.  
 
