@@ -36,7 +36,9 @@ $$\text{sentence} = \text{sentences}[i]$$
     ```typ
     For every #obj, it is #adjective to #action a #buzzword #obj2: #equation.
     ```
+
     These placeholders will be passed down similarly to step 3, with another layer of linear congruential generation. This will continue recursively down to the smallest level, with equations and individual words.
+
     ```typ
     For every coequalizer, it is trivial to dismantle a bijective left
     coset: $mu_4 eq.triple.not {...cos^-1}$.
@@ -49,10 +51,10 @@ Title sections and other document objects like proofs, theorems, and lemmas are 
 
 `Lemma 1.7` → Section II → `Theorem 2.1` 
 
+![](thumbnail.png)
 
 ### Performance
 **Typst** has no problem doing even hundreds of these calculations every time a letter changes, pretty awesome!
-
 
 # Contribution
 
