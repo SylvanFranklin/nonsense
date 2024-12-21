@@ -1,5 +1,7 @@
 # Nonsense
 
+![](example.png)
+
 Nonsensical math paper generator inspired by
 [mathgen](https://thatsmathematics.com/mathgen/), which is awesome but not super visual. I wanted something snappier, more embeddable, and I wanted to use my favorite $\LaTeX$ alternative, [**Typst**](https://typst.app). All the generation takes place within **Typst**, which in practice means any stage of generation can be exported as a *PDF*, and you can experiment with the code *Live*!  
 
