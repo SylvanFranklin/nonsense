@@ -7,8 +7,8 @@ license = "MIT-0"
 repository = "https://github.com/sylvanfranklin/nonsense"
 categories = ["Fun"]
 keywords = ["Fun"]
-exclude = ["*.pdf", "*.jpg"]
-description = "Generate nonsensical math papers"
+exclude = ["*.pdf", "*.jpg, *.gif"]
+description = "Generate nonsensical math papers or sections of them."
 
 [template]
 path = "lib"
