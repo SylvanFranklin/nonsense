@@ -58,6 +58,6 @@ Title sections and other document objects like proofs, theorems, and lemmas are 
 
 # Contribution
 
-PR's and issues / bug reports are welcome!  There are still quite a few gramatical mistakes floating around that would be great to fix. 
+PR's and issues / bug reports are welcome!  There are still quite a few grammatical mistakes floating around that would be great to fix. 
 
 Leave a *star*, share with friends, help get me hired one day! 🙏
