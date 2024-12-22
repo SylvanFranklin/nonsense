@@ -1,7 +1,7 @@
 # Nonsense
 Nonsensical math paper generator inspired by
 [mathgen](https://thatsmathematics.com/mathgen/). Try it on
-[Typst.app](https://typst.app/project/w9w2Hdb3XwhyAaAQuiJY4W), scroll to the
+[Typst.app](https://typst.app/project/w0RelEf0oxj8ONLaSzm2PG), scroll to the
 bottom to change the seed.
 
 ![](generation.gif)
