@@ -1,6 +1,6 @@
 # Nonsense
 Nonsensical math paper generator inspired by
-[mathgen](https://thatsmathematics.com/mathgen/). Try it [https://sylvanfranklin.github.io/nonsense/](here)
+[mathgen](https://thatsmathematics.com/mathgen/). Try it [here](https://sylvanfranklin.github.io/nonsense/)
 
 ![](generation.gif)
 
