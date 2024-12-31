@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sylvan's Nonsense</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module"
+        src="https://cdn.jsdelivr.net/npm/@myriaddreamin/typst.ts/dist/esm/contrib/all-in-one-lite.bundle.js"
+        id="typst"></script>
+</head>
+
+<body class="flex w-screen h-screen overflow-hidden justify-center items-center gap-8 p-8">
+    <textarea id="input" class="hidden"></textarea>
+    <div class="flex flex-col gap-8 font-mono px-4 item-center w-1/3">
+        <a href="https://github.com/sylvanfranklin/nonsense" class="mx-auto flex flex-row items-center">
+            <svg width="170" height="51" viewBox="0 0 170 51" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M142.665 22C134.568 22 128 28.5667 128 36.6667C128 43.1467 132.203 48.644 138.031 50.5827C138.764 50.7187 139.031 50.2653 139.031 49.876C139.031 49.5293 139.019 48.6067 139.012 47.3827C134.932 48.268 134.071 45.416 134.071 45.416C133.404 43.7227 132.443 43.2693 132.443 43.2693C131.111 42.3613 132.543 42.3787 132.543 42.3787C134.016 42.4827 134.789 43.8907 134.789 43.8907C136.097 46.1307 138.223 45.484 139.059 45.1093C139.192 44.1627 139.571 43.516 139.989 43.1493C136.733 42.7787 133.309 41.52 133.309 35.9C133.309 34.3 133.88 32.9893 134.819 31.964C134.667 31.5933 134.164 30.1013 134.963 28.084C134.963 28.084 136.193 27.688 138.996 29.5867C140.192 29.2604 141.427 29.0945 142.667 29.0933C143.907 29.0944 145.142 29.2603 146.339 29.5867C149.139 27.688 150.368 28.0827 150.368 28.0827C151.168 30.1013 150.665 31.5933 150.515 31.964C151.455 32.9893 152.021 34.2987 152.021 35.9C152.021 41.5347 148.592 42.7747 145.325 43.1373C145.852 43.5907 146.321 44.484 146.321 45.8533C146.321 47.8133 146.303 49.396 146.303 49.876C146.303 50.2693 146.568 50.7253 147.311 50.5827C153.135 48.6387 157.333 43.1453 157.333 36.6667C157.333 28.5667 150.765 22 142.665 22Z"
+                    fill="black" />
+                <path
+                    d="M120.06 9.64562L119.249 13.3022C119.1 13.972 119.827 14.4844 120.407 14.1255L123.589 12.1543L126.822 14.0536C127.412 14.4005 128.128 13.8653 127.962 13.2041L127.068 9.56892L129.864 7.08395C130.373 6.63502 130.086 5.7863 129.409 5.73771L125.687 5.45457L124.193 2.02202C123.924 1.39546 123.031 1.4039 122.772 2.03743L121.352 5.50843L117.627 5.87002C116.948 5.93621 116.68 6.78468 117.205 7.22706L120.06 9.64562Z"
+                    fill="#EED952" />
+                <path
+                    d="M139.06 9.64562L138.249 13.3022C138.1 13.972 138.827 14.4844 139.407 14.1255L142.589 12.1543L145.822 14.0536C146.412 14.4005 147.128 13.8653 146.962 13.2041L146.068 9.56892L148.864 7.08395C149.373 6.63502 149.086 5.7863 148.409 5.73771L144.687 5.45457L143.193 2.02202C142.924 1.39546 142.031 1.4039 141.772 2.03743L140.352 5.50843L136.627 5.87002C135.948 5.93621 135.68 6.78468 136.205 7.22706L139.06 9.64562Z"
+                    fill="#EED952" />
+                <path
+                    d="M157.06 9.64562L156.249 13.3022C156.1 13.972 156.827 14.4844 157.407 14.1255L160.589 12.1543L163.822 14.0536C164.412 14.4005 165.128 13.8653 164.962 13.2041L164.068 9.56892L166.864 7.08395C167.373 6.63502 167.086 5.7863 166.409 5.73771L162.687 5.45457L161.193 2.02202C160.924 1.39546 160.031 1.4039 159.772 2.03743L158.352 5.50843L154.627 5.87002C153.948 5.93621 153.68 6.78468 154.205 7.22706L157.06 9.64562Z"
+                    fill="#EED952" />
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M26.6653 22C18.568 22 12 28.5667 12 36.6667C12 43.1467 16.2027 48.644 22.0307 50.5827C22.764 50.7187 23.0307 50.2653 23.0307 49.876C23.0307 49.5293 23.0187 48.6067 23.012 47.3827C18.932 48.268 18.0707 45.416 18.0707 45.416C17.404 43.7227 16.4427 43.2693 16.4427 43.2693C15.1107 42.3613 16.5427 42.3787 16.5427 42.3787C18.016 42.4827 18.7893 43.8907 18.7893 43.8907C20.0973 46.1307 22.2227 45.484 23.0587 45.1093C23.192 44.1627 23.5707 43.516 23.9893 43.1493C20.7333 42.7787 17.3093 41.52 17.3093 35.9C17.3093 34.3 17.88 32.9893 18.8187 31.964C18.6667 31.5933 18.164 30.1013 18.9627 28.084C18.9627 28.084 20.1933 27.688 22.996 29.5867C24.1923 29.2604 25.4267 29.0945 26.6667 29.0933C27.9071 29.0944 29.1419 29.2603 30.3387 29.5867C33.1387 27.688 34.368 28.0827 34.368 28.0827C35.168 30.1013 34.6653 31.5933 34.5147 31.964C35.4547 32.9893 36.0213 34.2987 36.0213 35.9C36.0213 41.5347 32.592 42.7747 29.3253 43.1373C29.852 43.5907 30.3213 44.484 30.3213 45.8533C30.3213 47.8133 30.3027 49.396 30.3027 49.876C30.3027 50.2693 30.568 50.7253 31.3107 50.5827C37.1347 48.6387 41.3333 43.1453 41.3333 36.6667C41.3333 28.5667 34.7653 22 26.6653 22Z"
+                    fill="black" />
+                <path
+                    d="M4.05954 9.64562L3.24865 13.3022C3.0999 13.972 3.82724 14.4844 4.40703 14.1255L7.5886 12.1543L10.8222 14.0536C11.4121 14.4005 12.1279 13.8653 11.9617 13.2041L11.0681 9.56892L13.8642 7.08395C14.3728 6.63502 14.0862 5.7863 13.4095 5.73771L9.6866 5.45457L8.19304 2.02202C7.92436 1.39546 7.03058 1.4039 6.77179 2.03743L5.35207 5.50843L1.62685 5.87002C0.948205 5.93621 0.680503 6.78468 1.20487 7.22706L4.05954 9.64562Z"
+                    fill="#EED952" />
+                <path
+                    d="M23.0595 9.64562L22.2486 13.3022C22.0999 13.972 22.8272 14.4844 23.407 14.1255L26.5886 12.1543L29.8222 14.0536C30.4121 14.4005 31.1279 13.8653 30.9617 13.2041L30.0681 9.56892L32.8642 7.08395C33.3728 6.63502 33.0862 5.7863 32.4095 5.73771L28.6866 5.45457L27.193 2.02202C26.9244 1.39546 26.0306 1.4039 25.7718 2.03743L24.3521 5.50843L20.6268 5.87002C19.9482 5.93621 19.6805 6.78468 20.2049 7.22706L23.0595 9.64562Z"
+                    fill="#EED952" />
+                <path
+                    d="M112.714 36.7006C113.1 36.3065 113.095 35.6734 112.701 35.2864L106.279 28.9811C105.884 28.5942 105.251 28.6 104.864 28.9941C104.477 29.3882 104.483 30.0213 104.877 30.4083L110.586 36.013L104.981 41.7215C104.594 42.1156 104.6 42.7487 104.994 43.1356C105.388 43.5226 106.021 43.5168 106.408 43.1227L112.714 36.7006ZM57.5092 37.5L112.009 37L111.991 35L57.4908 35.5L57.5092 37.5Z"
+                    fill="black" />
+                <path
+                    d="M52.2026 5.68569L47.9612 5.3264L46.3049 1.51969C46.007 0.826779 44.9904 0.826779 44.6925 1.51969L43.0362 5.33496L38.8036 5.68569C38.0324 5.74557 37.7169 6.68655 38.304 7.18271L41.5202 9.90302L40.5562 13.9407C40.381 14.6764 41.1959 15.2581 41.8619 14.8646L45.4987 12.726L49.1355 14.8731C49.8015 15.2666 50.6165 14.6849 50.4412 13.9493L49.4773 9.90302L52.6934 7.18271C53.2805 6.68655 52.9738 5.74557 52.2026 5.68569ZM45.4987 11.1263L42.2037 13.0681L43.08 9.40686L40.1706 6.94319L44.009 6.61812L45.4987 3.17069L46.9972 6.62667L50.8356 6.95174L47.9262 9.41541L48.8025 13.0767L45.4987 11.1263Z"
+                    fill="#111111" />
+            </svg>
+
+
+        </a>
+        <h1 class="text-center font-extrabold text-2xl">
+            NONSENSE
+        </h1>
+        <p class="text-wrap justify-center">
+            Random math paper generator using Typst. Rendering is much smoother in the official
+            Typst editor Typst.app or locally. This website is missing some key features which should
+            be fixed soon, but in the meantime if you notice any bugs kindly report them via the github link!
+        </p>
+
+
+        <button id="random-button" class="bg-blue-400 font-mono text-white py-2 px-4 shadow-sm">
+            randomize
+        </button>
+        <label for="entropy-slider" class="mb-2 font-medium text-center">Completeness (beware of
+            lag)</label>
+        <input id="entropy-slider" type="range" min="10.0" max="30.0" value="0.50" step="5.0"
+            class="h-2 bg-blue-400 rounded-lg appearance-none cursor-pointer">
+        <div class="flex justify-between mt-2 text-sm text-gray-700 text-xl">
+            <span>1</span>
+            <span>2</span>
+            <span>3</span>
+            <span>4</span>
+            <span>5</span>
+        </div>
+    </div>
+    <div class="overflow-auto h-full w-3/4 border-black border-4 rounded-md flex items-start justify-center">
+        <div id="content"></div>
+    </div>
+    <script>
+        const loading = `
+            <h2 class="font-mono text-2xl mt-4">
+                loading...
+            </h2>
+        `;
+
+        const slider = document.getElementById('entropy-slider');
+        const button = document.getElementById('random-button');
+        const input = document.getElementById('input');
+        const content = document.getElementById('content');
+
+        content.innerHTML = loading;
+        const fileURL = "https://raw.githubusercontent.com/SylvanFranklin/nonsense/refs/heads/main/lib.typ";
+
+        fetch(fileURL)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Failed to load file: ${response.statusText}`);
+                }
+                return response.text();
+            })
+            .then(text => {
+                input.value = text;
+            })
+            .catch(error => {
+                console.error(error);
+                input.value = "Error loading file.";
+            });
+
+        document.getElementById('typst').addEventListener('load', function () {
+            $typst.setCompilerInitOptions({
+                getModule: () =>
+                    'https://cdn.jsdelivr.net/npm/@myriaddreamin/typst-ts-web-compiler/pkg/typst_ts_web_compiler_bg.wasm',
+            });
+            $typst.setRendererInitOptions({
+                getModule: () =>
+                    'https://cdn.jsdelivr.net/npm/@myriaddreamin/typst-ts-renderer/pkg/typst_ts_renderer_bg.wasm',
+            });
+
+            const compile = function (mainContent, seed) {
+                if (mainContent.length > 0) {
+                    mainContent += `\n #nonsense[${seed}]`;
+                    $typst.svg({mainContent}).then(svg => {
+                        console.log(`Rendered! SvgElement { len: ${svg.length} }`);
+                        content.innerHTML = svg;
+                    });
+                } else {
+                    content.innerHTML = loading;
+                }
+            };
+
+
+            const start = "zxcdvkhoienmgtsraqwfpbj"
+            let seed = "zxcdvkhoienmgtsraqwfpbj".split('').sort(function () {return 0.5 - Math.random()}).join('');
+            const alphabet = "abcdefghijklmnopqrstuvwxyz";
+            slider.addEventListener('input', () => {
+                seed = "zxcdvkhoienmgtsraqwfpbj";
+                for (let i = 0; i < slider.value; i++) {
+                    seed += alphabet[i % alphabet.length];
+                }
+                compile(input.value, seed);
+            });
+            button.addEventListener('click', () => {
+                seed = start;
+                for (let i = 0; i < slider.value; i++) {
+                    seed += alphabet[i % alphabet.length];
+                }
+                seed = seed.split('').sort(function () {return 0.5 - Math.random()}).join('');
+                compile(input.value, seed);
+            });
+
+
+            compile(input.value, seed);
+        });
+    </script>
+</body>
+
+</html>
