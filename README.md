@@ -2,10 +2,10 @@
 Nonsensical math paper generator inspired by
 [mathgen](https://thatsmathematics.com/mathgen/). Try it [here](https://sylvanfranklin.github.io/nonsense/)
 
-![](generation.gif)
-
 > [!WARNING]
 > Hosting is broken right now I'll try to fix it asap.
+
+![](generation.gif)
 
 ## How it works
 Since the **Typst** language is deterministic and lacks a random number generator, I had to rely on number theory tricks. Each step of the process uses a linear congruential generation to create the illusion of randomness.  
