@@ -4,6 +4,9 @@ Nonsensical math paper generator inspired by
 
 ![](generation.gif)
 
+> [!WARNING]
+> Hosting is broken right now I'll try to fix it asap.
+
 ## How it works
 Since the **Typst** language is deterministic and lacks a random number generator, I had to rely on number theory tricks. Each step of the process uses a linear congruential generation to create the illusion of randomness.  
 
