@@ -8,6 +8,7 @@ Nonsensical math paper generator inspired by
 Since the **Typst** language is deterministic and lacks a random number generator, I had to rely on number theory tricks. Each step of the process uses a linear congruential generation to create the illusion of randomness.  
 
 1. Each letter inputted is turned into an integer by extracting its index from the alphabet: 
+
     ```typ 
     "abcdefghijklmnopqrstuvwxyz".at("a") # = 0
     "abcdefghijklmnopqrstuvwxyz".at("b") # = 1
