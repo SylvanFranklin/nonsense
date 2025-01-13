@@ -53,7 +53,7 @@ Title sections and other document objects like proofs, theorems, and lemmas are 
 ![](thumbnail.png)
 
 ### Performance
-**Typst** has no problem doing even hundreds of these calculations every time a letter changes, pretty awesome!
+Ideally pdfs can be generated instantly upon change, in practice however this is not holding up with web assembly, it's something that needs work. 
 
 # Contribution
 
