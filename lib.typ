@@ -20,6 +20,10 @@
   extract(body).clusters().map(lower)
 }
 
+/*
+Generation symbols are used for visual debugging, currently they are disabled since they make the whole preview look weird, but in the future with some better styling they may add a nice visual touch. I added a control guard which turns them off as the paper approached completion, but this is still visually clashing with the solid color of the symbols needing to fade out in accordence with the rest of the text which fades to black.  
+*/
+
 #let generation-symbol = (i, color: red, body) => context {
   let offset = calc.rem(parse-actions(i).len() + 1, 4) * 10
   let percent = calc.exp((entropy.final() - (80 + offset)) / 8)
@@ -234,9 +238,9 @@
   let b2 = buzzword(i + 3)
   let base = get(bases, i + 1)
   generation-symbol([fld], color: orange)[#{
-      if capital [#bgs(cap(b1)) #bgs(b2) #base] else if title-case [#bgs(
-          cap(b1),
-        ) #bgs(cap(b2)) #cap(base)] else [#bgs(b1) #bgs(b2) #base]
+      if capital [#bgs(cap(b1)) #bgs(b2) #base] else if title-case [#bgs(cap(b1)) #bgs(
+          cap(b2),
+        ) #cap(base)] else [#bgs(b1) #bgs(b2) #base]
     }]
 }
 
@@ -710,7 +714,6 @@
       ),
       i,
     )
-    // between 1803 and 2028
     let year = 1803 + calc.rem(i, 225)
     generation-symbol(calc.rem(i, 12), color: gray)[#month #year]
   }
