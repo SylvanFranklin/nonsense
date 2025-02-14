@@ -2,7 +2,7 @@
 Nonsensical math paper generator inspired by
 [mathgen](https://thatsmathematics.com/mathgen/). Try it [here](https://sylvanfranklin.github.io/nonsense/), but WARNING, this website is very janky, and may require a reload in order to render the nonsensical paper properly. I want to fix it, but am very busy at the moment. If you think you know the problem, please open an issue or PR!
 
-![](generation.gif)
+![](thumbnail.png)
 
 ## How it works
 Since the **Typst** language is deterministic and lacks a random number generator, I had to rely on number theory tricks. Each step of the process uses a linear congruential generation to create the illusion of randomness.  
@@ -50,7 +50,7 @@ Title sections and other document objects like proofs, theorems, and lemmas are 
 
 `Lemma 1.7` → Section II → `Theorem 2.1` 
 
-![](thumbnail.png)
+![](generation.gif)
 
 ### Performance
 Ideally pdfs can be generated instantly upon change, in practice however this is not holding up with web assembly, it's something that needs work. 
