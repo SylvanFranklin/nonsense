@@ -76,61 +76,77 @@
         <div id="content"></div>
     </div>
     <script>
-        const loading = `
-            <h2 class="font-mono text-2xl mt-4">
-                loading...
-            </h2>
-        `;
-
         const slider = document.getElementById('entropy-slider');
         const button = document.getElementById('random-button');
         const input = document.getElementById('input');
         const content = document.getElementById('content');
 
-        content.innerHTML = loading;
-        const fileURL = "https://raw.githubusercontent.com/SylvanFranklin/nonsense/refs/heads/main/lib.typ";
+        // Loading states
+        const loadingStates = {
+            typstTemplate: false,
+            typstRenderer: false
+        };
 
-        fetch(fileURL)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Failed to load file: ${response.statusText}`);
-                }
-                return response.text();
-            })
-            .then(text => {
-                input.value = text;
-            })
-            .catch(error => {
-                console.error(error);
-                input.value = "Error loading file.";
-            });
+        // Show loading message with status
+        function updateLoadingStatus() {
+            const loadingMessage = `
+                <h2 class="font-mono text-2xl mt-4">
+                    Loading...
+                </h2>
+                <ul class="font-mono mt-4">
+                    <li>Typst Renderer: ${loadingStates.typstRenderer ? '✓' : '⏳'}</li>
+                    <li>Typst Template: ${loadingStates.typstTemplate ? '✓' : '⏳'}</li>
+                </ul>
+            `;
+            content.innerHTML = loadingMessage;
+        }
 
-        document.getElementById('typst').addEventListener('load', function () {
-            $typst.setCompilerInitOptions({
-                getModule: () =>
-                    'https://cdn.jsdelivr.net/npm/@myriaddreamin/typst-ts-web-compiler/pkg/typst_ts_web_compiler_bg.wasm',
-            });
-            $typst.setRendererInitOptions({
-                getModule: () =>
-                    'https://cdn.jsdelivr.net/npm/@myriaddreamin/typst-ts-renderer/pkg/typst_ts_renderer_bg.wasm',
-            });
+        // Show error message
+        function showError(message) {
+            content.innerHTML = `
+                <div class="font-mono text-red-600 p-4">
+                    <h2 class="text-2xl mb-2">Error</h2>
+                    <p>${message}</p>
+                    <button onclick="location.reload()" class="mt-4 bg-blue-400 py-2 px-4 text-white">
+                        Reload Page
+                    </button>
+                </div>
+            `;
+        }
+
+        // Initialize app once all dependencies are loaded
+        function initializeApp() {
+            if (!loadingStates.typstTemplate || !loadingStates.typstRenderer) {
+                return; // Wait until everything is loaded
+            }
 
             const compile = function (mainContent, seed) {
                 if (mainContent.length > 0) {
-                    mainContent += `\n #nonsense[${seed}]`;
-                    $typst.svg({mainContent}).then(svg => {
-                        console.log(`Rendered! SvgElement { len: ${svg.length} }`);
-                        content.innerHTML = svg;
-                    });
+                    try {
+                        content.innerHTML = `<h2 class="font-mono text-2xl mt-4">Rendering...</h2>`;
+                        mainContent += `\n #nonsense[${seed}]`;
+                        $typst.svg({mainContent})
+                            .then(svg => {
+                                console.log(`Rendered! SvgElement { len: ${svg.length} }`);
+                                content.innerHTML = svg;
+                            })
+                            .catch(error => {
+                                console.error("Rendering error:", error);
+                                showError(`Rendering failed: ${error.message}`);
+                            });
+                    } catch (error) {
+                        console.error("Compile error:", error);
+                        showError(`Compilation failed: ${error.message}`);
+                    }
                 } else {
-                    content.innerHTML = loading;
+                    showError("No content to render");
                 }
             };
 
-
-            const start = "zxcdvkhoienmgtsraqwfpbj"
-            let seed = "zxcdvkhoienmgtsraqwfpbj".split('').sort(function () {return 0.5 - Math.random()}).join('');
+            const start = "zxcdvkhoienmgtsraqwfpbj";
+            let seed = start.split('').sort(() => 0.5 - Math.random()).join('');
             const alphabet = "abcdefghijklmnopqrstuvwxyz";
+
             slider.addEventListener('input', () => {
                 seed = "zxcdvkhoienmgtsraqwfpbj";
                 for (let i = 0; i < slider.value; i++) {
@@ -138,17 +154,67 @@
                 }
                 compile(input.value, seed);
             });
+
             button.addEventListener('click', () => {
                 seed = start;
                 for (let i = 0; i < slider.value; i++) {
                     seed += alphabet[i % alphabet.length];
                 }
-                seed = seed.split('').sort(function () {return 0.5 - Math.random()}).join('');
+                seed = seed.split('').sort(() => 0.5 - Math.random()).join('');
                 compile(input.value, seed);
             });
 
-
+            // Initial compilation
             compile(input.value, seed);
+        }
+
+        // Display initial loading state
+        updateLoadingStatus();
+
+        // Load the template file
+        const fileURL = "https://raw.githubusercontent.com/SylvanFranklin/nonsense/refs/heads/main/lib.typ";
+        fetch(fileURL)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Failed to load template: ${response.statusText}`);
+                }
+                return response.text();
+            })
+            .then(text => {
+                input.value = text;
+                loadingStates.typstTemplate = true;
+                updateLoadingStatus();
+                initializeApp();
+            })
+            .catch(error => {
+                console.error("Template loading error:", error);
+                showError(`Failed to load Typst template: ${error.message}`);
+            });
+
+        // Load the Typst renderer
+        document.getElementById('typst').addEventListener('load', function () {
+            try {
+                $typst.setCompilerInitOptions({
+                    getModule: () =>
+                        'https://cdn.jsdelivr.net/npm/@myriaddreamin/typst-ts-web-compiler/pkg/typst_ts_web_compiler_bg.wasm',
+                });
+                $typst.setRendererInitOptions({
+                    getModule: () =>
+                        'https://cdn.jsdelivr.net/npm/@myriaddreamin/typst-ts-renderer/pkg/typst_ts_renderer_bg.wasm',
+                });
+
+                loadingStates.typstRenderer = true;
+                updateLoadingStatus();
+                initializeApp();
+            } catch (error) {
+                console.error("Typst initialization error:", error);
+                showError(`Failed to initialize Typst: ${error.message}`);
+            }
+        });
+
+        // Add error handler for script loading
+        document.getElementById('typst').addEventListener('error', function () {
+            showError("Failed to load Typst renderer script");
         });
     </script>
 </body>
