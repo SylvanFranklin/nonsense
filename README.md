@@ -1,4 +1,4 @@
-# Nonsense
+# Nonsense™
 Production ready, entropy-subset-stacking supported, Cuda accelerated, dynamically encoded toolchain with broad usecases. Spiritual successor to [mathgen](https://thatsmathematics.com/mathgen/). 
 
 ![](thumbnail.png)
