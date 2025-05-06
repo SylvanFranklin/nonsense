@@ -21,7 +21,7 @@
 }
 
 /*
-Generation symbols are used for visual debugging, currently they are disabled since they make the whole preview look weird, but in the future with some better styling they may add a nice visual touch. I added a control guard which turns them off as the paper approached completion, but this is still visually clashing with the solid color of the symbols needing to fade out in accordence with the rest of the text which fades to black.  
+Generation symbols are used for visual debugging, currently they are disabled since they make the whole preview look weird, but in the future with some better styling they may add a nice visual touch. I added a control guard which turns them off as the paper approached completion, but this is still visually clashing with the solid color of the symbols needing to fade out in accordence with the rest of the text which fades to black.
 */
 
 #let generation-symbol = (i, color: red, body) => context {
@@ -832,3 +832,9 @@ Generation symbols are used for visual debugging, currently they are disabled si
     ]
   ]
 }
+
+#nonsense[
+  uetnaksealsoakeslaosksealstoakseslaoskaeslaoskeaeaosksealsoaksos
+  fsotestnae
+]
+
