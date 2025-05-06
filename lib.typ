@@ -91,7 +91,6 @@ Generation symbols are used for visual debugging, currently they are disabled si
   if lower(str.at(0)) in "aeiouy" { "an " + str } else { "a " + str }
 }
 
-
 #let buzzword(i) = {
   return get(
     (
@@ -270,11 +269,11 @@ Generation symbols are used for visual debugging, currently they are disabled si
   let case = calc.rem(i, 14)
   if case == 0 { v = upper(v) }
   if case == 1 { v = $cal(#v)$ }
-  if case == 2 { v = $#v _(#calc.rem(i, 16))$ }
+  if case == 2 { v = $#v_(#calc.rem(i, 16))$ }
   if case == 3 { v = $frak(#v)$ }
   if case == 4 { v = $bb(#v)$ }
-  if case == 5 { v = $#v _(#get(vars, i + 3))$ }
-  if case == 6 { v = $#v ^(#get(vars, i * 2))$ }
+  if case == 5 { v = $#v_(#get(vars, i + 3))$ }
+  if case == 6 { v = $#v^(#get(vars, i * 2))$ }
   return generation-symbol(-1, color: red)[$#v$]
 }
 
@@ -339,41 +338,33 @@ Generation symbols are used for visual debugging, currently they are disabled si
 }
 
 #let eq-med = (i, heft: 3) => {
-  $
-    #{for n in range(0, calc.floor(heft)) {
-       let se = upper(get(alphabet, i+n))
-       let v1 = var(i+n)
-       let v2 = var(i + 1+n)
-       let v3 = var(i + 2+n)
-       let sub = eq-small(i*67+n, n+i+7)
-       let sub2 = eq-small(i+73+n, n+i+4)
-       let bo = get(binary_op, i+n)
-       let g = func(i*4, i+1+n)
-       let rem = calc.rem(i + n*n*17, 18)
+  for n in range(0, calc.floor(heft)) {
+    let se = upper(get(alphabet, i + n))
+    let v1 = var(i + n)
+    let v2 = var(i + 1 + n)
+    let v3 = var(i + 2 + n)
+    let sub = eq-small(i * 67 + n, n + i + 7)
+    let sub2 = eq-small(i + 73 + n, n + i + 4)
+    let bo = get(binary_op, i + n)
+    let g = func(i * 4, i + 1 + n)
+    let rem = calc.rem(i + n * n * 17, 18)
 
-       generation-symbol(rem, color: orange)[#{
-           if rem == 0 [$\{sub | (sub2) in bb(se)\}$]
-           else if rem == 1 [$v1_v2 #g se$]
-           else if rem == 2 [$v1 bo se subset {...v2^n}$]
-           else if rem == 3 [$sub2/(sub bo v2)$]
-           else if rem == 4 [$sub2 := abs(v1)v3$]
-           else if rem == 5 [$(sub)_(sub2)$]
-           else if rem == 6 [$integral_(i * n)^(v3)sub d v2$]
-           else if rem == 7 [$(diff)/(v2 diff)$]
-           else if rem == 8 [$lim_(v2 -> oo)(sub2)$]
-           else if rem == 9 [$(sub)/(v2)$]
-           else if rem == 10 [$(sub2)^(#g v3)$]
-           else if rem == 11 [$cases(v1\:sub=v2,v3\:rem=#g)$]
-           else if rem == 12 [$(sum_(sub2)^(v2))/v3$]
-           else if rem == 13 [$v3$]
-           else if rem == 14 [$sub$]
-           else if rem == 15 [$sub2$]
-           else if rem == 16 [$v2^(sub)|$]
-           else [$v1$]
-        }]
-
-    }}
-  $
+    generation-symbol(rem, color: orange)[#{
+        if rem == 0 [$\{sub | (sub2) in bb(se)\}$] else if rem == 1 [$v1_v2 #g se$] else if (
+          rem == 2
+        ) [$v1 bo se subset {...v2^n}$] else if rem == 3 [$sub2 / (sub bo v2)$] else if (
+          rem == 4
+        ) [$sub2 := abs(v1)v3$] else if rem == 5 [$(sub)_(sub2)$] else if (
+          rem == 6
+        ) [$integral_(i * n)^(v3)sub d v2$] else if rem == 7 [$(diff) / (v2 diff)$] else if (
+          rem == 8
+        ) [$lim_(v2 -> oo)(sub2)$] else if rem == 9 [$(sub) / (v2)$] else if rem == 10 [$(sub2)^(#g v3)$] else if (
+          rem == 11
+        ) [$cases(v1\:sub=v2, v3\:rem=#g)$] else if rem == 12 [$(sum_(sub2)^(v2)) / v3$] else if (
+          rem == 13
+        ) [$v3$] else if rem == 14 [$sub$] else if rem == 15 [$sub2$] else if rem == 16 [$v2^(sub)|$] else [$v1$]
+      }]
+  }
 }
 
 #let object(i) = {
@@ -421,7 +412,7 @@ Generation symbols are used for visual debugging, currently they are disabled si
 
 #let authors = i => {
   range(0, calc.rem(i, 4) + 1)
-    .map(n => [#generation-symbol(n, color: gray)[#upper(get(alphabet, i + n))]. #generation-symbol(i+n, color: orange)[#get(last-names, i + n)]])
+    .map(n => [#generation-symbol(n, color: gray)[#upper(get(alphabet, i + n))]. #generation-symbol(i + n, color: orange)[#get(last-names, i + n)]])
     .join(", ")
 }
 
@@ -474,11 +465,11 @@ Generation symbols are used for visual debugging, currently they are disabled si
   generation-symbol(case, color: navy)[#{
       if (
         case == 0
-      ) [Fix #sing(buzz1) #buzz2 #object(i), #eq1 in #sing(buzz3) #object(i+1), #eq2.] else if (
+      ) [Fix #sing(buzz1) #buzz2 #object(i), #eq1 in #sing(buzz3) #object(i + 1), #eq2.] else if (
         case == 1
       ) [Let #sing(buzz2) #object(i) that #prop, be defined #eq2] else if (
         case == 2
-      ) [Fix #sing(buzz1) #object(i+1) in #sing(buzz2) #buzz3 #object(i+1).] else if (
+      ) [Fix #sing(buzz1) #object(i + 1) in #sing(buzz2) #buzz3 #object(i + 1).] else if (
         case == 3
       ) [Assume #sing(buzz1) #sing(buzz2) #object(i) #prop.] else [Assume #eq1 #symbol #eq2.]
     }]
@@ -530,7 +521,7 @@ Generation symbols are used for visual debugging, currently they are disabled si
     let reference = generation-symbol(
       -1,
       color: orange,
-    )[[#{1 + calc.rem(i * case * 979, references.get())}]]
+    )[[#{ 1 + calc.rem(i * case * 979, references.get()) }]]
     generation-symbol(case, color: blue)[
       #{
         if (
@@ -541,7 +532,7 @@ Generation symbols are used for visual debugging, currently they are disabled si
           case == 2
         ) [#cap(adverb1) #ogs(sing(obj1)) is #stem\ed by #bgs(sing(buzz2)) #ogs(obj2).] else if (
           case == 3
-        ) [#cap(adverb1) there exists #bgs(sing(buzz3)) #ogs(obj2,) which #ck #bgs(sing(buzz3)) #ogs(obj3). It #adverb2 #property: #eq-med(i)] else if (
+        ) [#cap(adverb1) there exists #bgs(sing(buzz3)) #ogs(obj2) which #ck #bgs(sing(buzz3)) #ogs(obj3). It #adverb2 #property: #eq-med(i)] else if (
           case == 4
         ) [#ogs(cap(sing(obj1))) #property if it is #bgs(sing(buzz3)) #ogs(obj1), which #awareness.] else if (
           case == 5
@@ -549,35 +540,39 @@ Generation symbols are used for visual debugging, currently they are disabled si
           case == 6
         ) [#cap(adverb1) we can #action #ogs(sing(obj1)) by #reference] else if (
           case == 14
-        ) [#cap(action): #eq-small(case, i*5)] else if (
+        ) [#cap(action): #eq-small(case, i * 5)] else if (
           case == 16
         ) [The work of #last-name on #res #reference is #glaze for #adverb2 #stem\ing #bgs(sing(buzz1)) #ogs(obj1), which #adverb1 #property.] // Inline text
         else if (
           case == 7
-        ) [By #stem\ing #bgs(sing(buzz1)) #ogs(obj1) on a #ogs(obj2), that is #eq-small(case+i, i+case*3) We reach #bgs(sing(buzz3)) #bgs(buzz2) #ogs(obj3)).] else if (
+        ) [By #stem\ing #bgs(sing(buzz1)) #ogs(obj1) on a #ogs(obj2), that is #eq-small(case + i, i + case * 3) We reach #bgs(sing(buzz3)) #bgs(buzz2) #ogs(obj3)).] else if (
           case == 8
-        ) [#bgs(cap(sing(buzz2))) #adverb1 #property, provided #eq-small(i, i*case+3)#eq-small(i + 1, case*i*83)] else if (
+        ) [#bgs(cap(sing(buzz2))) #adverb1 #property, provided #eq-small(i, i * case + 3)#eq-small(i + 1, case * i * 83)] else if (
           case == 9
-        ) [However, #eq-small(i, case*i*3), as shown #adverb2 in #reference is #bgs(sing(buzz2)) #ogs(obj3) and #property.] else if (
+        ) [However, #eq-small(i, case * i * 3), as shown #adverb2 in #reference is #bgs(sing(buzz2)) #ogs(obj3) and #property.] else if (
           case == 10
-        ) [#eq-small(i+case, case*17).] else if (
+        ) [#eq-small(i + case, case * 17).] else if (
           case == 11
-        ) [#cap(awareness) #reference #eq-small(i, case*i+1), provided #eq-small(i - 1, case+19).] else if (
+        ) [#cap(awareness) #reference #eq-small(i, case * i + 1), provided #eq-small(i - 1, case + 19).] else if (
           case == 12
         ) [#eq-small(i, case * 9)] else if (
           case == 13
-        ) [#cap(awareness) that #eq-small(i*17, case+i)] // medium
+        ) [#cap(awareness) that #eq-small(i * 17, case + i)] // medium
         else if (
           case == 15
-        ) [Provided #eq-small(i, i*case*3), as shown in #reference any #person would agree that every #ogs(obj1) #property] else if (
+        ) [Provided #eq-small(i, i * case * 3), as shown in #reference any #person would agree that every #ogs(obj1) #property] else if (
           case == 17
-        ) [And as shown in #reference, by #last-name #eq-med(i, heft:2)] else if (
+        ) [And as shown in #reference, by #last-name #eq-med(i, heft: 2)] else if (
           case == 18
         ) [By #res #eq-med(i, heft: 2)] // big equation
         else if case == 19 [#eq-med(
             i + 1,
             heft: 3,
-          )] else [Breaking into the two cases: #grid(gutter: 6em, columns: (1fr, 1fr), [#align(center)[Case I] #eq-med(i+3, heft: 3)], [#align(center)[Case II] #eq-med(i, heft:1)])]
+          )] else [Breaking into the two cases: #grid(
+            gutter: 6em,
+            columns: (1fr, 1fr),
+            [#align(center)[Case I] #eq-med(i + 3, heft: 3)], [#align(center)[Case II] #eq-med(i, heft: 1)],
+          )]
       }
     ]
   }
@@ -587,7 +582,7 @@ Generation symbols are used for visual debugging, currently they are disabled si
   let case = calc.rem(case, 5)
   generation-symbol(case, color: fuchsia)[
     #par[
-      _proof:_ #h(3pt) #sgs(non-setup(i, case+1)) #sgs(non-setup(i+1, case - 1))
+      _proof:_ #h(3pt) #sgs(non-setup(i, case + 1)) #sgs(non-setup(i + 1, case - 1))
       #non-statement(i, case + 1)
       #eq-med(i + 1)
       #{
@@ -623,7 +618,7 @@ Generation symbols are used for visual debugging, currently they are disabled si
         case == 1
       ) [#strong[Proposition #heading] #setup #pf] else if (
         case == 2
-      ) [#strong[Definition #heading] Let #eq-small(i*5, case * 13) be #buzz. #cap(sing(obj)) #prop if it #prop2. #pf] else if (
+      ) [#strong[Definition #heading] Let #eq-small(i * 5, case * 13) be #buzz. #cap(sing(obj)) #prop if it #prop2. #pf] else if (
         case == 3
       ) [#strong[Definition #heading] #setup2 #pf] else if (
         case == 4
@@ -636,7 +631,7 @@ Generation symbols are used for visual debugging, currently they are disabled si
       ) [#strong[Theorem #heading] #emph([#setup #setup2]). #pf] else [#strong[Lemma #heading] #text(
           weight: "regular",
           style: "italic",
-          [Let #eq-small(i+3, case * 79) be #buzz, then #eq-small(i+5, case * 97).],
+          [Let #eq-small(i + 3, case * 79) be #buzz, then #eq-small(i + 5, case * 97).],
         ) #pf]
     }]
 }
@@ -719,9 +714,9 @@ Generation symbols are used for visual debugging, currently they are disabled si
   }
 
   if calc.rem(i, 7) == 0 {
-    [#authors(i+case*5). #h(6pt) _#{title}_, #authors(i * 9), #date(i)]
+    [#authors(i + case * 5). #h(6pt) _#{ title }_, #authors(i * 9), #date(i)]
   } else {
-    [#authors(i+7*case+4). #h(6pt) #title, _#publisher(i * 7, i * 13)_, #date(i)]
+    [#authors(i + 7 * case + 4). #h(6pt) #title, _#publisher(i * 7, i * 13)_, #date(i)]
   }
 }
 
