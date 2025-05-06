@@ -1,5 +1,5 @@
-# Nonsense
-Production ready, entropy-subset-stacking supported, Cuda accelerated, dynamically encoded toolchain with broad use cases. Spiritual successor to [mathgen](https://thatsmathematics.com/mathgen/). Nonsensical math paper generator. 
+# Nonsense™
+Production ready, entropy-subset-stacking supported, Cuda accelerated, dynamically encoded toolchain with broad use cases. Spiritual successor to [mathgen](https://thatsmathematics.com/mathgen/). Math paper generator.
 
 ![](thumbnail.png)
 
