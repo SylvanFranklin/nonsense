@@ -71,7 +71,6 @@ Generation symbols are used for visual debugging, currently they are disabled si
   $succ$,
   $fence.r$,
   $eq.succ$,
-  $harpoon.lr$,
   $|->$,
   $<==>$,
   $triangle$,
@@ -81,6 +80,7 @@ Generation symbols are used for visual debugging, currently they are disabled si
 #let to-int = char => {
   "ab*()&^%$#@!'cd:;efghijklmnopqrstuvwxyz".position(char)
 }
+
 #let get(arr, i) = { arr.at(calc.rem(i, arr.len())) }
 
 #let kv(dict, i) = {
@@ -271,15 +271,15 @@ Generation symbols are used for visual debugging, currently they are disabled si
     "r",
   )
 
-  let v = get(vars, i)
+  let var = get(vars, i)
   let case = calc.rem(i, 14)
-  if case == 0 { v = upper(v) }
-  if case == 1 { v = $cal(#v)$ }
-  if case == 2 { v = $#v_(#calc.rem(i, 16))$ }
-  if case == 3 { v = $frak(#v)$ }
-  if case == 4 { v = $bb(#v)$ }
-  if case == 5 { v = $#v_(#get(vars, i + 3))$ }
-  if case == 6 { v = $#v^(#get(vars, i * 2))$ }
+  if case == 0 { var = upper(var) }
+  if case == 1 { var = $cal(var)$ }
+  if case == 2 { var = $var_(#calc.rem(i, 15)$ }
+  if case == 3 { var = $frak(var)$ }
+  if case == 4 { var = $bb(var)$ }
+  if case == 5 { var = $var_(#get(vars, i + 3))$ }
+  if case == 6 { var = $var^(#get(vars, i * 2))$ }
   return generation-symbol(-1, color: red)[$#v$]
 }
 
@@ -587,22 +587,22 @@ Generation symbols are used for visual debugging, currently they are disabled si
 #let non-proof(i, case) = {
   let case = calc.rem(case, 5)
   generation-symbol(case, color: fuchsia)[
-    #par[
-      _proof:_ #h(3pt) #sgs(non-setup(i, case + 1)) #sgs(non-setup(i + 1, case - 1))
-      #non-statement(i, case + 1)
-      #eq-med(i + 1)
-      #{
-        if case == 0 [
-          #non-statement(i + 7, case + 3)
-          #non-statement(i + 1, case + 2)
-        ] else if case == 1 [
-          #non-statement(i + 1, case + 2)
-          #eq-med(i + 3)
-        ] else [
-          The rest is trivial.
-        ]
-      }
-      #v(0.2em)#h(1fr)$square.big$
+    [
+    _proof:_ #h(3pt) #sgs(non-setup(i, case + 1)) #sgs(non-setup(i + 1, case - 1))
+    #non-statement(i, case + 1)
+    #eq-med(i + 1)
+    #{
+      if case == 0 [
+        #non-statement(i + 7, case + 3)
+        #non-statement(i + 1, case + 2)
+      ] else if case == 1 [
+        #non-statement(i + 1, case + 2)
+        #eq-med(i + 3)
+      ] else [
+        The rest is trivial.
+      ]
+    }
+    #v(0.2em)#h(1fr)$square.big$
     ]
   ]
 }
