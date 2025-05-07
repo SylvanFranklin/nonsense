@@ -190,6 +190,8 @@ Generation symbols are used for visual debugging, currently they are disabled si
   "Hitches",
   "Wumpin",
   "Quabosh",
+  "Barsik",
+  "Sharik"
 );
 
 #let connectives = (
