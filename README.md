@@ -13,4 +13,4 @@ typst init @preview/nonsense:0.1.0
 ![](generation.gif)
 
 # 'Tributing
-I through this together in a weekend so there are prolly hella spelling mistakes and bad variable names, open a PR so that it looks like you're doing something meaningful for open source lol. 
+I threw this together in a weekend so there are prolly hella spelling mistakes and bad variable names, open a PR so that it looks like you're doing something meaningful for open source lol. 
