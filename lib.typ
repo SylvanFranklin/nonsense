@@ -142,6 +142,14 @@ Generation symbols are used for visual debugging, currently they are disabled si
   "interesting",
   "highly relevant",
   "vital",
+  "insightful",
+  "innovative",
+  "transformative",
+  "cutting-edge",
+  "pivotal",
+  "invaluable",
+  "unparalleled",
+  "revolutionary",
 )
 
 #let stems = (
