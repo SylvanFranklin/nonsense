@@ -290,7 +290,7 @@ Generation symbols are used for visual debugging, currently they are disabled si
   if case == 4 { var = $bb(var)$ }
   if case == 5 { var = $var_(#get(vars, i + 3))$ }
   if case == 6 { var = $var^(#get(vars, i * 2))$ }
-  return generation-symbol(-1, color: red)[$#v$]
+  return generation-symbol(-1, color: red)[$#var$]
 }
 
 #let func(i, case) = {
