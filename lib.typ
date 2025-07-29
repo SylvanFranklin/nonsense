@@ -444,6 +444,7 @@ Generation symbols are used for visual debugging, currently they are disabled si
       "principle",
       "extension",
       "theory",
+      "postulate",
     ),
     i,
   )
