@@ -14,3 +14,16 @@ typst init @preview/nonsense:0.1.0
 
 # 'Tributing
 I threw this together in a weekend so there are prolly hella spelling mistakes and bad variable names, open a PR so that it looks like you're doing something meaningful for open source lol. 
+
+# usage
+
+edit the content of the nonsense in the [main](./main.typ) file
+
+then
+```bash
+typst compile main.typ
+```
+or
+```bash
+typst watch main.typ
+```
